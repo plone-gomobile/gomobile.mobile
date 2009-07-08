@@ -2,6 +2,12 @@ GoMobile is a Plone add-on product to turn Plone to converged web and mobile con
 It aims to be the leading open source solution for mobile and converged content management.
 This is achieved by not making compromises on mobile site usability. 
 
+.. contents:: :depth: 2
+
+.. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/frontpage.png
+   :align: right
+   :alt: PloneGoMobile screenshot
+   
 Features
 --------
 
@@ -132,6 +138,7 @@ To view mobile site version, go `http://mobi.localhost <http://mobi.localhost>`_
 Portlets
 ========
 
+
 The following new portlets are available:
 
 * Mobile preview portlet: render the current page in mobile phone mock up. This generates preview request
@@ -139,6 +146,10 @@ The following new portlets are available:
 
 * Content medias portlet: allow to choose in which medias the content appears: web, mobile, both or 
   use the parent folder setting.
+
+.. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/portlets.png
+   :alt: Portlets examples
+    
 
 Sitemap
 =======
