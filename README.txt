@@ -1,4 +1,6 @@
-GoMobile is a Plone add-on product to turn Plone to converged web and mobile content management system.
+GoMobile is a Plone add-on product to turn Plone to converged web and mobile content management system. 
+It aims to be the leading open source solution for mobile and converged content management.
+This is achieved by not making compromises on mobile site usability. 
 
 Features
 --------
@@ -6,33 +8,35 @@ Features
 Note: GoMobile is still under development. Some of these features might require extra work to 
 be enabled in your configuration.
 
-- No compromises made with the mobile user experience.
+* Automatically reformat pages and images suitable for mobile consumption.
 
-- Automatically reformat images and page content for mobile phone
+* Degenerate gracefully when viewing the pages on less powerful mobile phones (other than webkit based browser)
 
-- Manage web and mobile content from the same user interface.
+* Manage web and mobile content from the same user interface.
 
-- Mobile phone preview option for pages (admin interface).
+* Mobile phone preview option for pages in the admin interface.
 
-- Categorize site sections belonging to web, mobile or both (gomobile.convergence product)
+* Categorize site sections belonging to web, mobile or both (gomobile.convergence product)
 
-- Same URLs for web and mobile content (configuration option). This way pages are displayed correctly
+* Possible to use same URLs for web and mobile content. This way pages are displayed correctly
   whether the user opens them from his web browser or mobile browser. Very handy for outgoing links in
   email.
   
-- Big folder navigation and link buttons for touch screen displays to make the mobile site finger friendly
+* Big folder navigation and link buttons for touch screen displays to make the mobile site finger friendly.
 
-- Superious handset database support
+* Superious handset database support, sourcing information from multiple handset databases.
 
-- Enable and disable site features depending on whether the handset supports them (location based services, downloadable ringtones, downloadable widgets)
+* Enable and disable site features depending on whether the handset supports them (location based services, downloadable ringtones, downloadable widgets).
+
+* Built on Plone and Zope component architecture to make the product extensible, configurable and future proof.
   
-- Upload video files and they will be automatically transcoded suitable for different web and mobile platforms (commercial add on service)
+* Upload video files and they will be automatically transcoded suitable for different web and mobile platforms (commercial add on service)
 
 
 Requirements
 ------------
 
-* Plone 3.2 or later
+* `Plone <http://plone.org>`_ 3.2 or later
 
 * This product has been tested both on vanilla Plone and `Repoze <http://www.repoze.org>`_ set ups
   
@@ -61,13 +65,18 @@ mobile sessions are identified by user agent sniffing and preview requests are i
 buildout.cfg
 ============
 
-Example below::
+Installation of GoMobile source codes is buildout recipe based.
+
+Source code can be checked out from `Google Code <http://code.google.com/p/plonegomobile/source/checkout>`_.
+
+Example configuration below::
 
 	# Add additional eggs here
-	eggs = archetypes.schemaextender
-		   gomobile.imageinfo
-	       gomobile.mobile
-	       gomobile.convergence
+	eggs = 
+		archetypes.schemaextender
+		gomobile.imageinfo
+		gomobile.mobile
+		gomobile.convergence
 	
 	# These are direct SVN trunk checkouts
 	develop =
@@ -77,10 +86,11 @@ Example below::
 
 	# If you want to register ZCML slugs for any packages, list them here.
 	# e.g. zcml = my.package my.other.package
-	zcml = archetypes.schemaextender
-		   gomobile.imageinfo
-	       gomobile.mobile
-	       gomobile.convergence
+	zcml = 
+		archetypes.schemaextender
+		gomobile.imageinfo
+		gomobile.mobile
+		gomobile.convergence
 	       
 	       
 Add on product installers
@@ -102,7 +112,15 @@ See gomobile.mobile/profiles/default/propertiestool.xml for settings description
 Mobile support
 --------------
 
-* The product has been tested with iPhone, various Nokia Series 40 and Series 60 models, various BlackPerry models
+The product has been tested with 
+
+* iPhone
+
+* Various Nokia Series 40 (non-webkit browsers)
+
+* Various Nokia Series 60 models
+
+* BlackPerry models
 
 Usage
 -----
@@ -116,9 +134,11 @@ Portlets
 
 The following new portlets are available:
 
-* Mobile preview portlet
+* Mobile preview portlet: render the current page in mobile phone mock up. This generates preview request
+  to the site in pop-up iframe.
 
-* Content medias portlet
+* Content medias portlet: allow to choose in which medias the content appears: web, mobile, both or 
+  use the parent folder setting.
 
 Sitemap
 =======
@@ -243,7 +263,9 @@ and make this product a great success we decided to spin off it.
 Authors
 -------
 
- `Twinapex Research <http://www.twinapex.com>`_ team. Email: mikko.ohtamaa@twinapex.com.
+The project is hosted at `Google code <http://code.google.com/p/plonegomobile/>`_.
+
+`Twinapex Research <http://www.twinapex.com>`_ team. Email: mikko.ohtamaa@twinapex.com.
 
 Twinapex Research - high quality Python and mobile hackers for hire. We have 50+ years of mobile site expertise and 10+ years of Plone expertise.
 
