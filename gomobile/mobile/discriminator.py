@@ -30,17 +30,16 @@ class DefaultMobileRequestDiscriminator(object):
         pass
         
     
-    def isMobileRequest(self, site, request, mobileDomainPrefixes):
+    def isMobileRequest(self, site, request, mobileDomainPrefixes, mobileDomainSuffixes):
         """ Determine should this request be rendered in mobile mode. """        
 
         #
-        # Special HTTP GET parameter tellign
+        # Special HTTP GET query parameter telling
         # that render this as a preview request
         #            
         if request.get("view_mode") == "mobile":
             # IFRAME request
             return True
-
 
         #
         # Determine if this is targeted to mobile domain
@@ -48,14 +47,18 @@ class DefaultMobileRequestDiscriminator(object):
         #
         if "HTTP_HOST" in request.environ:
             
-            host = request.environ["HTTP_HOST"]
+            host = request.environ["HTTP_HOST"].lower()
             
-                    
-            for prefix in mobileDomainPrefixes:
+            host = host.split(":")[0] # Remove port
+            
+            for prefix in mobileDomainPrefixes:                
                 if host.startswith(prefix + "."):
                     return True
-
-                                    
+                
+            for suffix in mobileDomainSuffixes:
+                if host.endswith("." + suffix):
+                    return True
+                                                    
         return False
     
     def isPreviewRequest(self, site, request, prefixes):
@@ -100,6 +103,7 @@ class DefaultMobileRequestDiscriminator(object):
             # It is possible to have several mobile domain prefixes,
             # but in the default config there is just one
             mobileDomainPrefixes = properties.mobile_domain_prefixes      
+            mobileDomainSuffixes = properties.mobile_domain_suffixes
             previewDomainPrefixes = properties.preview_domain_prefixes
             
         except AttributeError:
@@ -119,7 +123,7 @@ class DefaultMobileRequestDiscriminator(object):
             flags.append(MobileRequestType.PREVIEW)
             flags.append(MobileRequestType.MOBILE)
         # 2. Test against mobile subdomains
-        elif self.isMobileRequest(context, request, mobileDomainPrefixes):
+        elif self.isMobileRequest(context, request, mobileDomainPrefixes, mobileDomainSuffixes):
             flags.append(MobileRequestType.MOBILE)    
         # 3. otherwise assume web request
         else:

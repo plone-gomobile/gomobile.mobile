@@ -17,6 +17,18 @@
 	<element value="mobi" />
     <element value="mobile" />
   </property>
+
+
+  <!-- TLD names for mobile requests.
+  
+       All suffixes are accepted for incoming requests.
+ 
+   	   When rewriting URLS pick first one on the list.
+   -->
+  <property name="mobile_domain_suffixes" type="lines" purge="False">
+	<element value="mobi" />
+  </property>
+
   
   <!-- Subdomain names for mobile site preview requests 
   
