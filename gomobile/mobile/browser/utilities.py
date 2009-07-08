@@ -85,3 +85,10 @@ class MobileTool(BrowserView):
         base = self.context.portal_properties.mobile_properties.web_site_base
         return self.replaceNetworkLocation(self.context.absolute_url(), base)
     
+    def isLowEndPhone(self):
+        """ @return True: If the user is visiting the site using a crappy mobile phone browser """
+        
+        # We assume all powerful mobile browsers are WebKit based
+        user_agent = self.request.other["HTTP_USER_AGENT"].lower()
+        return not "webkit" in user_agent
+        
