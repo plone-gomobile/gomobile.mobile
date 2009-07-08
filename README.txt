@@ -156,15 +156,19 @@ Sitemap
 
 Sitemap has been enhanced to show content media and content language for the site administrators. 
 
+.. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/sitemap.png
+   :alt: Sitemap example
+
 Extended schema
 ===============
 
 All Plone content types will be retrofitted with the following new fields
 
-* contentMedia: convergence options - whether the content should appear in web, mobile or both. This
-  setting can be inherited from parent levels.
+* *contentMedia*: convergence options - whether the content should appear in web, mobile or both. This
+  setting can be inherited from parent levels. Usually you do not wish to query contentMedia directly,
+  instead use gomobile.convergence.ConvergedMediaFilter utility functions.
   
-* mobileFolderListing: Show mobile specific folder listing for this content [deprecated].
+* *mobileFolderListing*: Show mobile specific folder listing for this content [deprecated].
 
 Mobile request discriminating
 =============================
@@ -274,9 +278,9 @@ and make this product a great success we decided to spin off it.
 Authors
 -------
 
-The project is hosted at `Google code <http://code.google.com/p/plonegomobile/>`_.
+The project is hosted at `Google Code project repository <http://code.google.com/p/plonegomobile>`_.
 
-`Twinapex Research <http://www.twinapex.com>`_ team. Email: mikko.ohtamaa@twinapex.com.
+Currently project is maintained by`Twinapex Research <http://www.twinapex.com>`_ team and friends. Email: mikko.ohtamaa@twinapex.com.
 
 Twinapex Research - high quality Python and mobile hackers for hire. We have 50+ years of mobile site expertise and 10+ years of Plone expertise.
 
