@@ -49,6 +49,8 @@ class DefaultMobileRequestDiscriminator(object):
             
             host = request.environ["HTTP_HOST"].lower()
             
+            print "Got host:" + str(host)
+            
             host = host.split(":")[0] # Remove port
             
             for prefix in mobileDomainPrefixes:                
