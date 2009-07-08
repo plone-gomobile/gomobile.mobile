@@ -1,9 +1,10 @@
 <div id="portal-logo">
 	<a metal:define-macro="portal_logo"
+	   id="portal-logo"
 	   accesskey="1"
-	   tal:attributes="href view/navigation_root_url"
+	   tal:attributes="href string:${view/navigation_root_url}"
 	   i18n:domain="plone">
-	
-	    <img tal:replace="structure view/logo_tag"/>       
-	</a><div>
+	   		   	
+	    <img tal:condition="view/logo_url" tal:attributes="src string:${view/logo_url};alt view/portal_title" />
+	</a>
 </div>

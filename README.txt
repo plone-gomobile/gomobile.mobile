@@ -193,6 +193,15 @@ and Plone's CSS registry is ignored for mobile.
 
 Mobile aware and convergence aware base viewlets are available in gomobile.convergence.browser and gomobile.mobile.browser packakges.
 
+How to export mobile viewlet settings
++++++++++++++++++++++++++++++++++++++
+
+1. Go to plone_skins, set your mobile skin as a default theme
+
+2. Go to portal_setup, export viewlets
+
+3. Go to plone_skins, put the normal theme back
+
 Viewlet configuration
 +++++++++++++++++++++
 

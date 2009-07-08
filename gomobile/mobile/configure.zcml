@@ -16,6 +16,10 @@
 	 provides="gomobile.mobile.interfaces.IMobileSiteLocationManager"
 	 factory=".locationmanager.DomainNameBasedMobileSiteLocationManager" />        
 
+   <utility
+	 provides="gomobile.mobile.interfaces.IMobileUtility"
+	 factory=".utilities.MobileUtility" />        
+
    <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
    
    <include file="profiles.zcml" />

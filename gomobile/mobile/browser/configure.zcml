@@ -24,7 +24,7 @@
 		name="mobile_tool"
         permission="zope2.Public"
         class=".views.MobileTool"
-        allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL"        
+        allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL isLowEndPhone"        
         />    
         
 

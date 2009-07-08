@@ -1,11 +1,21 @@
+"""
+
+    Common mobile viewlet overrides.
+
+"""
+
 __license__ = "GPL 2.1"
 __copyright__ = "2009 Twinapex Research"
+
+import md5
 
 from Acquisition import aq_inner
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.viewlets.common import ViewletBase
 from zope.component import getMultiAdapter
+
+from mobile.sniffer.utilities import get_user_agent
 
 class ConvergedViewletMixin(object):
     """ Viewlet which is aware whether it is in web or mobile
@@ -176,13 +186,39 @@ class MobileFolderListingViewlet(MobileOnlyViewletMixin, ViewletBase):
                         
 from plone.app.layout.viewlets import common
 class LogoViewlet(MobileOnlyViewletMixin, common.LogoViewlet):    
-    """ Mobile site logo """
+    """ Mobile site logo.
+    
+    Render logo so that it cannot excess the dimensions of mobile screen.
+    """
     index = ViewPageTemplateFile('logo.pt')
+        
+    def getLogoName(self):
+        """ Return logo URI relative to portal root.
+        
+        Subclass to override this.
+        """
+        return "logo.jpg"
     
     def update(self):
         common.LogoViewlet.update(self)
         self.portal = self.portal_state.portal()        
-        logoName = "logo.jpg"        
+        
+        logoName = self.getLogoName()
+
+        # Traverse to logo from the site root
+        site = self.context.portal_url.getPortalObject()        
+        path = "/".join(site.getPhysicalPath()) # getPhysicalPath() returns tuples of path parts
+        path += "/" 
+        path += logoName
+    
+        
+        resizer = self.context.restrictedTraverse("@@mobile_image_resizer")
+                
+        # Make user that each user agent gets its own logo version and not cached version for some other user agent
+        user_agent=  get_user_agent(self.request)        
+        user_agent_md5 = md5.new(user_agent).hexdigest()
+        self.logo_url = resizer.getResizedImageURL(path=path, user_agent_md5=user_agent_md5, width="auto", height="85", padding_width=10)
+
 
 class FooterViewlet(MobileOnlyViewletMixin, common.ViewletBase):    
     """ Mobile site footer """

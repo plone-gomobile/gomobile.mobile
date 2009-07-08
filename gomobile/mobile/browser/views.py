@@ -42,16 +42,18 @@ class MobileSimulator(BrowserView):
 class MobileTool(BrowserView):
     """ A context-aware wrapper for mobile site utilities.
     
-    Provide convience functions for page templates.
+    Provide convience functions for page templates to deal with mobile HTTP requests.
     """
     
     def __init__(self, context, request):
         self.context = context
         self.request = request
         self.discriminator = getUtility(IMobileRequestDiscriminator)
-        self.location_manager = getUtility(IMobileSiteLocationManager)
-                
+        self.location_manager = getUtility(IMobileSiteLocationManager)            
         self.request_flags = self.discriminator.discriminate(self.context, self.request)
+        
+    def getUtility(self):
+        return getUtility(IMobileUtility)
                 
     def isMobileRequest(self):
         return MobileRequestType.MOBILE in self.request_flags
@@ -78,5 +80,8 @@ class MobileTool(BrowserView):
         """ Return the web version URL of this of context """        
         return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.WEB)
     
-    
+    def isLowEndPhone(self):
+        """ @return True: If the user is visiting the site using a crappy mobile phone browser """
+        return self.getUtility().isLowEndPhone(self.request)
+
 
