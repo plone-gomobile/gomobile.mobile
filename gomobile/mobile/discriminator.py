@@ -45,9 +45,18 @@ class DefaultMobileRequestDiscriminator(object):
         # Determine if this is targeted to mobile domain
         # based on request domain name
         #
-        if "HTTP_HOST" in request.environ:
+        if "SERVER_NAME" in request.environ:
+            # Virtual host
+            host = request.environ["SERVER_NAME"]
+        elif "HTTP_HOST" in request.environ:
+            # Direct client request
+            host = request.environ["HTTP_HOST"]
+        else:
+            host = None
             
-            host = request.environ["HTTP_HOST"].lower()
+        if host:
+                    
+            host = host.lower()
             
             print "Got host:" + str(host)
             
