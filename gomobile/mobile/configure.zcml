@@ -1,0 +1,24 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    i18n_domain="gomobile.mobile">
+
+   <five:registerPackage package="." initialize=".initialize" />
+
+   <include package=".browser" />
+
+   <utility
+	 provides="gomobile.mobile.interfaces.IMobileRequestDiscriminator"
+	 factory=".discriminator.DefaultMobileRequestDiscriminator" />        
+
+   <utility
+	 provides="gomobile.mobile.interfaces.IMobileSiteLocationManager"
+	 factory=".locationmanager.DomainNameBasedMobileSiteLocationManager" />        
+
+   <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
+   
+
+   <include file="profiles.zcml" />
+
+</configure>

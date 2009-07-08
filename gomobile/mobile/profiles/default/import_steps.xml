@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="gomobile.mobile-setup"
+               version="123"
+               handler="gomobile.mobile.setuphandlers.importFinalSteps"
+               title="Plone Mobile extra steps">
+   <dependency step="types"/>
+    Final configuration
+  </import-step>
+</import-steps>

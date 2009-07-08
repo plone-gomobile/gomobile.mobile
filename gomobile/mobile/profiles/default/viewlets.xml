@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<object>
+	
+ <!-- Use this URL to get mobile viewlet manager
+ 
+	 http://localhost:8080/mobi/@@manage-viewlets?view_mode=mobile
+	 
+ -->
+	
+ <order manager="plone.portaltop" skinname="Plone Mobile">
+  <viewlet name="plone.app.i18n.locales.languageselector"/>
+  <viewlet name="plone.header"/>
+  <viewlet name="plone.path_bar"/>
+ </order>
+ 
+ <order manager="plone.portalfooter" skinname="Plone Mobile">
+  <viewlet name="plone.path_bar"/>
+  <viewlet name="plone.footer"/>
+ </order> 
+
+ <order manager="plone.footer" skinname="Plone Mobile">
+  <viewlet name="gomobile.mobile.path_bar"/>
+  <viewlet name="gomobile.mobile.footer"/>  
+ </order> 
+
+
+ <hidden manager="plone.portalfooter" skinname="Plone Mobile">
+  <viewlet name="plone.colophon"/>
+ </hidden>
+ 
+ <hidden manager="plone.portalfooter" skinname="Plone Mobile">
+  <viewlet name="plone.colophon"/>
+ </hidden>
+
+ <hidden manager="plone.portalheader" skinname="Plone Mobile">
+  <viewlet name="gomobile.mobile.logo"/> 	
+  <viewlet name="plone.global_sections"/>
+  <viewlet name="plone.searchbox"/>  
+  <viewlet name="plone.site_actions"/>    
+  <viewlet name="plone.logo"/>      
+ </hidden>
+
+ <hidden manager="plone.portaltop" skinname="Plone Mobile">
+  <viewlet name="plone.personal_bar"/>
+  <viewlet name="plone.app.i18n.locales.languageselector"/>  
+  <viewlet name="plone.path_bar"/>  
+ </hidden>
+ 
+<hidden manager="plone.contentviews" skinname="Plone Mobile">
+  <viewlet name="plone.contentviews"/>
+  <viewlet name="plone.contentactions"/>  
+ </hidden>
+
+ 
+<hidden manager="plone.belowcontenttitle" skinname="Plone Mobile">
+  <viewlet name="plone.belowcontenttitle.documentbyline"/>
+  <viewlet name="plone.belowcontenttitle.keywords"/>  
+</hidden>
+
+<hidden manager="plone.belowcontentbody" skinname="Plone Mobile">
+  <viewlet name="plone.abovecontenttitle.documentactions"/>
+  <viewlet name="plone.belowcontentbody.workflowhistory"/>  
+</hidden>
+
+<hidden manager="plone.portalfooter" skinname="Plone Mobile">
+  <viewlet name="plone.footer"/>
+  <viewlet name="plone.colophon"/>  
+</hidden>
+ 
+</object>

@@ -1,0 +1,147 @@
+/* GoMobile default Plone theme CSS definitions */
+
+/* <dtml-with mobile_properties> */
+
+/* --- Base --- */
+
+body {
+	margin: 0;
+	padding: 0;
+ 	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;	
+ 	font-size: 12px;
+ 	background: &dtml-globalBackgroundColor;;
+}
+
+img {
+	border: 0;
+}
+
+/* quicklinks */
+.hiddenStructure,
+#kss-spinner {
+	display: none;
+}
+
+h1 {
+    border-bottom: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.documentFirstHeading {
+    margin-top: 15px;
+}
+
+h1 {
+  font-size: 1.8em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: &dtml-headingColor;;
+}
+
+h3, h4, h5, h6 {
+    color: &dtml-fontColor;;
+    font-size: 1.2em;
+}
+
+h3 {
+    margin-top: 20px;
+}
+
+ul {
+}
+
+p {
+    margin-bottom: 1.5em;
+}
+
+/* Makes easier to hit link lists */
+li {
+  margin-bottom: 0.5em;
+}
+
+
+table {
+	font-size: &dtml-fontSize;;
+}
+
+/* no link underlinings */
+a,
+a:active,
+a:visited,
+.documentContent li a,
+.documentContent li a:active,
+.documentContent li a:visited,
+.documentContent p a,
+.documentContent p a:visited,
+.documentContent p a:active {
+	border: 0;
+	text-decoration: none;
+	color: &dtml-linkColor;;
+}
+
+a:hover,
+.documentContent li a:hover,
+.documentContent p a:hover {
+  text-decoration: underline;
+}
+
+/* Content styles */
+.image-right, .image-left {
+  border: none;
+}
+
+/* Make text area text more visible than normal grey */
+input[type=text],textarea,select {
+	color: black;
+}
+
+.documentContent ul {
+    list-style-image: url(++resource++gomobile.mobile/li.png);
+}
+
+/* Layout structure */
+
+/* TODO: Preview mode hack - make sure the actual viewlet is removed */
+#portal-siteactions { display: none; }
+
+#portal-columns {
+	padding: 1em;
+}
+
+#portal-header {
+	background: white;
+	color: black;
+	text-align: center;
+}
+
+#portal-breadcrumbs {
+	margin-bottom: 1em;
+}
+
+
+.documentDescription {
+	color: #666;
+}
+
+/* Footer */
+
+#portal-footer {
+	background: white url(footer.gif) repeat-x top left;
+	color: #666;
+	padding: 1em;
+	padding-top: 10px;
+}
+
+#portal-globalnav { list-style: none; text-align:center; padding: 0; }
+#portal-globalnav li { display: inline; margin-bottom: 1.5px; }
+#portal-globalnav li a { padding: 0.5em; }
+
+#footer-links, #portal-breadcrumbs { text-align: center; }
+
+#copyright { text-align: center; }
+
+
+/* </dtml-with> */
+
+

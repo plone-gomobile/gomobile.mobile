@@ -1,0 +1,41 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="gomobile.mobile">
+    
+    <include package=".portlets" />
+
+    <include package=".viewlets" />
+    
+    <browser:resourceDirectory
+        name="gomobile.mobile"
+        directory="resources"
+        />
+    
+    <interface
+        interface="gomobile.mobile.interfaces.IMobileLayer"
+        type="zope.publisher.interfaces.browser.IBrowserSkinType"
+        name="Plone Mobile"
+        />
+        
+	<!-- Page template utilities -->
+    <browser:page
+		for="*"
+		name="mobile_tool"
+        permission="zope2.Public"
+        class=".views.MobileTool"
+        allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL"        
+        />    
+        
+
+	<!-- Page template utilities -->
+    <browser:page
+		for="*"
+		name="mobile_image_resizer"
+        permission="zope2.Public"
+        class=".resizer.ImageResizerView"
+        allowed_attributes="getResizedImageURL"
+        />    
+		
+		        
+</configure>

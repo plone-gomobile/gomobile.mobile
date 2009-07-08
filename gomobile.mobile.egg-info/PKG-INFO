@@ -1,0 +1,177 @@
+Metadata-Version: 1.0
+Name: gomobile.mobile
+Version: 0.0.1dev-r3273
+Summary: GoMobile is a Plone add-on product to turn Plone to converged web and mobile content management system
+Home-page: http://www.twinapex.com
+Author: GoMobile community
+Author-email: mikko.ohtamaa@twinapex.com
+License: GPL
+Description: GoMobile is a Plone add-on product to  Plone to converged web and mobile content management system.
+        
+        Features
+        --------
+        
+        - No compromises made with the mobile user experience.
+        
+        - Automatically reformat images and page content for mobile phone
+        
+        - Manage web and mobile content from the same user interface.
+        
+        - Mobile phone preview option for pages (admin interface).
+        
+        - Categorize site sections belonging to web, mobile or both (gomobile.convergence product)
+        
+        - Same URLs for web and mobile content (configuration option). This way pages are displayed correctly
+        whether the user opens them from his web browser or mobile browser. Very handy for outgoing links in
+        email.
+        
+        - Upload video files and they will be automatically transcoded suitable for different web and mobile platforms (commercial add on service)
+        
+        Installation
+        ------------
+        
+        External Set up
+        ===============
+        
+        Out-of-the-box setup needs special DNS set-up to work correctly.
+        
+        - There are three different request types: web, mobile and preview
+        
+        - Different domain names are used to identify the request type
+        
+        - URI stays same
+        
+        Edit your /etc/hosts and add line::
+        
+        127.0.0.1 mobi.localhost web.localhost preview.localhost
+        
+        Optional: It is possible to configure the server to use only single domain name. In this case,
+        mobile sessions are identified by user agent sniffing and preview requests are identified by a path prefix.
+        
+        
+        buildout.cfg
+        ============
+        
+        Example below::
+        
+        # Add additional eggs here
+        eggs = archetypes.schemaextender
+        gomobile.imageinfo
+        gomobile.mobile
+        gomobile.convergence
+        
+        # Reference any eggs you are developing here, one per line
+        # e.g.: develop = src/my.package
+        develop =
+        ../workspace/gomobile/gomobile.imageinfo
+        ../workspace/gomobile/gomobile.mobile
+        ../workspace/gomobile/gomobile.convergence
+        
+        # If you want to register ZCML slugs for any packages, list them here.
+        # e.g. zcml = my.package my.other.package
+        zcml = archetypes.schemaextender
+        gomobile.imageinfo
+        gomobile.mobile
+        gomobile.convergence
+        
+        
+        Add on product installers
+        =========================
+        
+        Run add on product installers for
+        
+        * Plone Mobile
+        
+        * Convergence
+        
+        Site specific settings
+        ======================
+        
+        Site specific settings can be found in ZMI. Go portal_properties -> mobile_properties.
+        
+        See gomobile.mobile/profiles/default/propertiestool.xml for settings descriptions.
+        
+        Usage
+        -----
+        
+        To view web site version, go `http://web.localhost <http://web.localhost>`_.
+        
+        To view mobile site version, go `http://mobi.localhost <http://mobi.localhost>`_.
+        
+        To rearrange mobile theme viewlets, go http://mobi.localhost
+        
+        Portlets
+        ========
+        
+        The following new portlets are available:
+        
+        * Mobile preview portlet
+        
+        * Content medias portlet
+        
+        Sitemap
+        =======
+        
+        Sitemap has been enhanced to show content media and content language for the site administrators.
+        
+        Extended schema
+        ===============
+        
+        All Plone content types will be retrofitted with the following new fields
+        
+        * contentMedia: convergence options - whether the content should appear in web, mobile or both. This
+        setting can be inherited from parent levels.
+        
+        * mobileFolderListing: Show mobile specific folder listing for this content [deprecated].
+        
+        Mobile request discriminating
+        =============================
+        
+        gomobile.mobile.discriminator contains an utility which categorizes the incoming HTTP requests to web, mobile and preview requests.
+        
+        By default, this uses domain name based policy. You can override this to use user agent based policy or cookie based policy.
+        
+        Image resizing
+        ==============
+        
+        Images can be automatically resized to fit for mobile screen. The following options are availble
+        
+        * Scale by maximum screen width (good for logos)
+        
+        * Scale by maximum screen height
+        
+        * Manually enforce dimensions
+        
+        Please see gomobile.mobile.brwoser.resizer for more information about this functionality.
+        
+        Traffic analyzing
+        -----------------
+        
+        Mobile sites cannot use Javascript based traffic analysing (Google Analytics).
+        
+        gomobile.analytics provides SQL based visitor logging
+        
+        * Unique visitors
+        
+        * Visitor revisits
+        
+        * Pages/visiting session
+        
+        Performance
+        -----------
+        
+        archetypes.schemaextender has performance issues.
+        
+        If this is an issue please install archetypes.schematuning package.
+        Changelog
+        =========
+        
+        1.0 - Unreleased
+        ----------------
+        
+        * Initial release
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

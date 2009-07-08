@@ -1,0 +1,13 @@
+/**
+ * CSS styles actived in the mobile preview mode.
+ * 
+ * Define font sizes for small screens.
+ *
+ * Dynamically loaded by simulator Javascript.
+ */
+
+
+/* Force smaller font size to emulate fonts on small screen */
+body {
+	font-size:10px;
+}

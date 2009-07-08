@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="mobile_properties" meta_type="Plone Property Sheet" title="Mobile site specific settings">
+ 	
+  <property name="title">Mobile site settings</property>
+
+  <property name="help" type="string" purge="True">For property descriptions see propertiestool.xml in gomobile.mobile Python package</property>
+
+  <!-- Subdomain names for mobile requests.
+  
+       All prefixes are accepted for incoming requests.
+ 
+   	   When rewriting URLS pick first one on the list.
+   -->
+  <property name="mobile_domain_prefixes" type="lines" purge="False">
+  	<element value="m" />
+	<element value="mobi" />
+    <element value="mobile" />
+  </property>
+  
+  <!-- Subdomain names for mobile site preview requests 
+  
+       All prefixes are accepted for incoming requests.
+ 
+   	   When rewriting URLS pick first one on the list.
+  
+  -->
+  <property name="preview_domain_prefixes" type="lines" purge="False">
+  	<element value="preview" />  	  
+  </property>
+
+  <!-- Subdomain names for web site requests 
+  
+       All prefixes are accepted for incoming requests.
+ 
+   	   When rewriting URLS *no* prefix is put in.
+  
+  -->
+  <property name="web_domain_prefixes" type="lines" purge="False">
+  	<element value="www" />  	  
+	<element value="web" />  	  
+  </property>
+
+  <!--
+  
+  	When request is detected to be mobile or mobile site preview request,
+	enable this skin (the name of the skin) instead of using one 
+	set up in portal_skins.
+  
+    -->
+  <property name="mobile_skin" type="string" purge="False">Plone Mobile</property>  
+  
+  <!--
+  
+  	Magic string which protects against the denial of service attack by doing
+	many requsts to (slow) image resizer.
+  
+    -->
+  <property name="image_resizer_secret" type="string" purge="False">random_string_set_in_setuphandlers</property>  
+  
+  <!--
+  
+  		This information is used for image resizer when we don't
+		use mobile user agent sniffer to determine 
+  
+    -->
+  <property name="default_canvas_width" type="int" purge="False">160</property>  
+  <property name="default_canvas_height" type="int" purge="False">100</property>  
+ </object>
+</object>

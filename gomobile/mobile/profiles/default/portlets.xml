@@ -1,0 +1,12 @@
+<portlets>
+
+  <portlet
+    addview="gomobile.mobile.Preview"
+    title="Mobile preview"
+    description="Tools for showing the mobile version of the page"
+    />
+	
+  <assignment name="mobile-preview" category="context" key="/"
+     manager="plone.rightcolumn" type="gomobile.mobile.Preview"/>
+	    
+</portlets>

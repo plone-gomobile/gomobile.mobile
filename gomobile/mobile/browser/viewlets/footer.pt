@@ -1,0 +1,39 @@
+<div id="footer-links"
+    tal:define="
+    	accesskeys python: {'sitemap' : '3', 'accessibility' : '0', 'contact' : '9'};    
+	    getIconFor nocall:context/plone_utils/getIconFor;"
+    i18n:domain="plone"    
+    >
+    				
+	<ul id="portal-globalnav" tal:condition="python:len(view.portal_tabs) > 0">
+        <tal:tabs tal:repeat="tab view/portal_tabs">
+        	<li tal:attributes="id string:portaltab-${tab/id};">
+        		<a href="" 
+	               tal:content="tab/name"
+	               tal:attributes="href tab/url;
+                               title tab/description|nothing">
+    		        Tab Name                       
+            	</a>
+	            <span tal:condition="not: repeat/tab/end">|</span>
+            </li>
+		</tal:tabs>
+    </ul>		
+	    		
+
+	<p id="copyright">
+	    &copy; <a href="#">GoMobile Community</a>
+	    
+	    <span 
+	           tal:omit-tag=""
+	           tal:define="now modules/DateTime/DateTime"
+	           tal:content="now/year" />
+	
+		|
+	    <a tal:attributes="href string:${view/context/mobile_tool/getWebSiteURL}">
+			Show desktop version
+	    </a>
+	
+	
+	</p>
+
+</div>

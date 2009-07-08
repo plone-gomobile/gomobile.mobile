@@ -1,0 +1,64 @@
+#mobile-preview-wrapper  
+{  
+	position: absolute;  
+	top:10px;  
+	left:25%;  
+	width:400px;
+	height:800px;
+	text-align: left;  
+	display: none;
+	z-index: 100;
+}  
+#mobile-preview-url { display:none; }
+#mobile-preview {  
+	background: url(++resource++gomobile.mobile/phone_back.png) no-repeat top left;  
+	width: 400px;  
+	height: 750px;  
+	margin:0;
+	padding:0; 
+}  
+
+#mobile-preview iframe {
+	margin-left: 34px;
+	margin-top: 155px;	
+	width: 320px;
+	height: 460px;
+	border:0;
+	padding:0;
+	background: white;
+}
+
+#preview-info {
+	border: 1px solid black;
+	padding: 4px;
+	background: #555;
+	color:white;
+	width: 250px;
+	z-index:102;
+	position: absolute;
+	left: 465px;
+	top: 30px;
+}
+
+#preview-info a {
+	font-weight: bold;
+	color: #ffa;
+}
+
+.darkClass
+{
+	background-color: black;
+	filter:alpha(opacity=80); /* IE */
+	opacity: 0.8; /* Safari, Opera */
+	-moz-opacity:0.80; /* FireFox */
+	z-index: 20;
+	min-height: 1000px;
+	max-height: 100%;
+	width: 100%;
+	background-repeat:no-repeat;
+	background-position:center;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	display:none;
+}

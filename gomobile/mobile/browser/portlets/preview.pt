@@ -1,0 +1,60 @@
+<dl tal:attributes="class string:portlet portletMobilePreview"
+    i18n:domain="plone">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span  tal:content="view/data/title" />
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem odd">
+    
+        <p>
+            <a class="open-mobile-preview" href="#">
+            	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_preview_icon.png" />
+            </a>
+        
+        	<a class="open-mobile-preview" href="#">
+        		Preview mobile version
+			</a>
+        </p>
+
+        <p>
+           	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_icon.png" />        
+        	Surf in mobile phone:
+			<input type="text" tal:attributes="value view/getMobileSiteURL" />
+        </p>
+        
+        
+        <div id="dark-layer" class="darkClass"></div>
+        
+		<div id="mobile-preview-wrapper">
+				
+			<div id="mobile-preview">
+				<div id="preview-info">
+					<p>
+						<a href="#">
+							<b>[ X ]</b> Click here to close preview
+						</a>
+					</p>
+					
+					<p>
+						To have the best possible preview experience,
+						use Macintosh computer and Safari browser.
+					</p>
+				</div>
+				<span id="mobile-preview-url" tal:content="view/getMobilePreviewURL" />
+				<iframe>
+					Your browser does not support iframes
+				</iframe>
+
+			</div>					
+		</div>
+                
+        <tal:corners>
+            <span class="portletBottomLeft"></span>
+            <span class="portletBottomRight"></span>
+        </tal:corners>
+    </dd>
+   
+</dl>

@@ -1,0 +1,42 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="twinapex.plone.mobile">
+
+    <!-- The logo -->
+    <browser:viewlet
+        name="twinapex.plone.mobile.logo"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        permission="zope2.View"
+        class=".common.LogoViewlet"
+        />
+
+    <!-- The breadcrumbs -->
+    <browser:viewlet
+        name="twinapex.plone.mobile.path_bar"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        permission="zope2.Public"
+		template="path_bar.pt"
+		class=".common.PathBarViewlet"
+        />
+
+    <!-- Footer -->
+    <browser:viewlet
+        name="twinapex.plone.mobile.footer"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        permission="zope.Public"
+		template="footer.pt"        
+		class=".common.FooterViewlet"
+        />
+
+    <!-- Mobile folder listing -->
+    <browser:viewlet
+        name="twinapex.plone.mobile.folderlisting"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+        permission="zope.Public"
+		class=".common.MobileFolderListingViewlet"
+        />
+
+ 
+
+</configure>

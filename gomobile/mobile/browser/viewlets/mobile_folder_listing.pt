@@ -1,0 +1,24 @@
+<ul id="mobile-folder-listing" class="button-links">
+		
+	<tal:repeat tal:repeat="res view/items">
+		<tal:foobar tal:define="item python:res['item'];image python:res['image']">
+		
+			<li tal:condition="not:image">
+				<!-- Convergence product gives this mobileButtonImage condition-->
+	
+                <a tal:attributes="href item/absolute_url">
+                    <span class="button-body">
+                        <span class="button-inner" tal:content="item/Title" />
+                    </span>
+                </a>
+		</li>
+
+			<li tal:condition="image" class="image-button">				
+				<a tal:attributes="href item/absolute_url" >
+					<img tal:attributes="src image; alt item/Title" />
+				</a>
+			</li>
+	
+		</tal:foobar>
+	</tal:repeat>
+</ul>

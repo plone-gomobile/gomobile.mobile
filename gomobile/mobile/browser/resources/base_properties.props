@@ -1,0 +1,63 @@
+title:string=Twinapex Theme's color, font, logo and border defaults
+
+plone_skin:string=Twinapex Theme
+
+logoName:string=logo.png
+
+fontFamily:string=Arial, Helvetica, sans-serif
+fontBaseSize:string=62.5%
+fontColor:string=#666
+fontSmallSize:string=100%
+
+backgroundColor:string=White
+
+linkColor:string=#CC0000
+linkActiveColor:string=#CC0000
+linkVisitedColor:string=#CC0000
+
+borderWidth:string=1px
+borderStyle:string=solid
+borderStyleAnnotations:string=solid
+
+globalBorderColor:string=#989898
+globalBackgroundColor:string=White
+globalFontColor:string=#989898
+
+headingFontFamily:string=Arial, Helvetica, sans-serif
+
+contentViewBorderColor:string=#74ae0b
+contentViewBackgroundColor:string=#cde2a7
+contentViewFontColor:string=#578308
+
+inputFontColor:string=#a4a3a4
+
+textTransform:string=none
+
+evenRowBackgroundColor:string=#f8f8f8
+oddRowBackgroundColor:string=transparent
+
+notifyBorderColor:string=#ffa500
+notifyBackgroundColor:string=#ffce7b
+
+discreetColor:string=#666666
+helpBackgroundColor:string=#ffffe1
+
+portalMinWidth:string=486px
+columnOneWidth:string=164px
+columnTwoWidth:string=231px
+
+componentFont:string=Verdana, Geneva, Arial, Helvetica, sans-serif
+headingColor:string=black
+
+portetLinkColor:string=#f3a019
+portletBackground:string=#f8f8f8
+portletHeadingColor:string=#999999
+
+portletStaticLinkColor:string=#5690d8
+
+searchBorderColor:string=#a4a3a4
+searchColor:string=#f3a019
+
+navBarLinkColor:string=#ffffff
+
+fontSize:string=12px

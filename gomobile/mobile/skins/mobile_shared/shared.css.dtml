@@ -1,0 +1,54 @@
+/* Styles which are shared in GoMobile web and mobile sites */
+
+/* TODO. This file needs to be scrapped */
+
+a.mobile-button {
+	color: yellow;
+	background: black;
+}
+
+ul.button-links {
+    padding: 0;
+    margin: 0;
+    margin-left: -1em;
+    margin-right: -1em;
+}
+
+/* Mobile content special styles */
+
+#content ul.button-links a { line-height: 32px; font-size: 12px; color:#FFFFFF;}
+
+ul.button-links li {
+    height: 35px;
+    width: 100%;
+    display:block;
+    text-align: center;
+    background:#cc0000 url(++resource++gomobile.mobile/menubar.png) repeat-x top left;
+}
+
+ul.button-links li.image-button {
+    background: none;
+    height: auto;
+}
+
+ul.button-links li .button-body {
+    color: #FFF;
+    text-align: center;
+    display: block;
+    font-size:12px;
+    height: 32px;
+    line-height: 32px;
+    padding: 0;
+    margin: 0;  
+    font-weight: bold;
+    color: white;
+}
+
+#content ul.button-links li a span { color:#FFF; }
+#content ul.button-links li a:hover span { color:red; }
+ul.button-links li a:hover .button-body {
+    color: red;
+    text-decoration: none !important;
+}
+#content ul.button-links li a:visited { color:#FFF; }
+
