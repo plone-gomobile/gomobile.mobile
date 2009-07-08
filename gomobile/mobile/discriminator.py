@@ -47,7 +47,7 @@ class DefaultMobileRequestDiscriminator(object):
         #
         if "HTTP_X_FORWARDED_HOST'" in request.environ:
             # Virtual host
-            host = request.environ["HTTP_X_FORWARDED_HOST'"]
+            host = request.environ["HTTP_X_FORWARDED_HOST"]
         elif "HTTP_HOST" in request.environ:
             # Direct client request
             host = request.environ["HTTP_HOST"]
