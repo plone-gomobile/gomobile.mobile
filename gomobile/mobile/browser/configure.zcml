@@ -27,7 +27,6 @@
         allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL isLowEndPhone"        
         />    
         
-
 	<!-- Page template utilities -->
     <browser:page
 		for="*"
@@ -36,6 +35,5 @@
         class=".resizer.ImageResizerView"
         allowed_attributes="getResizedImageURL"
         />    
-		
 		        
 </configure>
