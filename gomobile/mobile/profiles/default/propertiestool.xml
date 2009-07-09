@@ -78,5 +78,11 @@
     -->
   <property name="default_canvas_width" type="int" purge="False">160</property>  
   <property name="default_canvas_height" type="int" purge="False">100</property>  
+  
+  <!-- Input your tracking code if mobile analytics service is used.
+  
+  	See viewlets/tracking.py -->
+  <property name="tracking_id" type="string" purge="False"></property>
+  
  </object>
 </object>

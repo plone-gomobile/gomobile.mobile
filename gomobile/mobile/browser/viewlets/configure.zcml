@@ -37,6 +37,14 @@
 		class=".common.MobileFolderListingViewlet"
         />
 
+    <!-- Mobile analytics tracking HTML snippet -->
+    <browser:viewlet
+        name="gomobile.tracker"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        permission="zope.Public"
+		class=".tracking.MobileTrackingViewlet"
+		layer="gomobile.mobile.interfaces.IMobileLayer"
+        />
  
 
 </configure>
