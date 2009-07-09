@@ -10,6 +10,8 @@ Changelog
 
 * Increased mobiready.com score to 4 by fixing template quirks
 
+* Added Bango support
+
 0.0.1
 -----
 

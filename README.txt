@@ -252,17 +252,20 @@ sniffing can source information from multiple databases once.
 Traffic analyzing
 -----------------
 
-Mobile sites cannot use Javascript based traffic analysing (Google Analytics).
+Traffic analyzing can be either 
 
-gomobile.analytics provides SQL based visitor logging
+* internal: you record page hits your own database
 
-* Unique visitors
+* external: hidden image loaded from the tracker server is used to keep track of the loaded pages and the visitor data is hosted elsewhere
 
-* Visitor revisits
+The former is more visitor friendly, since there is no hidden images increasing mobile bandwidth usage.
+The latter is more easier for the site administrators.
 
-* Pages/visiting session
+Supported tracking backends:
 
-[TODO: Need to publish code for this]
+* SQL and cookie based tracking (not released yet)
+
+* `Bango <http://bango.com>`_
 
 Performance
 -----------
