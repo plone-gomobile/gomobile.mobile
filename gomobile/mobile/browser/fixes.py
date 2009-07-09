@@ -36,4 +36,29 @@ class ATFieldDecoratorView(_ATFieldDecoratorView):
         else:
             classstring = 'kss-dummy' # TODO don't let emptry string through
         return classstring
+
+def getKssClasses(self, fieldname, templateId=None, macro=None, target=None):
+        context = aq_inner(self.context)
+        field = context.getField(fieldname)
+        # field can be None when widgets are used without fields
+        # check whether field is valid
+        if field is not None and field.writeable(context):
+            classstring = ' kssattr-atfieldname-%s' % fieldname
+            if templateId is not None:
+                classstring += ' kssattr-templateId-%s' % templateId
+            if macro is not None:
+                classstring += ' kssattr-macro-%s' % macro
+            if target is not None:
+                classstring += ' kssattr-target-%s' % target
+            # XXX commented out to avoid macro showing up twice
+            # not removed since it might be needed in a use case I forgot about
+            # __gotcha
+            #else:
+            #    classstring += ' kssattr-macro-%s-field-view' % fieldname
+        else:
+            classstring = 'kss-dummy' # TODO don't let emptry string through
+        return classstring    
+    
+# Monkey patch the fuckiny thing
+_ATFieldDecoratorView.getKssClasses = getKssClasses
         
