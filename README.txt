@@ -34,31 +34,39 @@ be enabled in your configuration.
 
 * Enable and disable site features depending on whether the handset supports them (location based services, downloadable ringtones, downloadable widgets).
 
+* Plone ecosystem has dozens of well maintained add-ons which can be dropped in to your mobile sites: forums, form editors, blogs, ecommerce.
+
 * Built on Plone and Zope component architecture to make the product extensible, configurable and future proof.
   
 * Upload video files and they will be automatically transcoded suitable for different web and mobile platforms (commercial add on service)
 
+Feel it
+-------
+
+Please visit `Plone community mobile site <http://plonecommunity.mobi>`_ to see the product in action.
 
 Requirements
 ------------
 
-* `Plone <http://plone.org>`_ 3.2 or later
+* Experience and will to learn how to install and maintain Plone sites
 
-* This product has been tested both on vanilla Plone and `Repoze <http://www.repoze.org>`_ set ups
+* `Plone <http://plone.org>`_ 3.3 or later
   
 Installation
 ------------
+
+* You need to install `Plone CMS <http://plone.org/products/plone/>`_ first. 
 
 External Set up
 ===============
 
 Out-of-the-box setup needs special DNS set-up to work correctly.
 
-- There are three different request types: web, mobile and preview
+* There are three different request types: web, mobile and preview
 
-- Different domain names are used to identify the request type
+* Different domain names are used to identify the request type
 
-- URI stays same
+* URI stays same
 
 Edit your /etc/hosts and add line::
 
@@ -270,6 +278,8 @@ Unit tests are available for all packages.
 
 Roadmap
 -------
+
+* gomobile.mobile theme will be rewritten based on plonecommunity.mobi
 
 * Launch GoMobile community in GetPaid fashion
 

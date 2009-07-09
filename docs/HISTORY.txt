@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.0.1 - 0.0.2
+-------------
+
+* Migrated to Plone 3.3
+
+* Created plonecommunity.mobi demo site
+
+* Increased mobiready.com score to 4 by fixing template quirks
+
 0.0.1
 -----
 

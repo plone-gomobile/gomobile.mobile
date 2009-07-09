@@ -35,5 +35,16 @@
         class=".resizer.ImageResizerView"
         allowed_attributes="getResizedImageURL"
         />    
+
+	<!-- Fix empty CSS class declaration generating - it is not valid XHTML -->
+    <browser:page
+		for="Products.Archetypes.interfaces.IBaseObject"
+		name="kss_field_decorator_view"
+        permission="zope2.View"
+        class=".fixes.ATFieldDecoratorView"
+        allowed_attributes="getKssUIDClass getKssClassesInlineEditable getKssClasses"
+		layer="gomobile.mobile.interfaces.IMobileLayer"
+        />
+
 		        
 </configure>
