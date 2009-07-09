@@ -1,5 +1,4 @@
-<ul id="mobile-folder-listing" class="button-links">
-		
+<ul id="mobile-folder-listing" class="button-links" tal:condition="python:len(view.items) &gt; 0">
 	<tal:repeat tal:repeat="res view/items">
 		<tal:foobar tal:define="item python:res['item'];image python:res['image']">
 		
