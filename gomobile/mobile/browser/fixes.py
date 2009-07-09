@@ -59,6 +59,16 @@ def getKssClasses(self, fieldname, templateId=None, macro=None, target=None):
             classstring = 'kss-dummy' # TODO don't let emptry string through
         return classstring    
     
+def getKssClassesInlineEditable(self, fieldname, templateId, macro=None, target=None):
+    classstring = self.getKssClasses(fieldname, templateId, macro, target)
+    global_kss_inline_editable = self._global_kss_inline_editable()
+    if global_kss_inline_editable and classstring != "kss-dummy":
+        classstring += ' inlineEditable'
+        
+    if classstring == "": classtring = "kss-dummy"
+    return classstring
+    
+    
 # Monkey patch the fuckiny thing
 _ATFieldDecoratorView.getKssClasses = getKssClasses
-        
+_ATFieldDecoratorView.getKssClassesInlineEditable = getKssClassesInlineEditable
