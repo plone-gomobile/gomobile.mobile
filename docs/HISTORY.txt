@@ -8,7 +8,7 @@ Changelog
 
 * Created plonecommunity.mobi demo site
 
-* Increased mobiready.com score to 4 by fixing template quirks
+* Increased mobiready.com score to to near perfect by fixing template quirks: http://plonecommunity.mobi/readiness.png
 
 * Added Bango support
 

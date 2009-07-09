@@ -45,10 +45,16 @@ Feel it
 
 Please visit `Plone community mobile site <http://plonecommunity.mobi>`_ to see the product in action.
 
+The site achieves near perfect score in mobiReady industry standard test how well pages work across
+different mobile phones.
+
+.. image:: http://plonecommunity.mobi/readiness.png
+   :alt: mobiReady test results
+
 Requirements
 ------------
 
-* Experience and will to learn how to install and maintain Plone sites
+* Experience or will to learn how to install and maintain Plone sites
 
 * `Plone <http://plone.org>`_ 3.3 or later
   
@@ -136,6 +142,10 @@ The product has been tested with
 
 * BlackPerry models
 
+* Android
+
+* Opera Mini
+
 Usage
 -----
 
@@ -145,7 +155,6 @@ To view mobile site version, go `http://mobi.localhost <http://mobi.localhost>`_
 
 Portlets
 ========
-
 
 The following new portlets are available:
 
@@ -158,7 +167,6 @@ The following new portlets are available:
 .. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/portlets.png
    :alt: Portlets examples
     
-
 Sitemap
 =======
 
@@ -305,4 +313,5 @@ The project is hosted at `Google Code project repository <http://code.google.com
 Currently project is maintained by`Twinapex Research <http://www.twinapex.com>`_ team and friends. Email: mikko.ohtamaa@twinapex.com.
 
 Twinapex Research - high quality Python and mobile hackers for hire. We have 50+ years of mobile site expertise and 10+ years of Plone expertise.
+
 
