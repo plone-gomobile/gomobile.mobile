@@ -58,7 +58,7 @@ class DefaultMobileRequestDiscriminator(object):
                     
             host = host.lower()
             
-            print "Got host:" + str(host)
+            # print "Got host:" + str(host)
             
             host = host.split(":")[0] # Remove port
             
