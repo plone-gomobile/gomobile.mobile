@@ -9,7 +9,7 @@ class IMobileLayer(IDefaultPloneLayer):
     """Marker interface that defines a Zope 3 browser layer.
     
     This layer is applied on HTTPRequest when mobile rendering 
-    is on.    
+    is on. Mobile only viewlets can be registered on this layer.
     """
     
 class IMobileUtility(zope.interface.Interface):
@@ -31,7 +31,6 @@ class MobileRequestType:
     PREVIEW = "preview"
     
     
-
 class IMobileRequestDiscriminator(zope.interface.Interface):
     """ Determine if the request is a mobile or not. 
         
@@ -105,9 +104,6 @@ class IMobileSiteLocationManager(zope.interface.Interface):
     2. Redirect to different URL
     """
     
-    
-      
-    
     def rewriteURL(request, url, mode):
         """ Rewrite the URL to redirect to the page in a different mobile view mode.
         
@@ -116,4 +112,4 @@ class IMobileSiteLocationManager(zope.interface.Interface):
         @return: string
         """
         
-      
+        
