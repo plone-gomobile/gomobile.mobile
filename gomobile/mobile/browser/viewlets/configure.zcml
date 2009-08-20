@@ -9,6 +9,7 @@
         manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
         permission="zope2.View"
         class=".common.LogoViewlet"
+        layer="gomobile.mobile.interfaces.IMobileLayer"
         />
 
     <!-- The breadcrumbs -->
@@ -18,6 +19,7 @@
         permission="zope2.Public"
 		template="path_bar.pt"
 		class=".common.PathBarViewlet"
+        layer="gomobile.mobile.interfaces.IMobileLayer"
         />
 
     <!-- Footer -->
@@ -25,8 +27,9 @@
         name="twinapex.plone.mobile.footer"
         manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
         permission="zope.Public"
-		template="footer.pt"        
+		template="footer.pt"
 		class=".common.FooterViewlet"
+        layer="gomobile.mobile.interfaces.IMobileLayer"
         />
 
     <!-- Mobile folder listing -->
@@ -35,6 +38,7 @@
         manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
         permission="zope.Public"
 		class=".common.MobileFolderListingViewlet"
+        layer="gomobile.mobile.interfaces.IMobileLayer"
         />
 
     <!-- Mobile analytics tracking HTML snippet -->
@@ -45,6 +49,6 @@
 		class=".tracking.MobileTrackingViewlet"
 		layer="gomobile.mobile.interfaces.IMobileLayer"
         />
- 
+
 
 </configure>
