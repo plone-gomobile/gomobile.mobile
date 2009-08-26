@@ -69,3 +69,12 @@ class MobileUtility(object):
         Note that Opera Mini browser works smoothly on low end phones too...
         """
         return is_low_end_phone(request)
+    
+    
+
+def getCachedMobileProperties(context, request):
+    """ Cached access to mobile properties of the site.
+    
+    Will look up mobile properties from the database or return the cached instance.
+    """
+    return context.portal_properties.mobile_properties

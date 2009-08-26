@@ -1,0 +1,47 @@
+==========================
+ Activating mobile theme
+==========================
+
+Since version 0.1 Plone Go Mobile themes are collective.skinny based.
+collective.skinny is a framework to deploy lightweight plone themes
+for public sites (no Plone editing functionality) easily.
+
+Activating the theme
+--------------------
+
+# Include your theme name in eggs list - example gomobiletheme.basic::
+
+	eggs =
+	    mobile.sniffer
+	    gomobile.mobile
+	    gomobile.convergence
+	    gomobile.supporter
+	    gomobiletheme.basic
+	
+# Include your theme package in zcml list - example gomobiletheme.basic::
+	
+	zcml =
+	    gomobile.imageinfo
+	    gomobile.mobile
+	    gomobile.convergence
+	    gomobile.supporter
+	    gomobiletheme.basic
+	    
+# Set your theme name through portal_properties.mobile_properties. Theme interface id is
+  used as the key to activate the theme.
+  
+  
+Troubleshooting
+---------------
+
+# Start Zope instance on foreground::
+
+	bin/instance fg
+	
+# Inspect start up messages
+
+# Inspect messages when you try to open your site using the web browser
+
+
+  
+	  
