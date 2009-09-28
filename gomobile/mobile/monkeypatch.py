@@ -10,17 +10,19 @@ import logging
 from zope.component import getUtility, queryUtility
 from zope.component.interfaces import ComponentLookupError
 
-from Products.CMFCore.Skinnable import SkinnableObjectManager
-from Products.CMFCore.utils import getToolByName
 
 from interfaces import MobileRequestType, IMobileRequestDiscriminator
 
 logger = logging.getLogger("Plone")
+
 #
 # Monkey patch in the mobile support
 #
 # TODO do something smarter here
 #
+from Products.CMFCore.Skinnable import SkinnableObjectManager
+from Products.CMFCore.utils import getToolByName
+
 def getSkinNameFromRequest(self, REQUEST=None):
     '''Returns the skin name from the Request.'''
 
