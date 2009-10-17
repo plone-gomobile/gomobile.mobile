@@ -42,6 +42,9 @@ def setDiscriminateMode(request, mode):
     request.environ["HTTP_HOST"] = host
 
 
+# Mock variable which can be manipulated by unit tests
+modes = [MobileRequestType.MOBILE]
+
 class TestMobileRequestDiscriminator(object):
     """ Spoof HTTP request media type for Zope test browser.
 
@@ -80,7 +83,11 @@ class TestMobileRequestDiscriminator(object):
 
     zope.interface.implements(IMobileRequestDiscriminator)
 
-    modes = [MobileRequestType.MOBILE]
+    @staticmethod
+    def setModes(_modes):
+        global modes
+        modes = _modes
 
     def discriminate(self, context, request):
-        return TestMobileRequestDiscriminator.modes
+        global modes
+        return modes

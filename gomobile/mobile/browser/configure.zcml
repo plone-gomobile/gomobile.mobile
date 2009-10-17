@@ -2,62 +2,57 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="gomobile.mobile">
-    
+
     <include package=".portlets" />
 
     <include package=".viewlets" />
-    
-    <browser:resourceDirectory
-        name="gomobile.mobile"
-        directory="resources"
-        />
-    
+
     <interface
         interface="gomobile.mobile.interfaces.IMobileLayer"
         type="zope.publisher.interfaces.browser.IBrowserSkinType"
         name="Plone Mobile"
         />
-        
-	<!-- Page template utilities -->
+
+    <!-- Page template utilities -->
     <browser:page
-		for="*"
-		name="mobile_tool"
+        for="*"
+        name="mobile_tool"
         permission="zope2.Public"
         class=".views.MobileTool"
-        allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL isLowEndPhone"        
-        />    
-        
-	<!-- Page template utilities -->
+        allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL isLowEndPhone"
+        />
+
+    <!-- Page template utilities -->
     <browser:page
-		for="*"
-		name="mobile_image_resizer"
+        for="*"
+        name="mobile_image_resizer"
         permission="zope2.Public"
         class=".resizer.ImageResizerView"
         allowed_attributes="getResizedImageURL"
-        />    
+        />
 
-	<!-- Fix empty CSS class declaration generating - it is not valid XHTML.
-	
-		Plone code uses both for= declarations, both must be covered.
-	
-		-->
+    <!-- Fix empty CSS class declaration generating - it is not valid XHTML.
+
+        Plone code uses both for= declarations, both must be covered.
+
+        -->
     <browser:page
-		for="Products.Archetypes.interfaces.IBaseObject"
-		name="kss_field_decorator_view"
+        for="Products.Archetypes.interfaces.IBaseObject"
+        name="kss_field_decorator_view"
         permission="zope2.View"
         class=".fixes.ATFieldDecoratorView"
         allowed_attributes="getKssUIDClass getKssClassesInlineEditable getKssClasses"
-		layer="gomobile.mobile.interfaces.IMobileLayer"
+        layer="gomobile.mobile.interfaces.IMobileLayer"
         />
-		
+
     <browser:page
-		for="*"
-		name="kss_field_decorator_view"
+        for="*"
+        name="kss_field_decorator_view"
         permission="zope2.View"
         class=".fixes.ATFieldDecoratorView"
         allowed_attributes="getKssUIDClass getKssClassesInlineEditable getKssClasses"
-		layer="gomobile.mobile.interfaces.IMobileLayer"
+        layer="gomobile.mobile.interfaces.IMobileLayer"
         />
 
-		        
+
 </configure>
