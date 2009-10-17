@@ -21,65 +21,65 @@ from zope.app.component.hooks import getSite
 
 
 from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator, IMobileSiteLocationManager, MobileRequestType
-       
+
 
 class MobileSimulator(BrowserView):
     """ Render mobile site preview in phone simulator view.
-    
+
     """
 
     context = None
     request = None
-    
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
         self.membership = context.portal_membership
-        
+
     def __call__(self):
         pass
-    
+
 class MobileTool(BrowserView):
     """ A context-aware wrapper for mobile site utilities.
-    
+
     Provide convience functions for page templates to deal with mobile HTTP requests.
     """
-    
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
         self.discriminator = getUtility(IMobileRequestDiscriminator)
-        self.location_manager = getUtility(IMobileSiteLocationManager)            
+        self.location_manager = getUtility(IMobileSiteLocationManager)
         self.request_flags = self.discriminator.discriminate(self.context, self.request)
-        
+
     def getUtility(self):
         return getUtility(IMobileUtility)
-                
+
     def isMobileRequest(self):
         return MobileRequestType.MOBILE in self.request_flags
-    
+
     def isPreviewRequest(self):
         return MobileRequestType.PREVIEW in self.request_flags
-    
+
     def isWebRequest(self):
         return MobileRequestType.WEB in self.request_flags
-    
+
     def isAdminRequest(self):
         return MobileRequestType.ADMIN in self.request_flags
-         
+
     def getMobileSiteURL(self):
-        """ Return the mobile version of this context"""        
+        """ Return the mobile version of this context"""
         return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.MOBILE)
-    
+
     def getMobilePreviewURL(self):
-        """ Return URL used in phone simualtor.            
+        """ Return URL used in phone simualtor.
         """
         return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.PREVIEW)
-        
+
     def getWebSiteURL(self):
-        """ Return the web version URL of this of context """        
+        """ Return the web version URL of this of context """
         return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.WEB)
-    
+
     def isLowEndPhone(self):
         """ @return True: If the user is visiting the site using a crappy mobile phone browser """
         return self.getUtility().isLowEndPhone(self.request)

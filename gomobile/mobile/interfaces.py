@@ -36,56 +36,9 @@ class MobileRequestType:
 
 
 class IMobileRequestDiscriminator(zope.interface.Interface):
-    """ Determine if the request is a mobile or not.
+    """ Determine what content medias and use-cases the request presents.
 
     """
-
-    def isMobileRequest(context, request):
-        """ Is the HTTP request a mobile version.
-
-        If the request is mobile request
-
-            - Mobile skin layer will be applied
-
-            - Navigation will be mobile based
-
-        @param context: PloneSite object
-
-        @param request: HTTPRequest
-
-        @return: True if the request output is targeted to mobile site.
-        """
-
-    def isPreviewRequest(context, request):
-        """
-
-        Preview requests are mobile pages rendered in IFRAME.
-        They need special handling, because they load simulator
-        specific Javascript files.
-
-        @param context: PloneSite object
-
-        @param request: HTTPRequest
-
-        @return: True if the request output is targeted to preview IFRAME
-
-        """
-
-    def isAdminRequest(context, request):
-        """ Is the request mobile site administration request.
-
-        The admin request will render the site in normal web mode,
-        but mobile only content is visibile in folder listings
-        and navigation tree. For the simple fact, that
-        you need to access mobile content to be able to edit it.
-
-        @param context: PloneSite object
-
-        @param request: HTTPRequest
-
-        @return: True if the request output should render mobile only specific content on
-                 normal web view
-        """
 
     def discriminate(context, request):
         """ Flag request to describe its relation of mobile
