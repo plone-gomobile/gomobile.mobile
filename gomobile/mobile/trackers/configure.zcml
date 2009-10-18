@@ -8,10 +8,18 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="gomobile.mobile">
 
-    <grok:grok package="." />
+    <grok:grok package=".view" />
 
     <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
            provides="gomobile.mobile.interfaces.IMobileTracker"
            factory=".bango.BangoTracker"
+           name="bango"
+            />
+
+    <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+           provides="gomobile.mobile.interfaces.IMobileTracker"
+           factory=".admob.AdmobTracker"
+           name="admob"
+           />
 
 </configure>
