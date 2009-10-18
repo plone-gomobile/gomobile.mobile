@@ -70,3 +70,32 @@ class IMobileSiteLocationManager(zope.interface.Interface):
         """
 
 
+class IMobileTracker(zope.interface.Interface):
+    """ Mobile site analytics tracking provider.
+
+    Mobile tracker provides necessary HTML
+    snippet for site visitor tracking.
+
+    Tracking providers are as Zope component adapters for context, request and name.
+    They are similar to views in this sense.
+
+    Example registration::
+
+        @grok.adapter(zope.interface.Interface, zope.publisher.interfaces.browser.IBrowserRequest, name="bango")
+        @grok.implementer(IMobileTracker)
+        class BangoTracker(object):
+            ...
+
+    The site manager can change the active tracker backend in mobile_properties.
+    Tracking viewlet does the corresponding tracker look-up based on this name.
+    """
+
+    def track(self, trackingId):
+        """ Create tracking HTML snippet.
+
+        @param trackingId: Tracker id. Site manager can edit this in the site settings.
+            Tracker id is given by the tracker site and is unique to it. Any string values accepted.
+
+        @return: HTML snippet as a string
+        """
+

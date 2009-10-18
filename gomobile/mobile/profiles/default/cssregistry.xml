@@ -22,24 +22,10 @@
       ResourceRegistries/tools/CSSRegistry.py for the latest list of all
       available keys and default values.
       -->
-	 <stylesheet title=""
-	    id="gomobile.css"
-	    media="screen" rel="stylesheet" rendering="import"
-	    cacheable="True" compression="safe" cookable="True"
-	    enabled="1" expression="portal/mobile_tool/isMobileRequest"/>
-	
-	 <stylesheet title=""
-	    id="++resource++gomobile.mobile/simulator.css"
-	    media="screen" rel="stylesheet" rendering="import"
-	    cacheable="True" compression="safe" cookable="True"
-	    enabled="1" expression=""/>
-
-	 <stylesheet title=""
-	    id="shared.css"
-	    media="screen" rel="stylesheet" rendering="import"
-	    cacheable="True" compression="safe" cookable="True"
-	    enabled="1" expression=""/>
-
-
+     <stylesheet title=""
+        id="++resource++gomobile.mobile/simulator.css"
+        media="screen" rel="stylesheet" rendering="import"
+        cacheable="True" compression="safe" cookable="True"
+        enabled="1" expression=""/>
 
 </object>

@@ -271,9 +271,9 @@ The latter is more easier for the site administrators.
 
 Supported tracking backends:
 
-* SQL and cookie based tracking (not released yet)
-
 * `Bango <http://bango.com>`_
+
+* 
 
 Performance
 -----------

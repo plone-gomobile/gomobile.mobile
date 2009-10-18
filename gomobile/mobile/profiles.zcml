@@ -3,12 +3,6 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="harvinaiset.skin">
 
-  <genericsetup:registerProfile
-      name="default"
-      title="Plone Go Mobile"
-      directory="profiles/default"
-      description='Mobile CMS add-on'
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+
 
 </configure>
