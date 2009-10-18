@@ -46,7 +46,7 @@ def getSkinNameFromRequest(self, REQUEST=None):
 
         # Determine mobile skin name from mobile_properties
         modes = discriminator.discriminate(site, REQUEST)
-        print "Discriminator:" + str(discriminator) + " modes:" + str(modes) + " ids:" + str(properties.objectIds())
+        # print "Discriminator:" + str(discriminator) + " modes:" + str(modes) + " ids:" + str(properties.objectIds())
         #import pdb ; pdb.set_trace()
         if MobileRequestType.MOBILE in modes:
 
@@ -58,7 +58,7 @@ def getSkinNameFromRequest(self, REQUEST=None):
 
                 # Enable mobile specific skin layer
                 skin_name = mobile_properties.mobile_skin
-                print "Got skin:" + skin_name
+                # print "Got skin:" + skin_name
                 return skin_name
 
         if sf is not None:

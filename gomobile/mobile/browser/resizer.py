@@ -21,7 +21,7 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility, queryUtility
 from zope.app.component.hooks import getSite
 
-from mobile.sniffer.utilities import get_user_agent
+from mobile.sniffer.utilities import get_user_agent, get_user_agent_hash
 
 from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator, IMobileSiteLocationManager, MobileRequestType
 from gomobile.imageinfo.interfaces import IImageInfoUtility
@@ -96,17 +96,88 @@ def getUserAgentBasedResizedImageURL(context, request, *args, **kwargs):
     view = view.__of__(context)
 
     # Make user that each user agent gets its own logo version and not cached version for some other user agent
-    user_agent=  get_user_agent(request)
-    if user_agent:
-        user_agent_md5 = md5.new(user_agent).hexdigest()
-    else:
-        # User agent will be None in unit tests
-        user_agent_md5 = ""
+    user_agent_md5 = get_user_agent_hash(request)
 
     kwargs["user_agent_md5"] = user_agent_md5
 
     return getResizedImageURL(*args, **kwargs)
 
+
+def getRecommendedDimensions(device_size, recommend_size, fallback_size=(128,128), padding=(0,0), safe=(1000,1000)):
+    """ Calculate image dimensions so that it will suitable for the mobile screen
+
+    @param device_size: (device screen width, device screen height) or None if not known
+
+    @param recommend_size: (width, height)
+
+    @param fallback_size: (width, height)
+
+    @param padding: (reduced width, reduced height)
+
+    @param safe: (max width, max height)
+
+    If device screen size is not known it can be None.
+
+    For recommend size width/height can be string "auto" or integer value.
+
+    Fallback size is used if recommend width/height is set to auto and device size is not known.
+
+    Padding is removed from the dimensions after calculating the correct image size (to leave space for CSS margins)
+
+    If safety parameters are exceeded, Unauthorized exception will be risen.
+
+    @return: (width, height) for recommended aspect ration conserving resize
+    """
+
+    max_width = recommend_size[0]
+
+    max_height = recommend_size[1]
+
+    # Solve wanted width
+    if max_width == "auto":
+
+        if device_size:
+            width = device_size[0]
+
+            # TODO: Hardcoded hack
+            if width > 320:
+                width = 320
+        else:
+            width = 0
+
+        if width <= 1:
+            print "Using default canvas width"
+            width = fallback_size[0]
+
+    else:
+        width = int(recommend_size[0])
+
+    width -= padding[0]
+
+    # Solve wanted height
+    if max_height == "auto":
+
+        # twinapex.sniffer middleware inserts this
+
+        if device_size:
+            height = device_size[1]
+        else:
+            height = 0
+
+        if height <= 1:
+            print "Using default canvas height"
+            height = fallback_size[1]
+
+    else:
+        height = int(recommend_size[0])
+
+    if width < 1 or width > safe[0]:
+        raise Unauthorized("Invalid width: %d" % width)
+
+    if height < 1 or height > safe[1]:
+        raise Unauthorized("Invalid height: %d" % height)
+
+    return (width, height)
 
 class ImageResizerView(BrowserView):
     """ Resize images on fly for mobile screens.

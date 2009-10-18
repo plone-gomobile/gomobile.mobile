@@ -16,8 +16,8 @@
     <include package=".browser" />
     <include package=".trackers" />
 
-    <grok:grok package=".assignable" />
-    <grok:grok package=".trackers" />
+	<grok:grok package="." />
+
 
     <five:registerPackage package="." initialize=".initialize" />
 
@@ -27,6 +27,11 @@
     <class class="Products.Archetypes.BaseObject.BaseObject">
           <implements interface=".interfaces.IMobileContentish" />
     </class>
+
+    <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+             provides=".interfaces.IUserAgentSniffer"
+             factory=".sniffer.cached_wurlf_ua_sniffer"
+             />
 
    <plone:behavior
         title="Mobile"

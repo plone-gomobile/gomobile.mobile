@@ -99,3 +99,11 @@ class IMobileTracker(zope.interface.Interface):
         @return: HTML snippet as a string
         """
 
+
+class IUserAgentSniffer(zope.interface.Interface):
+    """ Get user agent info for HTTP request.
+
+    This is an adapter which returns mobile.sniffer.UserAgent records
+    for the HTTP request.
+    """
+
