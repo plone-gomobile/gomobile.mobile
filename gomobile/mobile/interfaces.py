@@ -105,5 +105,15 @@ class IUserAgentSniffer(zope.interface.Interface):
 
     This is an adapter which returns mobile.sniffer.UserAgent records
     for the HTTP request.
+    By overriding the adapter you can add site specific user agent sniffing logic.
+
+    This is a multi-adapter with two parameters:
+
+        * context object (site)
+
+        * request (HTTP request object)
+
+    See gomobile.mobile.sniffer for the default implementation.
     """
+
 
