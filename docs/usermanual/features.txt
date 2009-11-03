@@ -1,0 +1,28 @@
+Features
+--------
+
+* Publish and manage web and mobile through unified tool
+
+* Reformat pages and images suitable for mobile
+
+* Define different content in mobile by site section or on 
+  individual field level
+
+* Supports *all* (over 5000) mobile phones models: 
+  Page will degenerate gracefully when being viewed on less powerful mobile phones
+
+* Mobile phone preview for page editors
+
+* Single URL for mobile and web - the user will be
+  catered correctly every time 
+  
+* Specialized navigation for mobile phones and touch screens
+
+* Use hundreds of add-on products from Plone ecosystem for mobile: blogs, forums, file sharing, etc. 
+
+* Video and audio files  will be automatically transcoded suitable for mobile platforms(*)
+
+
+
+** Commercial add-on service
+

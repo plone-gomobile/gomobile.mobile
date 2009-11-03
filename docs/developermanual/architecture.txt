@@ -1,0 +1,50 @@
+Python layer
+------------
+
+* mobile.sniffer: Handset database abstraction
+
+* mobile.heurestics: Condensed ten years of experience dealing with mobile phone complexity
+
+* mobile.xhtmlmp: lxml based cleaner and post-processor for XHTML mobile profile. 
+
+	* Enforce strict XHTML MP (e.g. add alt="" attributes)
+	
+	* Dynamically rewrite internal and external <img> tags for mobile.
+
+Note: Python layer can be used e.g. with Django and Django-CMS.
+
+Plone layer
+-----------
+
+* gomobile.mobile: core mobile behavior
+
+	* mobile layer and theming
+	
+	* browser mobile tracking
+	
+	* domain name and URL 
+	
+	* mobile preview
+	
+	* user agent based image resizing
+
+* gomobile.convergence: multichannel publishing options
+
+	* Set folder/page for web and mobile only
+	
+	* Override field values individually
+
+* gomobiletheme.basic: mobile theme written from scratch using Grok
+
+* twinapex.video: Video and audio transcoding for mobile
+
+Handset backends
+----------------
+
+* Apex Vertex (1000 handsets)
+
+* Wurfl (5000 handsets)
+
+* DeviceAtlas (4000 handsets)
+
+* WAP profiles (dynamic)

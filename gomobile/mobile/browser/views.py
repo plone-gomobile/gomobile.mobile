@@ -19,9 +19,12 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility, queryUtility
 from zope.app.component.hooks import getSite
 
+from five import grok
 
 from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator, IMobileSiteLocationManager, MobileRequestType
+from gomobile.mobile.interfaces import IMobileContentish
 
+grok.templatedir("templates")
 
 class MobileSimulator(BrowserView):
     """ Render mobile site preview in phone simulator view.
@@ -38,6 +41,19 @@ class MobileSimulator(BrowserView):
 
     def __call__(self):
         pass
+
+
+class MobileSimulatorIFrame(grok.View):
+    """ Create <iframe> snippet needed to render the simulator page loader.
+    """
+    
+    grok.context(IMobileContentish)
+
+    def getMobilePreviewURL(self):
+        """ """
+        mobile_tool = self.context.unrestrictedTraverse("@@mobile_tool")
+        return mobile_tool.getMobilePreviewURL()
+            
 
 class MobileTool(BrowserView):
     """ A context-aware wrapper for mobile site utilities.

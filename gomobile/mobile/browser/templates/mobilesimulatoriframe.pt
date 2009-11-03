@@ -1,0 +1,21 @@
+
+<div id="mobile-preview">
+	<div id="preview-info">
+		<p>
+			<a href="#">
+				<b>[ X ]</b> Click here to close preview
+			</a>
+		</p>
+		
+		<p>
+			Displaying simulated mobile view.
+			View is not 100% accurate.
+		</p>
+		
+	</div>
+	
+	<iframe tal:attributes="src view/getMobilePreviewURL">
+		Your browser does not support frames.
+	</iframe>
+
+</div>					
