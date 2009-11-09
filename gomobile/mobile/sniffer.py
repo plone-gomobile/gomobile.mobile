@@ -9,14 +9,23 @@
 __license__ = "GPL 2.1"
 __copyright__ = "2009 Twinapex Research"
 
+import logging
+
 import zope.interface
 from zope.annotation.interfaces import IAnnotations
 
-from mobile.sniffer.wurlf.sniffer import WurlfSniffer
+logger = logging.getLogger("Plone")
 
-# Wrapper sniffer instance
-# All start-up delay goes on this line
-_sniffer = WurlfSniffer()
+try:
+    from mobile.sniffer.wurlf.sniffer import WurlfSniffer
+
+    # Wrapper sniffer instance
+    # All start-up delay goes on this line
+    _sniffer = WurlfSniffer()
+except ImportError, e:
+    logger.exception(e)
+    logger.error("Could not import Wurlf sniffer... probably python-Lehvenstein egg missing")
+    _sniffer = None
 
 # Annotations cache key
 KEY = "sniffer_user_agent"
@@ -27,7 +36,14 @@ def cached_wurlf_ua_sniffer(context, request):
     User agent look-up may be expensive.
     Store cached value on the request object itself and
     session.
+
+    @return: mobile.sniffer.base.UserAgent instance or None if no user agent found or it cannot be looked up
     """
+
+
+    if _sniffer == None:
+        # For some reason, coudln't initialize
+        return None
 
     # First check if we have cached hit on HTTP request
     annotations = IAnnotations(request)
