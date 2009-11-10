@@ -32,6 +32,7 @@ setup(name='gomobile.mobile',
           'zope.schema',
           'zope.interface',
           'zope.component',
+          'plone.postpublicationhook',
           'gomobile.imageinfo',
           'gomobile.xhtmlmp',
           # -*- Extra requirements: -*-
