@@ -35,12 +35,12 @@ DOCSTRING_MARKER="xhtml-mobile"
 
 @adapter(Interface, IAfterPublicationEvent)
 def set_mobile_html_content_type(object, event):
-    pass
-    return
 
     request = event.request
     response = event.request.response
 
+
+    return
 
     # Check that we have text/html response
     if "Content-type" in response.headers:

@@ -79,3 +79,16 @@ def getCachedMobileProperties(context, request):
     return context.portal_properties.mobile_properties
 
 
+def debug_layers(context):
+    from zope.component import adapts
+    from zope.component import getSiteManager
+    from zope.component import queryMultiAdapter
+    from zope.component import getSiteManager
+    from zope.component import getAllUtilitiesRegisteredFor
+
+    from plone.browserlayer.interfaces import ILocalBrowserLayerType
+    from plone.browserlayer.utils import register_layer, unregister_layer
+    return
+    active = context.REQUEST.__provides__.__iro__
+    print active
+
