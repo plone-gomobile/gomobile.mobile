@@ -69,9 +69,11 @@ class DefaultMobileRequestDiscriminator(object):
 
             host = host.split(":")[0] # Remove port
 
-            for prefix in mobileDomainPrefixes:
-                if host.startswith(prefix + "."):
-                    return True
+            # Go through each subdomain name and compare it to mobile markers
+            for part in host.split(".")[0:-1]:
+                for prefix in mobileDomainPrefixes:
+                    if part == prefix:
+                        return True
 
             for suffix in mobileDomainSuffixes:
                 if host.endswith("." + suffix):
