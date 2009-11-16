@@ -58,7 +58,7 @@ class MobileTracker(grok.CodeView):
 
         if self.trackerName and self.trackingId:
             # Look up the tracker
-            tracker = getTracker(self.trackerName)
+            tracker = self.getTracker(self.trackerName)
             self.trackingCode = tracker.track(self.trackingId)
 
         else:

@@ -16,7 +16,7 @@
     <include package=".browser" />
     <include package=".trackers" />
 
-	<grok:grok package="." />
+    <grok:grok package="." />
 
 
     <five:registerPackage package="." initialize=".initialize" />
@@ -38,8 +38,9 @@
         description="Mobile behavior of content"
         provides=".behaviors.IMobileBehavior"
         for="gomobile.mobile.interfaces.IMobileContentish"
-        factory=".behaviors.MobileBehaviorStorage"
+        factory=".behaviors.manufacture_mobile_behavior"
         />
+
    <utility
      provides="gomobile.mobile.interfaces.IMobileRequestDiscriminator"
      factory=".discriminator.DefaultMobileRequestDiscriminator" />

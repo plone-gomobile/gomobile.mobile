@@ -9,12 +9,13 @@
 
 from urllib2 import urlopen
 from urllib import urlencode
+
 try:
     # Python >= 2.5
     from hashlib import md5
 except ImportError:
     # Python < 2.5
-    import md5
+    from md5 import md5
 
 
 import zope.interface
@@ -49,14 +50,19 @@ class AdmobTracker(object):
         uri = self.request["PATH_TRANSLATED"]
 
         # Get Plone session id
-        session_data_manager = self.context.session_data_manager
-        session_id = session_data_manager.getBrowserIdManager().getBrowserId(create=create)
+        session_data_manager = getattr(self.context, "session_data_manager", None)
+
+        if session_data_manager:
+            session_id = session_data_manager.getBrowserIdManager().getBrowserId(create=create)
+        else:
+            # Unit tests
+            session_id = "fake_session"
 
         params = {
           "admob_site_id" : trackingId,
         }
 
-        html_code = admob_ad(self.request, session_id, uri, params)
+        html_code = admob_code(self.request, session_id, uri, params)
 
         return html_code
 
@@ -79,8 +85,8 @@ def admob_code(request, session, uri, admob_params=None):
     admob_post["s"] = admob_params["admob_site_id"]
 
     # Meta Parameters.
-    admob_post["u"] = request.header.get("HTTP_USER_AGENT", None)
-    admob_post["i"] = request.header.get("REMOTE_ADDR", None)
+    admob_post["u"] = request.get_header("HTTP_USER_AGENT", None)
+    admob_post["i"] = request.get_header("REMOTE_ADDR", None)
     admob_post["p"] = uri
     admob_post["t"] = session
 
@@ -98,7 +104,7 @@ def admob_code(request, session, uri, admob_params=None):
     admob_post["k"] = admob_params.get("admob_keywords", None)
     admob_post["search"] = admob_params.get("admob_search", None)
 
-    for k, v in request.header.items():
+    for k, v in request.environ.items():
         if k not in admob_ignore:
             admob_post["h[%s]" % k] = v
 

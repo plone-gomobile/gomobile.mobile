@@ -92,3 +92,26 @@ def debug_layers(context):
     active = context.REQUEST.__provides__.__iro__
     print active
 
+
+
+class VolatileContext(object):
+    """ Mix-in class to provide context variable to persistent classes which is not persitent.
+
+    Some subsystems (e.g. forms) expect objects to have a reference to parent/site/whatever.
+    However, it might not be a wise idea to have circular persistent references.
+
+    This helper class creates a context property which is volatile (never persistent),
+    but can be still set on the object after creation or after database load.
+    """
+
+    # _v_ attribute prefix marks volatile ZODB references
+    _v_context = None
+
+
+    def _set_context(self, context):
+        self._v_context = context
+
+    def _get_context(self):
+        return self._v_context
+
+    context = property(_get_context, _set_context)
