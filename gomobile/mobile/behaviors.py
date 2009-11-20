@@ -32,10 +32,14 @@ class IMobileBehavior(form.Schema):
         fields=('mobileFolderListing'),
     )
 
-    mobileFolderListing = schema.Bool(title=u"Mobile folder listing",
-                                  description=u"Show touch screen friendly listing of the child content at the bottom of the page.",
+    mobileFolderListing = schema.Bool(title=u"Show folder listing",
+                                  description=u"Show touch screen friendly listing of the child content at the bottom of the page for this content.",
                                   default=True)
 
+
+    appearInFolderListing = schema.Bool(title=u"Appear in folder listing",
+                                  description=u"This item appears in the parent folder mobile folder listing",
+                                  default=True)
 
 
 alsoProvides(IMobileBehavior, form.IFormFieldProvider)
@@ -89,6 +93,7 @@ class MobileBehaviorStorage(VolatileContext, Persistent):
 
     mobileFolderListing = FieldPropertyDelegate(IMobileBehavior["mobileFolderListing"])
 
+    appearInFolderListing = FieldPropertyDelegate(IMobileBehavior["appearInFolderListing"])
 
 KEY = "mobile"
 

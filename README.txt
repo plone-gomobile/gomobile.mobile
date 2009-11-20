@@ -1,17 +1,17 @@
-GoMobile is a Plone add-on product to turn Plone to converged web and mobile content management system. 
+GoMobile is a Plone add-on product to turn Plone to converged web and mobile content management system.
 It aims to be the leading open source solution for mobile and converged content management.
-This is achieved by not making compromises on mobile site usability. 
+This is achieved by not making compromises on mobile site usability.
 
 .. contents:: :depth: 2
 
 .. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/frontpage.png
    :align: right
    :alt: PloneGoMobile screenshot
-   
+
 Features
 --------
 
-Note: GoMobile is still under development. Some of these features might require extra work to 
+Note: GoMobile is still under development. Some of these features might require extra work to
 be enabled in your configuration.
 
 * Automatically reformat pages and images suitable for mobile consumption.
@@ -27,7 +27,7 @@ be enabled in your configuration.
 * Possible to use same URLs for web and mobile content. This way pages are displayed correctly
   whether the user opens them from his web browser or mobile browser. Very handy for outgoing links in
   email.
-  
+
 * Big folder navigation and link buttons for touch screen displays to make the mobile site finger friendly.
 
 * Superious handset database support, sourcing information from multiple handset databases.
@@ -37,7 +37,7 @@ be enabled in your configuration.
 * Plone ecosystem has dozens of well maintained add-ons which can be dropped in to your mobile sites: forums, form editors, blogs, ecommerce.
 
 * Built on Plone and Zope component architecture to make the product extensible, configurable and future proof.
-  
+
 * Upload video files and they will be automatically transcoded suitable for different web and mobile platforms (commercial add on service)
 
 Feel it
@@ -57,11 +57,11 @@ Requirements
 * Experience or will to learn how to install and maintain Plone sites
 
 * `Plone <http://plone.org>`_ 3.3 or later
-  
+
 Installation
 ------------
 
-* You need to install `Plone CMS <http://plone.org/products/plone/>`_ first. 
+* You need to install `Plone CMS <http://plone.org/products/plone/>`_ first.
 
 External Set up
 ===============
@@ -77,8 +77,8 @@ Out-of-the-box setup needs special DNS set-up to work correctly.
 Edit your /etc/hosts and add line::
 
 	127.0.0.1 mobi.localhost web.localhost preview.localhost
-	
-Optional: It is possible to configure the server to use only single domain name. In this case, 
+
+Optional: It is possible to configure the server to use only single domain name. In this case,
 mobile sessions are identified by user agent sniffing and preview requests are identified by a path prefix.
 
 
@@ -92,12 +92,12 @@ Source code can be checked out from `Google Code <http://code.google.com/p/plone
 Example configuration below::
 
 	# Add additional eggs here
-	eggs = 
+	eggs =
 		archetypes.schemaextender
 		gomobile.imageinfo
 		gomobile.mobile
 		gomobile.convergence
-	
+
 	# These are direct SVN trunk checkouts
 	develop =
 	        ../workspace/gomobile/gomobile.imageinfo
@@ -106,13 +106,13 @@ Example configuration below::
 
 	# If you want to register ZCML slugs for any packages, list them here.
 	# e.g. zcml = my.package my.other.package
-	zcml = 
+	zcml =
 		archetypes.schemaextender
 		gomobile.imageinfo
 		gomobile.mobile
 		gomobile.convergence
-	       
-	       
+
+
 Add on product installers
 =========================
 
@@ -132,7 +132,7 @@ See gomobile.mobile/profiles/default/propertiestool.xml for settings description
 Mobile support
 --------------
 
-The product has been tested with 
+The product has been tested with
 
 * iPhone
 
@@ -161,16 +161,16 @@ The following new portlets are available:
 * Mobile preview portlet: render the current page in mobile phone mock up. This generates preview request
   to the site in pop-up iframe.
 
-* Content medias portlet: allow to choose in which medias the content appears: web, mobile, both or 
+* Content medias portlet: allow to choose in which medias the content appears: web, mobile, both or
   use the parent folder setting.
 
 .. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/portlets.png
    :alt: Portlets examples
-    
+
 Sitemap
 =======
 
-Sitemap has been enhanced to show content media and content language for the site administrators. 
+Sitemap has been enhanced to show content media and content language for the site administrators.
 
 .. image:: http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile/docs/sitemap.png
    :alt: Sitemap example
@@ -183,7 +183,7 @@ All Plone content types will be retrofitted with the following new fields
 * *contentMedia*: convergence options - whether the content should appear in web, mobile or both. This
   setting can be inherited from parent levels. Usually you do not wish to query contentMedia directly,
   instead use gomobile.convergence.ConvergedMediaFilter utility functions.
-  
+
 * *mobileFolderListing*: Show mobile specific folder listing for this content [deprecated].
 
 Mobile request discriminating
@@ -251,16 +251,16 @@ To achieve the maximum usability mobile pages must be tailored for each handset 
 
 * Disable site features depending on whether the handset supports them (downloadable map locations, ringtones, wallpapers)
 
-* Use location based information when available 
+* Use location based information when available
 
 State of the art `mobile.sniffer <http://code.google.com/p/mobilesniffer/>`_ library is used in this project.
-It is an generic middleware supporting several different handset databases. To make the sniffing more accurate, 
+It is an generic middleware supporting several different handset databases. To make the sniffing more accurate,
 sniffing can source information from multiple databases once.
 
 Traffic analyzing
 -----------------
 
-Traffic analyzing can be either 
+Traffic analyzing can be either
 
 * internal: you record page hits your own database
 
@@ -273,7 +273,7 @@ Supported tracking backends:
 
 * `Bango <http://bango.com>`_
 
-* 
+*
 
 Performance
 -----------
@@ -302,16 +302,28 @@ History
 -------
 
 This project started as an internal Twinapex effort and was test-driven
-on few sites before becoming public. To embrace the open source 
+on few sites before becoming public. To embrace the open source
 and make this product a great success we decided to spin off it.
 
-Authors
--------
+Code repository
+----------------
 
 The project is hosted at `Google Code project repository <http://code.google.com/p/plonegomobile>`_.
 
-Currently project is maintained by`Twinapex Research <http://www.twinapex.com>`_ team and friends. Email: mikko.ohtamaa@twinapex.com.
 
-Twinapex Research - high quality Python and mobile hackers for hire. We have 50+ years of mobile site expertise and 10+ years of Plone expertise.
+Author
+------
+
+`Twinapex Team <mailto:info@twinapex.com>`_ - Python and Plone professionals for hire.
+
+* `Twinapex company site <http://www.twinapex.com>`_ (`Twinapex-yritysryhm� <http://www.twinapex.fi>`_)
+
+* `Twinapex company blog <http://blog.twinapex.fi>`_
+
+* `Twinapex mobile site <http://www.twinapex.mobi>`_
+
+* `More about Plone <http://www.twinapex.com/products/plone>`_ (`Lis�tietoa Plone-julkaisuj�rjestelm�st� <http://www.twinapex.fi/tuotteet/plone>`_)
+
+* `Other open source Plone products by Twinapex <http://www.twinapex.com/for-developers/open-source/for-plone>`_
 
 

@@ -4,15 +4,18 @@
 
 """
 
-__license__ = "GPL 2.1"
+__license__ = "GPL 2"
 __copyright__ = "2009 Twinapex Research"
+__author__ = "Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>"
+__author_url__ = "http://www.twinapex.com"
 
 import urlparse
 
 import zope.interface
 from zope.component import getUtility, queryUtility
 
-from mobile.sniffer.utilities import get_user_agent, is_low_end_phone
+from mobile.sniffer.utilities import get_user_agent
+from mobile.heurestics.simple import is_low_end_phone
 
 from Products.Five.browser import BrowserView
 from gomobile.mobile.interfaces import IMobileUtility

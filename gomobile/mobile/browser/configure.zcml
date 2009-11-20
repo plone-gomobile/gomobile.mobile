@@ -5,7 +5,6 @@
 
     <include package=".portlets" />
 
-    <!-- Page template utilities -->
     <browser:page
         for="*"
         name="mobile_tool"
@@ -14,7 +13,6 @@
         allowed_attributes="isMobileRequest getWebSiteURL getMobileSiteURL getMobilePreviewURL isLowEndPhone"
         />
 
-    <!-- Page template utilities -->
     <browser:page
         for="*"
         name="mobile_image_resizer"
@@ -22,5 +20,22 @@
         class=".resizer.ImageResizerView"
         allowed_attributes="getResizedImageURL"
         />
+
+    <browser:page
+        for="*"
+        name="mobile_folder_listing"
+        permission="cmf.ListFolderContents"
+        class=".views.FolderListingView"
+        allowed_attributes="getItems"
+        />
+
+     <browser:page
+        for="*"
+        name="phone_number_formatter"
+        permission="zope2.View"
+        class=".views.PhoneNumberFormatterView"
+        allowed_attributes="format"
+        />
+
 
 </configure>

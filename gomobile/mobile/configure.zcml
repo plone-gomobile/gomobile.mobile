@@ -53,6 +53,8 @@
      provides="gomobile.mobile.interfaces.IMobileUtility"
      factory=".utilities.MobileUtility" />
 
+    <subscriber handler=".postpublication.set_mobile_html_content_type" />
+
     <genericsetup:registerProfile
       name="default"
       title="Plone Go Mobile"
