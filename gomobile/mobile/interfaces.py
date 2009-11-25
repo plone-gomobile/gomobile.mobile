@@ -38,6 +38,19 @@ class MobileRequestType:
 class IMobileRequestDiscriminator(zope.interface.Interface):
     """ Determine what content medias and use-cases the request presents.
 
+    Example::
+
+            from zope.component import getUtility
+            from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType
+
+            discriminator = getUtility(IMobileRequestDiscriminator)
+            flags = discriminator.discriminate(self.context, self.request)
+            if MobileRequestType.MOBILE in flags:
+                # Do mobile
+            else:
+                # Do web
+
+
     """
 
     def discriminate(context, request):

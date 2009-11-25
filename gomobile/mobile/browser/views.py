@@ -116,9 +116,21 @@ class FolderListingView(BrowserView):
     def getListingContainer(self):
         """ Get the item for which we perform the listing
         """
+
+
         context = self.context.aq_inner
         if IFolderish.providedBy(context):
-            return context
+            folder = context
+
+            # XXX: Ugly hack - if folder is default content type we need to peek parent also
+            # Do this for one level for now
+            parent = context.aq_parent
+            if IFolderish.providedBy(parent):
+                if parent.default_page == folder.getId():
+                    return parent
+
+            return folder
+
         else:
             return context.aq_parent
 
@@ -204,6 +216,7 @@ class FolderListingView(BrowserView):
             return None
 
         container = self.getListingContainer()
+        print "Container:" + str(container)
 
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
