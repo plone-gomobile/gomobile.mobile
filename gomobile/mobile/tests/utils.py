@@ -94,7 +94,7 @@ class TestMobileRequestDiscriminator(object):
         global modes
         return modes
 
-def spoofMobileFolderListingActiveTemplate(self, viewName="something"):
+def spoofMobileFolderListingActiveTemplate(viewName="something"):
     """ Make sure that mobile folder listing "active template" check is turned off.
 
     Otherwise unit tests will always use "folder_listing" template which is blacklisted.
