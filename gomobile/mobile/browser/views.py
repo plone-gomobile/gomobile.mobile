@@ -227,6 +227,7 @@ class FolderListingView(BrowserView):
         items = self.constructListing()
         if items == None:
             return []
+        return items
 
 class PhoneNumberFormatterView(BrowserView):
     """

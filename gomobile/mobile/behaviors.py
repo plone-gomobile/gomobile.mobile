@@ -17,11 +17,11 @@ from zope.component import adapts
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema import getFields
-from zope.annotation import IAnnotations
+
 
 from plone.directives import form
 
-from gomobile.mobile.utilities import VolatileContext
+from gomobile.mobile.utilities import VolatileContext, AnnotationPersistentFactory
 
 class IMobileBehavior(form.Schema):
     """ How content and its children react to differt medias """
@@ -95,18 +95,6 @@ class MobileBehaviorStorage(VolatileContext, Persistent):
 
     appearInFolderListing = FieldPropertyDelegate(IMobileBehavior["appearInFolderListing"])
 
-KEY = "mobile"
 
-def manufacture_mobile_behavior(context):
-
-    annotations = IAnnotations(context)
-    if not KEY in annotations:
-        annotations[KEY] = MobileBehaviorStorage()
-
-    object = annotations[KEY]
-
-    # Set volatile context
-    object.context = context
-
-    return object
+mobile_behavior_factory = AnnotationPersistentFactory(MobileBehaviorStorage, "mobile")
 

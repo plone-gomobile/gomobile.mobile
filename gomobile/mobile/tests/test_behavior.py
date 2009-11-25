@@ -10,12 +10,15 @@ from Products.CMFCore.utils import getToolByName
 from gomobile.mobile.interfaces import IMobileContentish
 
 from gomobile.mobile.tests.base import BaseTestCase
-from gomobile.mobile.behaviors import IMobileBehavior
+from gomobile.mobile.behaviors import IMobileBehavior, mobile_behavior_factory,  MobileBehaviorStorage
 
 from zope.schema.interfaces import ConstraintNotSatisfied
 from zope.schema.interfaces import WrongType
 
 class TestBehavior(BaseTestCase):
+
+    def make_behavor_persistent(self, behavior):
+        mobile_behavior_factory.makePersistent(behavior)
 
     def test_has_behavior(self):
         """ Test behavior and assignable works nicely.
@@ -48,6 +51,7 @@ class TestBehavior(BaseTestCase):
         self.assertTrue(IMobileContentish.providedBy(doc))
         behavior = IMobileBehavior(doc)
 
+        self.assertTrue(isinstance(behavior, MobileBehaviorStorage))
         self.assertEqual(behavior.mobileFolderListing, True)
 
         behavior.mobileFolderListing = False

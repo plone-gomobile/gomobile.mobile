@@ -13,6 +13,7 @@ import urlparse
 
 import zope.interface
 from zope.component import getUtility, queryUtility
+from zope.annotation import IAnnotations
 
 from mobile.sniffer.utilities import get_user_agent
 from mobile.heurestics.simple import is_low_end_phone
@@ -117,4 +118,66 @@ class VolatileContext(object):
     def _get_context(self):
         return self._v_context
 
+    # http://docs.python.org/library/functions.html#property
     context = property(_get_context, _set_context)
+
+class AnnotationPersistentFactory(object):
+    """ A factory pattern to manufacture persistent objects stored within the parent object annotations.
+
+    Until the first write, the default (non-persistent) object is return. This prevents
+    possible situations where database read could cause write.
+
+    The first write must call AnnotationPersistentFactory.makePersistent(object).
+
+    After the first write, the saved persistent object is return.
+    """
+
+
+    def __init__(self, persistent_class, key):
+        """
+        @param persistent_class: Class reference / factory method which will create new objects.
+            Created classes must conform VolatileContext interface
+
+        @param key: ASCII string, Key name used with IAnnotations
+        """
+        self.persistent_class = persistent_class
+        self.key = key
+        self._assertProperlySetUp()
+
+    def _assertProperlySetUp(self):
+        """
+        Check that the framework is properly set up
+        """
+        assert callable(self.persistent_class), "Factory is missing"
+
+        assert self.key is not None, "You must give the annotations key"
+
+    def makePersistent(self, object):
+        """ Write created persistent object to the database.
+
+        This will store the object on the annotations of its context.
+        """
+        assert isinstance(self.persistent_class, object)
+        annotations = IAnnotations(object.context)
+        annotations[self.key] = object
+
+    def __call__(self, context):
+        """ Called by Zope framework when doing a factory call.
+
+        Usually this class is refered as <adapter factory=""> and
+        this method creates a new, read-only, persistent object.
+        """
+
+        annotations = IAnnotations(context)
+
+        if not self.key in annotations:
+            # Construct a new (default) instance
+            object = self.persistent_class()
+        else:
+            # Return the object stored previously
+            object = annotations[self.key]
+
+        # Set volatile context reference
+        object.context = context
+
+        return object

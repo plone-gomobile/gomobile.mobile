@@ -38,7 +38,7 @@
         description="Mobile behavior of content"
         provides=".behaviors.IMobileBehavior"
         for="gomobile.mobile.interfaces.IMobileContentish"
-        factory=".behaviors.manufacture_mobile_behavior"
+        factory=".behaviors.mobile_behavior_factory"
         />
 
    <utility
