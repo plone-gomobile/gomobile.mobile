@@ -13,6 +13,8 @@ import zope.interface
 from gomobile.mobile.locationmanager import DomainNameBasedMobileSiteLocationManager
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType
 
+from gomobile.mobile.browser.views import FolderListingView
+
 def setDiscriminateMode(request, mode):
     """ Spoof the media discrimination mode for unit tests.
 
@@ -91,3 +93,16 @@ class TestMobileRequestDiscriminator(object):
     def discriminate(self, context, request):
         global modes
         return modes
+
+def spoofMobileFolderListingActiveTemplate(self, viewName="something"):
+    """ Make sure that mobile folder listing "active template" check is turned off.
+
+    Otherwise unit tests will always use "folder_listing" template which is blacklisted.
+    """
+
+    # Monkey-patch for tests
+    def dummy(self):
+        return viewName
+
+    old = FolderListingView.getActiveTemplate
+    FolderListingView.getActiveTemplate = dummy

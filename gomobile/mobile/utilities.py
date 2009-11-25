@@ -128,6 +128,8 @@ class AnnotationPersistentFactory(object):
     possible situations where database read could cause write.
 
     The first write must call AnnotationPersistentFactory.makePersistent(object).
+    Alternative, you can call AnnotationPersistentFactory.makePersistent(object)
+    when entering the editing interface for the first time.
 
     After the first write, the saved persistent object is return.
     """
@@ -149,6 +151,8 @@ class AnnotationPersistentFactory(object):
         Check that the framework is properly set up
         """
         assert callable(self.persistent_class), "Factory is missing"
+
+        assert hasattr(self.persistent_class, "context"), "The persistent object must support volatile context interface"
 
         assert self.key is not None, "You must give the annotations key"
 
