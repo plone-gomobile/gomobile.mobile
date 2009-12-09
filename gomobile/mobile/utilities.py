@@ -161,7 +161,7 @@ class AnnotationPersistentFactory(object):
 
         This will store the object on the annotations of its context.
         """
-        assert isinstance(self.persistent_class, object)
+        assert isinstance(object, self.persistent_class), "Object %s was not type of %s" % (str(object), str(self.persistent_class))
         annotations = IAnnotations(object.context)
         annotations[self.key] = object
 
