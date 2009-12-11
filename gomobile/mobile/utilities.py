@@ -12,6 +12,7 @@ __author_url__ = "http://www.twinapex.com"
 import urlparse
 
 import zope.interface
+from zope import schema
 from zope.component import getUtility, queryUtility
 from zope.annotation import IAnnotations
 
@@ -97,6 +98,16 @@ def debug_layers(context):
     print active
 
 
+class IVolatileContext(zope.interface.Interface):
+    """ """
+    
+    context = schema.Object(zope.interface.Interface, description=u"Run-time reference accessor to the parent object this object belongs to")
+    
+    factory = schema.Object(zope.interface.Interface, description=u"Reference to the factory which created this run-time instance")
+
+    def save():
+        """ Write object to the database and construct connection with the parent object. 
+        """ 
 
 class VolatileContext(object):
     """ Mix-in class to provide context variable to persistent classes which is not persitent.
@@ -107,20 +118,36 @@ class VolatileContext(object):
     This helper class creates a context property which is volatile (never persistent),
     but can be still set on the object after creation or after database load.
     """
+    
+    zope.interface.implements(IVolatileContext)
 
     # _v_ attribute prefix marks volatile ZODB references
     _v_context = None
 
-
+    #: Store reference to the creator factory
+    _v_factory = None
+    
     def _set_context(self, context):
         self._v_context = context
 
     def _get_context(self):
         return self._v_context
 
+    def _set_factory(self, factory):
+        self._v_factory = factory
+
+    def _get_factory(self):
+        return self._v_factory
+
     # http://docs.python.org/library/functions.html#property
     context = property(_get_context, _set_context)
 
+    factory = property(_get_factory, _set_factory)
+    
+    def save(self):
+        """ """
+        self.factory.makePersistent(self)
+        
 class AnnotationPersistentFactory(object):
     """ A factory pattern to manufacture persistent objects stored within the parent object annotations.
 
@@ -183,5 +210,6 @@ class AnnotationPersistentFactory(object):
 
         # Set volatile context reference
         object.context = context
+        object.factory = self
 
         return object
