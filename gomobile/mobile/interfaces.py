@@ -74,13 +74,26 @@ class IMobileSiteLocationManager(zope.interface.Interface):
     2. Redirect to different URL
     """
 
-    def rewriteURL(request, url, mode):
+    def rewriteURL(url, mode):
         """ Rewrite the URL to redirect to the page in a different mobile view mode.
 
         @param mode: One of MobileRequestType pseudo constants
 
         @return: string
         """
+
+class IMobileRedirector(zope.interface.Interface):
+    """ Manage whether the user wants to surf web or mobile site.
+
+    Disable user-agent sniffing based redirects if needed.
+    """
+
+    def intercept():
+        """ Create HTTP redirect response to the mobile site if needed.
+
+        @return: True if redirect was made.
+        """
+
 
 
 class IMobileTracker(zope.interface.Interface):

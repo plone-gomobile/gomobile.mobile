@@ -9,7 +9,7 @@ from zope.component import getUtility, queryUtility
 from Products.CMFCore.utils import getToolByName
 
 from gomobile.mobile.tests.base import BaseTestCase
-from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator, IMobileSiteLocationManager, MobileRequestType
+from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator,  MobileRequestType
 from gomobile.mobile.behaviors import IMobileBehavior
 
 from gomobile.mobile.browser.views import FolderListingView

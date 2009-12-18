@@ -10,7 +10,6 @@ __copyright__ = "2009 Twinapex Research"
 
 import zope.interface
 
-from gomobile.mobile.locationmanager import DomainNameBasedMobileSiteLocationManager
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType
 
 from gomobile.mobile.browser.views import FolderListingView

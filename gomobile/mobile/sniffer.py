@@ -6,7 +6,7 @@
 
 """
 
-__license__ = "GPL 2.1"
+__license__ = "GPL 2"
 __copyright__ = "2009 Twinapex Research"
 
 import logging
@@ -23,8 +23,10 @@ try:
     # All start-up delay goes on this line
     _sniffer = WurlfSniffer()
 except ImportError, e:
+    import traceback
+    traceback.print_exc()
     logger.exception(e)
-    logger.error("Could not import Wurlf sniffer... probably python-Lehvenstein egg missing")
+    logger.error("Could not import Wurlf sniffer... add pywurfl and python-Lehvenstein to buildout.cfg eggs section")
     _sniffer = None
 
 # Annotations cache key
@@ -40,7 +42,6 @@ def cached_wurlf_ua_sniffer(context, request):
     @return: mobile.sniffer.base.UserAgent instance or None if no user agent found or it cannot be looked up
     """
 
-
     if _sniffer == None:
         # For some reason, coudln't initialize
         return None
@@ -51,10 +52,12 @@ def cached_wurlf_ua_sniffer(context, request):
 
     # Then check if we have cached hit on session
     if not ua:
-        sdm = context.session_data_manager
-        session = sdm.getSessionData(create=True)
+        # Session data manager is not availabe in unit tests
+        if "session_data_manager" in context:
+            sdm = context["session_data_manager"]
+            session = sdm.getSessionData(create=True)
 
-        ua = session.get(KEY, None)
+            ua = session.get(KEY, None)
 
     if not ua:
         ua = _sniffer.sniff(request)

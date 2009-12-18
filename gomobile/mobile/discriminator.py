@@ -34,11 +34,11 @@ class DefaultMobileRequestDiscriminator(object):
         """ Determine should this request be rendered in mobile mode. """
 
         # Force mobile mode if incoming device is mobile
-        ua = IUserAgentSniffer(site, request)
-        if ua:
-            # This attribute is supported by pywurlf only
-            if ua.get("is_wireless_device") == True:
-                return True
+        #ua = getMultiAdapter((site, request), IUserAgentSniffer)
+        #if ua:
+        #    # This attribute is supported by pywurlf only
+        #    if ua.get("is_wireless_device") == True:
+        #        return True
 
         #
         # Special HTTP GET query parameter telling

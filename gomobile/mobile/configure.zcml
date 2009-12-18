@@ -46,10 +46,6 @@
      factory=".discriminator.DefaultMobileRequestDiscriminator" />
 
    <utility
-     provides="gomobile.mobile.interfaces.IMobileSiteLocationManager"
-     factory=".locationmanager.DomainNameBasedMobileSiteLocationManager" />
-
-   <utility
      provides="gomobile.mobile.interfaces.IMobileUtility"
      factory=".utilities.MobileUtility" />
 
@@ -62,5 +58,18 @@
       description='Mobile CMS add-on'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
+     <adapter
+        for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+        name="mobile_site_location_manager"
+        class=".locationmanager.DomainNameBasedMobileSiteLocationManager"
+        />
+
+     <adapter
+        for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+        name="mobile_redirector"
+        class=".redirector.Redirector"
+        />
+
 
 </configure>

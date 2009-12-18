@@ -100,33 +100,28 @@ def debug_layers(context):
 
 class IVolatileContext(zope.interface.Interface):
     """ """
-    
+
     context = schema.Object(zope.interface.Interface, description=u"Run-time reference accessor to the parent object this object belongs to")
-    
+
     factory = schema.Object(zope.interface.Interface, description=u"Reference to the factory which created this run-time instance")
 
     def save():
-        """ Write object to the database and construct connection with the parent object. 
-        """ 
+        """ Write object to the database and construct connection with the parent object.
+        """
+from persistent import Persistent
+class VolatileContext(Persistent):
+    """ Mix-in class to provide non-persistent context  to persistent classes.
 
-class VolatileContext(object):
-    """ Mix-in class to provide context variable to persistent classes which is not persitent.
-
-    Some subsystems (e.g. forms) expect objects to have a reference to parent/site/whatever.
-    However, it might not be a wise idea to have circular persistent references.
+    Some subsystems (e.g. z3c.forms) expect objects to have a context reference to parent/site/whatever.
+    However, storing this back-reference persistenly is not needed, as the factory
+    method will always know the context.
 
     This helper class creates a context property which is volatile (never persistent),
     but can be still set on the object after creation or after database load.
     """
-    
+
     zope.interface.implements(IVolatileContext)
 
-    # _v_ attribute prefix marks volatile ZODB references
-    _v_context = None
-
-    #: Store reference to the creator factory
-    _v_factory = None
-    
     def _set_context(self, context):
         self._v_context = context
 
@@ -143,11 +138,20 @@ class VolatileContext(object):
     context = property(_get_context, _set_context)
 
     factory = property(_get_factory, _set_factory)
-    
+
     def save(self):
         """ """
         self.factory.makePersistent(self)
-        
+
+    def __setattr__(self, name, value):
+        """
+        https://mail.zope.org/pipermail/zodb-dev/2009-December/013047.html
+        """
+        if name not in ("context", "factory", "_v_context", "_v_factory"):
+            Persistent.__setattr__(self, name, value)
+        else:
+            object.__setattr__(self, name, value)
+
 class AnnotationPersistentFactory(object):
     """ A factory pattern to manufacture persistent objects stored within the parent object annotations.
 

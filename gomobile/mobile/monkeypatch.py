@@ -23,6 +23,15 @@ logger = logging.getLogger("Plone")
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFCore.utils import getToolByName
 
+
+# Don't mention anything about gomobile.mobile because
+# this is rarely our cause... we just happen to be first
+# code using components when HTTP request hits the server
+BAD_RAP="""
+    Zope start-up failed.
+    Please start Zope in foreground mode or check logs to see which Python egg failed to load.
+    """
+
 def getSkinNameFromRequest(self, REQUEST=None):
     '''Returns the skin name from the Request.'''
 
@@ -40,8 +49,7 @@ def getSkinNameFromRequest(self, REQUEST=None):
             discriminator = getUtility(IMobileRequestDiscriminator)
         except ComponentLookupError:
             # This happens aaaalways....
-            raise RuntimeError("Cannot load IMobileRequestDiscriminator utility. This usually means that there has been error in your ZCML or Python modules imported by ZCML. Please see Zope start up logs.")
-
+            raise RuntimeError(BAD_RAP)
         site = self
 
         # Determine mobile skin name from mobile_properties
