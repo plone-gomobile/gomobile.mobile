@@ -23,7 +23,7 @@ from Products.CMFPlone.browser import ploneview
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces._content import IFolderish
 
-from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator,  MobileRequestType
+from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator,  MobileRequestType, IMobileSiteLocationManager
 from gomobile.mobile.interfaces import IMobileContentish
 from gomobile.mobile.behaviors import IMobileBehavior
 

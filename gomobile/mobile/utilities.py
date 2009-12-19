@@ -122,35 +122,18 @@ class VolatileContext(Persistent):
 
     zope.interface.implements(IVolatileContext)
 
-    def _set_context(self, context):
-        self._v_context = context
-
-    def _get_context(self):
+    @property
+    def context(self):
         return self._v_context
 
-    def _set_factory(self, factory):
-        self._v_factory = factory
-
-    def _get_factory(self):
+    @property
+    def factory(self):
         return self._v_factory
 
-    # http://docs.python.org/library/functions.html#property
-    context = property(_get_context, _set_context)
-
-    factory = property(_get_factory, _set_factory)
-
+    # http://docs.python.org/library/functions.htm
     def save(self):
         """ """
         self.factory.makePersistent(self)
-
-    def __setattr__(self, name, value):
-        """
-        https://mail.zope.org/pipermail/zodb-dev/2009-December/013047.html
-        """
-        if name not in ("context", "factory", "_v_context", "_v_factory"):
-            Persistent.__setattr__(self, name, value)
-        else:
-            object.__setattr__(self, name, value)
 
 class AnnotationPersistentFactory(object):
     """ A factory pattern to manufacture persistent objects stored within the parent object annotations.
@@ -213,7 +196,7 @@ class AnnotationPersistentFactory(object):
             object = annotations[self.key]
 
         # Set volatile context reference
-        object.context = context
-        object.factory = self
+        object._v_context = context
+        object._v_factory = self
 
         return object
