@@ -101,7 +101,7 @@ class DomainNameBasedMobileSiteLocationManager(object):
 
         return urlparse.urlunparse(parts)
 
-    def rewriteURL(self, request, url, mode):
+    def rewriteURL(self, url, mode):
 
         # Load PloneSite object from thread locals
         site = getSite()

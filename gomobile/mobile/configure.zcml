@@ -61,14 +61,14 @@
 
      <adapter
         for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
-        name="mobile_site_location_manager"
-        class=".locationmanager.DomainNameBasedMobileSiteLocationManager"
+        provides=".interfaces.IMobileSiteLocationManager"
+        factory=".locationmanager.DomainNameBasedMobileSiteLocationManager"
         />
 
      <adapter
         for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
-        name="mobile_redirector"
-        class=".redirector.Redirector"
+        provides=".interfaces.IMobileRedirector"
+        factory=".redirector.Redirector"
         />
 
 

@@ -12,7 +12,7 @@ __author_url__ = "http://www.twinapex.com"
 from Products.Five.browser import BrowserView
 
 from zope.app.component.hooks import getSite
-from zope.component import getUtility, queryMultiAdapter
+from zope.component import getUtility, queryMultiAdapter, getMultiAdapter
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer, IMobileSiteLocationManager
 
@@ -71,9 +71,10 @@ class Redirector(BrowserView):
         """ Redirects to the mobile site, but stays on the same page.
         """
         url = self.request.URL
-        location_manager = getUtility(IMobileSiteLocationManager)
-        new_url = location_manager.rewriteURL(self.request, MobileRequestType.MOBILE)
+        location_manager = getMultiAdapter((self.context, self.request), IMobileSiteLocationManager)
+        new_url = location_manager.rewriteURL(url, MobileRequestType.MOBILE)
         self.request.response.redirect(new_url)
+
 
     def intercept(self):
         """ Manage mobile redirect on-demand basis.
@@ -88,8 +89,9 @@ class Redirector(BrowserView):
                 return False
             elif self.isCookiedWeb():
                 return False
-
-            return self.redirect()
+            else:
+                self.redirect()
+                return True
 
         else:
             # A web browser
