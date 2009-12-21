@@ -50,11 +50,13 @@ def cached_wurlf_ua_sniffer(context, request):
     annotations = IAnnotations(request)
     ua = annotations.get(KEY, None)
 
+    site = context.portal_url.getPortalObject()
+
     # Then check if we have cached hit on session
     if not ua:
         # Session data manager is not availabe in unit tests
-        if "session_data_manager" in context:
-            sdm = context["session_data_manager"]
+        if "session_data_manager" in site:
+            sdm = site["session_data_manager"]
             session = sdm.getSessionData(create=True)
 
             ua = session.get(KEY, None)

@@ -12,16 +12,14 @@
 
     <include package="plone.directives.form" file="meta.zcml" />
     <include package="plone.directives.form" />
+    <include package="plone.postpublicationhook" />
 
     <include package=".browser" />
     <include package=".trackers" />
 
     <grok:grok package="." />
 
-
     <five:registerPackage package="." initialize=".initialize" />
-
-    <include package=".browser" />
 
     <!-- Mark all classes which can obey mobile behavior -->
     <class class="Products.Archetypes.BaseObject.BaseObject">
@@ -50,6 +48,9 @@
      factory=".utilities.MobileUtility" />
 
     <subscriber handler=".postpublication.set_mobile_html_content_type" />
+
+    <subscriber handler=".postpublication.mobile_redirect" />
+
 
     <genericsetup:registerProfile
       name="default"

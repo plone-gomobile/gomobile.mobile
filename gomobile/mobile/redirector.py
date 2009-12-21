@@ -21,7 +21,7 @@ from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileReques
 
 from mobile.sniffer.utilities import get_user_agent
 
-class Redirector(BrowserView):
+class Redirector(object):
     """
 
     Manage redirect state in a cookie.
@@ -36,6 +36,9 @@ class Redirector(BrowserView):
     # even though
     COOKIE_NAME = "mobile_mode"
 
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
 
     def isSniffedMobile(self):
         """
@@ -68,25 +71,53 @@ class Redirector(BrowserView):
         """
         return "force_web" in self.request.form
 
+    def getRealContext(self):
+        """
+        """
+        # Crap acquisition magic
+        return self.context.aq_parent
+
     def forceWeb(self):
+        """
+        Set a cookie which forces the mobile browser to stay on the web site.
+        """
         response = self.request.response
         response.setCookie(Redirector.COOKIE_NAME, "web", path="/")
 
     def redirect(self):
         """ Redirects to the mobile site, but stays on the same page.
         """
-        url = self.request.URL
-        location_manager = getMultiAdapter((self.context, self.request), IMobileSiteLocationManager)
+
+        # This is the serverd URL
+        url = self.request["ACTUAL_URL"]
+        #print "Actual url:" + url
+
+        context = self.getRealContext()
+        location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
         new_url = location_manager.rewriteURL(url, MobileRequestType.MOBILE)
+
         self.request.response.redirect(new_url)
 
 
     def intercept(self):
-        """ Manage mobile redirect on-demand basis.
+        """ Manage redirects to mobile site.
 
         @return: True if redirect has been made
         """
-        if self.isSniffedMobile():
+        context = self.getRealContext()
+        discriminator = getUtility(IMobileRequestDiscriminator)
+        modes = discriminator.discriminate(context, self.request)
+
+        # Note: just in case redirect logged in users too
+        # This might be little stupid and needs to changed later
+        is_web = (MobileRequestType.WEB in modes)
+
+        #print "Sniffed: " + str(self.isSniffedMobile())
+        #print "Is web:" + str(is_web)
+        #print "ModeS:" + str(modes)
+
+
+        if self.isSniffedMobile() and is_web:
 
             # Check taht if we are asked to stay on the web site
             if self.isMobileWantsWeb():

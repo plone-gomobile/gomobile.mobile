@@ -7,11 +7,14 @@
 __license__ = "GPL 2.1"
 __copyright__ = "2009 Twinapex Research"
 
+import logging
 import zope.interface
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer
 
 from zope.app.component.hooks import getSite
+
+logger = logging.getLogger("Plone")
 
 class DefaultMobileRequestDiscriminator(object):
     """ Determine which are web, mobile, mobile preview and mobile content admin HTTP requests.
@@ -59,6 +62,7 @@ class DefaultMobileRequestDiscriminator(object):
             # Direct client request
             host = request.environ["HTTP_HOST"]
         else:
+            # Unit test code?
             host = None
 
         if host:
@@ -72,6 +76,7 @@ class DefaultMobileRequestDiscriminator(object):
             # Go through each subdomain name and compare it to mobile markers
             for part in host.split(".")[0:-1]:
                 for prefix in mobileDomainPrefixes:
+                    print "Comparing " + prefix + " " + part
                     if part == prefix:
                         return True
 
@@ -127,11 +132,13 @@ class DefaultMobileRequestDiscriminator(object):
             previewDomainPrefixes = properties.preview_domain_prefixes
 
         except AttributeError:
+
             # Traversing happens when our product is not properly set up
             # or during the site launch. The loading order prevents
             # us to access mobile_properties here, so it is
             # safe to assume this was not a mobile request
 
+            logger.warn("Cannot access mobile properties")
             # (Because monkey-patch intercepts admin interface requests also
             # we need to make sure no exceptio gets through)
             flags.append(MobileRequestType.WEB)

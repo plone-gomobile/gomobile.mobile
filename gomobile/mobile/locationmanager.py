@@ -96,7 +96,7 @@ class DomainNameBasedMobileSiteLocationManager(object):
         domainAndPort = parts[1].split(":")
 
         base = self._getBaseDomainName(domainAndPort[0], properties)
-        prefixed =  self.rewrireDomain(base, mode, properties)
+        prefixed =  self.rewriteDomain(base, mode, properties)
 
         domainAndPort[0] = prefixed
 
