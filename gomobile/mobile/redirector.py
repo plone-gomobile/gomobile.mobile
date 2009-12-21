@@ -146,13 +146,14 @@ class LoggingRedirector(Redirector):
         self.createLogger()
 
     def redirect(self):
-        Redirector.redirect(self)
         self.addLogEntry()
+        self.buffer.flush() # Don't hide data
+        return Redirector.redirect(self)
 
     def createLogger(self):
         """
         """
-        self.buffer = open("/tmp/redirect.log", "wt")
+        self.buffer = open("/tmp/redirect.log", "at", 0) # text + append only + no buffering
 
     def addLogEntry(self):
         """
@@ -161,7 +162,7 @@ class LoggingRedirector(Redirector):
         date = datetime.now()
         timestamp = str(date)
         user_agent = get_user_agent(self.request)
-        page = self.request["URL"]
+        page = self.request["ACTUAL_URL"]
 
-        print >> self.buffer, "%s %s %s" % (timestamp, page, user_agent)
-
+        print >> self.buffer, "%s|%s|%s" % (timestamp, page, user_agent)
+        print "Redirect log %s|%s|%s" % (timestamp, page, user_agent)
