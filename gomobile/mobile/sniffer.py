@@ -50,6 +50,13 @@ def cached_wurlf_ua_sniffer(context, request):
     annotations = IAnnotations(request)
     ua = annotations.get(KEY, None)
 
+    if context == None:
+        # TODO: Not sure yet when this hpapens,
+        # but it does
+        logger.warn("No context for user agent sniffing")
+        ua = _sniffer.sniff(request)
+        return ua
+
     site = context.portal_url.getPortalObject()
 
     # Then check if we have cached hit on session

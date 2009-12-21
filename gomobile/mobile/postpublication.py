@@ -105,18 +105,18 @@ def mobile_redirect(object, event):
     response = request.response
     context = object
 
-    print "Got UA:" + str(request["HTTP_USER_AGENT"])
+    #print "Got UA:" + str(request["HTTP_USER_AGENT"])
 
     redirector = getMultiAdapter((context, request), IMobileRedirector)
 
     ct = response.getHeader("Content-type")
-    print "Got ct:" + ct
+    #print "Got ct:" + ct
 
     # Do not do redirects for images, CSS or other non-content requests
     # note that ct string may be text/html;charset=utf-8
 
     if ct.startswith("text/html") or ct.startswith("text/xhtml"):
-        print "Intercepting"
+        #print "Intercepting"
         if redirector.intercept():
             # Redirect happened
             # Override payload so that we don't send extra data to mobile

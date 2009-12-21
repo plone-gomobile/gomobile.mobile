@@ -76,7 +76,7 @@ class DefaultMobileRequestDiscriminator(object):
             # Go through each subdomain name and compare it to mobile markers
             for part in host.split(".")[0:-1]:
                 for prefix in mobileDomainPrefixes:
-                    print "Comparing " + prefix + " " + part
+                    #print "Comparing " + prefix + " " + part
                     if part == prefix:
                         return True
 

@@ -1,12 +1,15 @@
 __license__ = "GPL 2.1"
 __copyright__ = "2009 Twinapex Research"
 
+import logging
 import urlparse
 
 import zope.interface
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IMobileSiteLocationManager
 from zope.app.component.hooks import getSite
+
+logger = logging.getLogger("Plone")
 
 class DomainNameBasedMobileSiteLocationManager(object):
     """ Present the content differently based on its domain name.
@@ -108,14 +111,15 @@ class DomainNameBasedMobileSiteLocationManager(object):
 
         # Load PloneSite object from thread locals
         site = getSite()
+        if site == None:
+            logger.warn("No site was available in locationmanager.rewriteURL()")
+            return url
+
 
         # Load config from the database
         properties = site.portal_properties.mobile_properties
 
         return self._replaceNetworkLocation(url, mode, properties)
 
-
-    def intercept(self, site, request):
-        pass
 
 
