@@ -115,12 +115,13 @@ def mobile_redirect(object, event):
     # Do not do redirects for images, CSS or other non-content requests
     # note that ct string may be text/html;charset=utf-8
 
-    if ct.startswith("text/html") or ct.startswith("text/xhtml"):
-        #print "Intercepting"
-        if redirector.intercept():
-            # Redirect happened
-            # Override payload so that we don't send extra data to mobile
-            print "Redirected"
-            response.body = ""
-            response.setHeader("Content-length", 0)
+    if ct is not None:
+        if ct.startswith("text/html") or ct.startswith("text/xhtml"):
+            #print "Intercepting"
+            if redirector.intercept():
+                # Redirect happened
+                # Override payload so that we don't send extra data to mobile
+                print "Redirected"
+                response.body = ""
+                response.setHeader("Content-length", 0)
 
