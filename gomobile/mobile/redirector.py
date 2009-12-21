@@ -9,12 +9,17 @@ __copyright__ = "2009 Twinapex Research"
 __author__ = "Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>"
 __author_url__ = "http://www.twinapex.com"
 
+
+from datetime import datetime
+
 from Products.Five.browser import BrowserView
 
 from zope.app.component.hooks import getSite
 from zope.component import getUtility, queryMultiAdapter, getMultiAdapter
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer, IMobileSiteLocationManager
+
+from mobile.sniffer.utilities import get_user_agent
 
 class Redirector(BrowserView):
     """
@@ -96,3 +101,36 @@ class Redirector(BrowserView):
         else:
             # A web browser
             return False
+
+
+
+class LoggingRedirector(Redirector):
+    """
+    A redirector which writes a log entry for every redirect, so that the site
+    manager can monitor how much mobile traffic hits the web site.
+    """
+
+    def __init__(self, context, request):
+        Redirector.__init__(self, context, request)
+        self.createLogger()
+
+    def redirect(self):
+        Redirector.redirect(self)
+        self.addLogEntry()
+
+    def createLogger(self):
+        """
+        """
+        self.buffer = open("/tmp/redirect.log", "wt")
+
+    def addLogEntry(self):
+        """
+        """
+
+        date = datetime.now()
+        timestamp = str(date)
+        user_agent = get_user_agent(self.request)
+        page = self.request["URL"]
+
+        print >> self.buffer, "%s %s %s" % (timestamp, page, user_agent)
+

@@ -51,12 +51,6 @@ class DomainNameBasedMobileSiteLocationManager(object):
 
         return ".".join(parts)
 
-    def _getMobileDomain(self, domain, properties):
-        """
-        Get preferred mobile domain.
-        """
-
-
 
     def _prefixDomain(self, domain, mode, properties):
         """ Add subdomain discriminator to domain host name
@@ -79,6 +73,15 @@ class DomainNameBasedMobileSiteLocationManager(object):
             # Assume web domains shouldn't get prefixed
             return domain
 
+    def rewriteDomain(self, domain, mode, properties):
+        """ Changes domain name to point to web/mobile server.
+
+
+        @return: Domain name for redirect request as a string
+        """
+        return self._prefixDomain(domain, mode, properties)
+
+
     def _replaceNetworkLocation(self, url, mode, properties):
         """ Rewrite domain name in the site URL.
 
@@ -93,7 +96,7 @@ class DomainNameBasedMobileSiteLocationManager(object):
         domainAndPort = parts[1].split(":")
 
         base = self._getBaseDomainName(domainAndPort[0], properties)
-        prefixed =  self._prefixDomain(base, mode, properties)
+        prefixed =  self.rewrireDomain(base, mode, properties)
 
         domainAndPort[0] = prefixed
 
