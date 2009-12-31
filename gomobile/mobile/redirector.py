@@ -75,8 +75,10 @@ class Redirector(object):
         """
         """
         # Crap acquisition magic
-        return self.context.aq_parent
-
+        if hasattr(self.context, "aq_parent"):
+            return self.context.aq_parent
+        else:
+            return None # This context lacks acquisition chain, happens 
     def forceWeb(self):
         """
         Set a cookie which forces the mobile browser to stay on the web site.
@@ -105,6 +107,8 @@ class Redirector(object):
         @return: True if redirect has been made
         """
         context = self.getRealContext()
+        if context is None:
+            return False
         discriminator = getUtility(IMobileRequestDiscriminator)
         modes = discriminator.discriminate(context, self.request)
 
@@ -126,8 +130,8 @@ class Redirector(object):
             elif self.isCookiedWeb():
                 return False
             else:
-                self.redirect()
-                return True
+                #self.redirect()
+                return False
 
         else:
             # A web browser
