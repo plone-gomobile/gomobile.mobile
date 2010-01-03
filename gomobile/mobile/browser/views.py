@@ -70,7 +70,7 @@ class MobileTool(BrowserView):
         self.context = context
         self.request = request
         self.discriminator = getUtility(IMobileRequestDiscriminator)
-        self.location_manager = getUtility(IMobileSiteLocationManager)
+        self.location_manager = getMultiAdapter((self.context, self.request), IMobileSiteLocationManager)
         self.request_flags = self.discriminator.discriminate(self.context, self.request)
 
     def getUtility(self):
@@ -90,16 +90,16 @@ class MobileTool(BrowserView):
 
     def getMobileSiteURL(self):
         """ Return the mobile version of this context"""
-        return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.MOBILE)
+        return self.location_manager.rewriteURL(self.context.absolute_url(), MobileRequestType.MOBILE)
 
     def getMobilePreviewURL(self):
         """ Return URL used in phone simualtor.
         """
-        return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.PREVIEW)
+        return self.location_manager.rewriteURL(self.context.absolute_url(), MobileRequestType.PREVIEW)
 
     def getWebSiteURL(self):
         """ Return the web version URL of this of context """
-        return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.WEB)
+        return self.location_manager.rewriteURL(self.context.absolute_url(), MobileRequestType.WEB)
 
     def isLowEndPhone(self):
         """ @return True: If the user is visiting the site using a crappy mobile phone browser """
