@@ -85,21 +85,23 @@ class Redirector(object):
         """
         response = self.request.response
         response.setCookie(Redirector.COOKIE_NAME, "web", path="/")
-
-    def redirect(self):
-        """ Redirects to the mobile site, but stays on the same page.
+        
+    def redirect_url(self, url):
+        """ HTTP redirect to a mobile site matching certain URL.
         """
-
-        # This is the serverd URL
-        url = self.request["ACTUAL_URL"]
-        #print "Actual url:" + url
-
         context = self.getRealContext()
         location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
         new_url = location_manager.rewriteURL(url, MobileRequestType.MOBILE)
-
         self.request.response.redirect(new_url)
+        
+    def redirect(self):
+        """ Redirects to the mobile site staying on the page pointed by the current HTTP request. 
+        """
 
+        # This is the serverd URL 
+        url = self.request["ACTUAL_URL"]
+        #print "Actual url:" + url
+        self.redirect_url(url)
 
     def intercept(self):
         """ Manage redirects to mobile site.

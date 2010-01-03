@@ -23,7 +23,7 @@ from Products.CMFPlone.browser import ploneview
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces._content import IFolderish
 
-from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator,  MobileRequestType, IMobileSiteLocationManager
+from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator, IMobileSiteLocationManager, MobileRequestType
 from gomobile.mobile.interfaces import IMobileContentish
 from gomobile.mobile.behaviors import IMobileBehavior
 
@@ -70,7 +70,7 @@ class MobileTool(BrowserView):
         self.context = context
         self.request = request
         self.discriminator = getUtility(IMobileRequestDiscriminator)
-        self.location_manager = getMultiAdapter((context, request), IMobileSiteLocationManager)
+        self.location_manager = getUtility(IMobileSiteLocationManager)
         self.request_flags = self.discriminator.discriminate(self.context, self.request)
 
     def getUtility(self):
@@ -90,22 +90,25 @@ class MobileTool(BrowserView):
 
     def getMobileSiteURL(self):
         """ Return the mobile version of this context"""
-        return self.location_manager.rewriteURL(self.context.absolute_url(), MobileRequestType.MOBILE)
+        return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.MOBILE)
 
     def getMobilePreviewURL(self):
         """ Return URL used in phone simualtor.
         """
-        return self.location_manager.rewriteURL(self.context.absolute_url(), MobileRequestType.PREVIEW)
+        return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.PREVIEW)
 
     def getWebSiteURL(self):
         """ Return the web version URL of this of context """
-        return self.location_manager.rewriteURL(self.context.absolute_url(), MobileRequestType.WEB)
+        return self.location_manager.rewriteURL(self.request, self.context.absolute_url(), MobileRequestType.WEB)
 
     def isLowEndPhone(self):
         """ @return True: If the user is visiting the site using a crappy mobile phone browser """
         return self.getUtility().isLowEndPhone(self.request)
 
 
+
+        
+        
 class FolderListingView(BrowserView):
     """ Mobile folder listing helper view
 
@@ -116,21 +119,9 @@ class FolderListingView(BrowserView):
     def getListingContainer(self):
         """ Get the item for which we perform the listing
         """
-
-
         context = self.context.aq_inner
         if IFolderish.providedBy(context):
-            folder = context
-
-            # XXX: Ugly hack - if folder is default content type we need to peek parent also
-            # Do this for one level for now
-            parent = context.aq_parent
-            if IFolderish.providedBy(parent):
-                if parent.default_page == folder.getId():
-                    return parent
-
-            return folder
-
+            return context
         else:
             return context.aq_parent
 
@@ -187,11 +178,6 @@ class FolderListingView(BrowserView):
             if item.getId() == default_page:
                 return False
 
-            # AtContentTypes schema based exclusion
-            if hasattr(item, "getExcludeFromNav"):
-                if item.getExcludeFromNav():
-                    return False
-
             return True
 
         return [ i for i in items if show(i) == True ]
@@ -216,7 +202,6 @@ class FolderListingView(BrowserView):
             return None
 
         container = self.getListingContainer()
-        print "Container:" + str(container)
 
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
@@ -245,7 +230,6 @@ class FolderListingView(BrowserView):
         items = self.constructListing()
         if items == None:
             return []
-        return items
 
 class PhoneNumberFormatterView(BrowserView):
     """

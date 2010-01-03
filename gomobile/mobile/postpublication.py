@@ -17,6 +17,8 @@
 
     http://svn.zope.de/plone.org/collective/five.caching/trunk/five/caching/event.py
 
+    http://www.developershome.com/wap/xhtmlmp/xhtml_mp_tutorial.asp?page=mimeTypesFileExtension
+
 """
 
 __author__  = 'Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>'
@@ -31,7 +33,10 @@ from plone.postpublicationhook.interfaces import IAfterPublicationEvent
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IMobileRedirector
 
-MOBILE_CONTENT_TYPE = "application/vnd.wap.xhtml+xml"
+MOBILE_CONTENT_TYPES = [
+    "application/vnd.wap.xhtml+xml",
+    "application/xhtml+xml"
+]
 
 DOCSTRING_MARKER="xhtml-mobile"
 
@@ -49,6 +54,21 @@ def extract_charset(content_type):
     else:
         return None
 
+def get_suggested_content_type(request):
+    """
+    @return: Content type which should be used for response, None if should not be modified
+    """
+    import pdb ; pdb.set_trace()
+    accepted = None
+
+    # Go through possibilities
+    for option in accepted:
+        if option.lower() in MOBILE_CONTENT_TYPES:
+            return option
+
+    return None
+
+
 def reset_content_type_for_mobile(request, response):
 
     # Peek first bytes to get enough data to check the marker
@@ -63,13 +83,20 @@ def reset_content_type_for_mobile(request, response):
 
             charset  = extract_charset(ct)
 
+            ct = get_suggested_content_type(request)
+
             if charset == "None":
                 # This should have been always set by
                 # HTTPResponse.setBody()
                 charset = "utf-8"
 
             # Set content type on response
-            response.setHeader("Content-type", MOBILE_CONTENT_TYPE + ";charset=" + charset)
+            response.setHeader("Content-type", ct + ";charset=" + charset)
+
+def is_wap_accepted(request):
+    """
+    application/vnd.wap.xhtml+xml"
+    """
 
 @adapter(Interface, IAfterPublicationEvent)
 def set_mobile_html_content_type(object, event):
@@ -81,6 +108,7 @@ def set_mobile_html_content_type(object, event):
     return
 
     # Check that we have text/html response
+    import pdb ; pdb.set_trace()
     if "Content-type" in response.headers:
         ct = response.getHeader("Content-type")
 
