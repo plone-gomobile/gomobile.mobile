@@ -5,9 +5,9 @@ import logging
 import urlparse
 
 import zope.interface
-
-from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IMobileSiteLocationManager
 from zope.app.component.hooks import getSite
+
+from gomobile.mobile.interfaces import MobileRequestType, IMobileSiteLocationManager
 
 logger = logging.getLogger("Plone")
 
@@ -33,13 +33,40 @@ class DomainNameBasedMobileSiteLocationManager(object):
         """
         self.context = context
         self.request = request
-
-    def _getBaseDomainName(self, domain, properties):
+        
+        self.properties = self.getProperties()
+        
+    def getProperties(self):
+        """ Error-tolerant mobile_properties getter.
+        
+        Work correctly under special traversing circumstances (e.g. ZMI in Zope App root).
         """
+        
+        # Load PloneSite object from thread locals
+        site = getSite()
+        if site == None:
+            logger.warn("No site was available in locationmanager.rewriteURL()")
+            return None
+
+        # Load config from the database
+        properties = site.portal_properties.mobile_properties
+        return properties
+
+    def getBaseDomainName(self, domain):
+        """ Get the domain name with all unnecessary prefixes and suffixes stripped out.
+        
+        We use the listing in mobile properties to filter out prefixes.
+
+        Example::
+            m.mfabrik.com -> mfabrik.com
+
+        
         @param domain: domain name as string
-        @param properties: Mobile site config (see propertiestool.xml)
+
         @return: domain name without mobile or preview prefixes
         """
+        
+        properties = self.properties
         parts = domain.split(".")
 
         all_subdomain_prefixes = properties.mobile_domain_prefixes + \
@@ -55,17 +82,19 @@ class DomainNameBasedMobileSiteLocationManager(object):
         return ".".join(parts)
 
 
-    def _prefixDomain(self, domain, mode, properties):
+    def prefixDomain(self, domain, mode):
         """ Add subdomain discriminator to domain host name
 
         xxx.com -> m.xxx.com
 
         @param mode: MobileRequestType
         @param domain: domain name as string
-        @param properties: Mobile site config (see propertiestool.xml)
+
         @return: mangled domain name
 
         """
+        
+        properties = self.properties
         if mode == MobileRequestType.MOBILE:
             # Use first prefix on the list when rewriting
             return properties.mobile_domain_prefixes[0] + "." + domain
@@ -76,30 +105,32 @@ class DomainNameBasedMobileSiteLocationManager(object):
             # Assume web domains shouldn't get prefixed
             return domain
 
-    def rewriteDomain(self, domain, mode, properties):
+    def rewriteDomain(self, domain, mode):
         """ Changes domain name to point to web/mobile server.
 
 
         @return: Domain name for redirect request as a string
         """
-        return self._prefixDomain(domain, mode, properties)
+        return self.prefixDomain(domain, mode)
 
 
-    def _replaceNetworkLocation(self, url, mode, properties):
+    def replaceNetworkLocation(self, url, mode):
         """ Rewrite domain name in the site URL.
 
         @param url: url to be rewritten
         @param mode: One of MobileRequestType pseudo constants
-        @param properties: Mobile site config (see propertiestool.xml)
         """
+
+        properties = self.properties
+        
         parts = urlparse.urlparse(url)
         parts = list(parts)
 
         # domain name + port as tuple
         domainAndPort = parts[1].split(":")
 
-        base = self._getBaseDomainName(domainAndPort[0], properties)
-        prefixed =  self.rewriteDomain(base, mode, properties)
+        base = self.getBaseDomainName(domainAndPort[0])
+        prefixed =  self.rewriteDomain(base, mode)
 
         domainAndPort[0] = prefixed
 
@@ -109,17 +140,13 @@ class DomainNameBasedMobileSiteLocationManager(object):
 
     def rewriteURL(self, url, mode):
 
-        # Load PloneSite object from thread locals
-        site = getSite()
-        if site == None:
-            logger.warn("No site was available in locationmanager.rewriteURL()")
+        if self.properties is None:
+            logger.warn("Cannot rewrite URL - no mobile_properties available - " + url)
+            # Don't do anything exceptional here as we might be called in pretraverse hook
+            # or other unsafe location
             return url
 
-
-        # Load config from the database
-        properties = site.portal_properties.mobile_properties
-
-        return self._replaceNetworkLocation(url, mode, properties)
+        return self.replaceNetworkLocation(url, mode)
 
 
 

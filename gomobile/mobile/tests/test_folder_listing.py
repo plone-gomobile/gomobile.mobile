@@ -62,6 +62,8 @@ class TestFolderListing(BaseTestCase):
     def test_not_appear_in_listing(self):
         behavior = IMobileBehavior(self.portal.folder.doc2)
         behavior.appearInFolderListing = False
+        
+        # self.assertEqual(self.getItems(self.portal.folder), None)
         self.assertEqual(len(self.getItems(self.portal.folder)), 1)
 
 

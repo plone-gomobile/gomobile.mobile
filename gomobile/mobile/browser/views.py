@@ -225,15 +225,18 @@ class FolderListingView(BrowserView):
 
     def getItems(self):
         """
-        @return: Iterable of content objects
+        @return: Iterable of content objects. Never return None.
         """
         items = self.constructListing()
         if items == None:
             return []
-
+        return items
+    
 class PhoneNumberFormatterView(BrowserView):
     """
     Helper view to format phone numbers so that they appear as dial-in links.
+    
+    Directly use underlying mobile.* package formatters.
     """
 
 
@@ -241,3 +244,4 @@ class PhoneNumberFormatterView(BrowserView):
         """
         """
         return format_phone_number_href(self.request, number)
+
