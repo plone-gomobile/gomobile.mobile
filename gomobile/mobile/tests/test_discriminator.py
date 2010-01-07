@@ -26,6 +26,8 @@ class TestDiscriminator(BaseTestCase):
 
         # By default, we are in web mode
         self.logout()
+        
+        self.setDiscriminateMode("web")
 
         util = getUtility(IMobileRequestDiscriminator)
         flags = util.discriminate(self.portal, self.portal.REQUEST)
@@ -46,7 +48,7 @@ class TestDiscriminator(BaseTestCase):
         self.assertTrue("mobile" in flags)
         self.assertTrue("preview" in flags)
 
-        self.setDiscriminateMode("web")
+        self.setDiscriminateMode("admin")
         self.loginAsPortalOwner()
         util = getUtility(IMobileRequestDiscriminator)
         flags = util.discriminate(self.portal, self.portal.REQUEST)
@@ -56,6 +58,8 @@ class TestDiscriminator(BaseTestCase):
 
 
     def test_mobile_tool_traverse(self):
+        
+        self.setDiscriminateMode("web")
         tool = self.portal.unrestrictedTraverse("@@mobile_tool")
         self.assertFalse(tool.isMobileRequest())
 
@@ -89,11 +93,8 @@ class TestDiscriminator(BaseTestCase):
         return
 
         from Products.CMFCore import Skinnable
-
-
         # Per-request per thread active skins
         SKINDATA = Skinnable.SKINDATA
-        import pdb ; pdb.set_trace()
 
         # Assume we have only one thread
         data = SKINDATA.items()[0]

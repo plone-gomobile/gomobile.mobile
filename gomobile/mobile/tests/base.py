@@ -17,6 +17,10 @@ def setup_zcml():
     fiveconfigure.debug_mode = True
     import gomobile.convergence
     zcml.load_config('configure.zcml', gomobile.convergence)
+    
+    
+    zcml.load_string(utils.ZCML_INSTALL_TEST_DISCRIMINATOR)
+    
     fiveconfigure.debug_mode = False
 
     # We need to tell the testing framework that these products
@@ -39,9 +43,17 @@ class BaseTestCase(ptc.PloneTestCase):
 
     def setUp(self):
         ptc.PloneTestCase.setUp(self)
-
+        utils.modes = ["web"]
+        
     def setDiscriminateMode(self, mode):
-        utils.setDiscriminateMode(self.portal.REQUEST, mode)
+        # utils.setDiscriminateMode(self.portal.REQUEST, mode)
+        
+        if mode == "preview":
+            utils.modes = ["preview", "mobile"]    
+        elif mode == "admin":
+            utils.modes = ["web", "admin"]    
+        else:
+            utils.modes = [mode]
 
 from Products.Five.testbrowser import Browser
 

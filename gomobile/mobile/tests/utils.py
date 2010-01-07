@@ -46,6 +46,16 @@ def setDiscriminateMode(request, mode):
 # Mock variable which can be manipulated by unit tests
 modes = [MobileRequestType.MOBILE]
 
+ZCML_INSTALL_TEST_DISCRIMINATOR='''
+        <configure
+            xmlns="http://namespaces.zope.org/zope">
+         <utility
+             provides="gomobile.mobile.interfaces.IMobileRequestDiscriminator"
+             factory="gomobile.mobile.tests.utils.TestMobileRequestDiscriminator" />
+        </configure>
+        '''
+
+
 class TestMobileRequestDiscriminator(object):
     """ Spoof HTTP request media type for Zope test browser.
 
