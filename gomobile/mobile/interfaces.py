@@ -141,9 +141,21 @@ class IUserAgentSniffer(zope.interface.Interface):
 
     See gomobile.mobile.sniffer for the default implementation.
     
-    Example::
-        from zope.component import queryMultiAdapter
-        # ua is mobile.sniffer.UserAgent object or None if no match/a web browser
-        ua = queryMultiAdapter((context, request), IUserAgentSniffer)
-        
+
     """
+    
+    def isMobileBrowser():
+        """ Check whether the HTTP request was web or mobile browser request.
+        
+        @return: True if HTTP request was made by a mobile browser
+        """
+    
+    def getUserAgentRecord():
+        """ Get the underlying mobile.sniffer.UserAgent record for the HTTP request.
+        
+        Example::
+            from zope.component import queryMultiAdapter
+            # ua is mobile.sniffer.UserAgent object or None if no match/a web browser
+            ua = queryMultiAdapter((context, request), IUserAgentSniffer)
+                    
+        """

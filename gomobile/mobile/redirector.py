@@ -47,11 +47,9 @@ class Redirector(object):
         site = getSite()
 
         # Force mobile mode if incoming device is mobile
-        ua = queryMultiAdapter((site, self.request), IUserAgentSniffer)
-        if ua:
-            # This attribute is supported by pywurlf only
-            if ua.get("is_wireless_device") == True:
-                return True
+        us = queryMultiAdapter((site, self.request), IUserAgentSniffer)
+        if us.isMobileBrowser():
+            return True
 
         return False
 
@@ -133,6 +131,7 @@ class Redirector(object):
                 return False
             else:
                 self.redirect()
+                return True
                 #return False
 
         else:

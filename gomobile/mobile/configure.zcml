@@ -28,7 +28,7 @@
 
     <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
              provides=".interfaces.IUserAgentSniffer"
-             factory=".sniffer.sniff"
+             factory=".sniffer.SessionCachedUASniffer"
              />
 
    <plone:behavior

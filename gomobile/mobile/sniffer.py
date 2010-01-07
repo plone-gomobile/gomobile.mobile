@@ -16,6 +16,9 @@ from zope.annotation.interfaces import IAnnotations
 
 logger = logging.getLogger("Plone")
 
+from mobile.sniffer.detect import  detect_mobile_browser
+from mobile.sniffer.utilities import get_user_agent
+
 try:
     from mobile.sniffer.wurlf.sniffer import WurlfSniffer
 
@@ -33,19 +36,28 @@ except ImportError, e:
 KEY = "sniffer_user_agent"
 
 
+class SessionCachedUASniffer(object):
     
-def sniff(context, request):
-    """ Resolve user-agent record for the request.
-
-    User agent look-up may be expensive.
-    Store cached value on the request object itself and
-    session.
-
-    @return: mobile.sniffer.base.UserAgent instance or None if no user agent found or it cannot be looked up
-    """
-
-    try:
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        
+    def isMobileBrowser(self):
+        ua = get_user_agent(self.request)
+        return detect_mobile_browser(ua)
     
+    def getUserAgentRecord(self, context, request):
+        """ Resolve user-agent record for the request.
+    
+        User agent look-up may be expensive.
+        Store cached value on the request object itself and
+        session.
+    
+        @return: mobile.sniffer.base.UserAgent instance or None if no user agent found or it cannot be looked up
+        """
+    
+        context = self.context
+        request = self.request
         
         if _sniffer == None:
             # For some reason, coudln't initialize
@@ -94,11 +106,4 @@ def sniff(context, request):
         annotations[KEY] = ua
     
         return ua
-    except Exception, e:
-        # Since this is factory method we need to
-        # handle all exceptions internally
-        # or they will be transformed to ComponentLookUpErrors
-        import traceback
-        traceback.print_exc(e)
-        return None
 

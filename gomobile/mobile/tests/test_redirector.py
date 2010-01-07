@@ -27,9 +27,9 @@ class TestRedirector(BaseTestCase):
             self.portal.REQUEST.environ["HTTP_USER_AGENT"] = "Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US)"
         else:
             self.portal.REQUEST.environ["HTTP_USER_AGENT"] = MOBILE_USER_AGENT
-            ua = getMultiAdapter((self.portal, self.portal.REQUEST), IUserAgentSniffer)
+            mobile = getMultiAdapter((self.portal, self.portal.REQUEST), IUserAgentSniffer).isMobileBrowser()
             # This attribute is supported by pywurlf only
-            self.assertTrue(ua.get("is_wireless_device"))
+            self.assertTrue(mobile)
 
     def test_redirect_web_browser(self):
         self.set_user_agent("web")
