@@ -132,8 +132,8 @@ class Redirector(object):
             elif self.isCookiedWeb():
                 return False
             else:
-                #self.redirect()
-                return False
+                self.redirect()
+                #return False
 
         else:
             # A web browser

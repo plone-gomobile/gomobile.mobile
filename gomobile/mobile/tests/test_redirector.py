@@ -59,6 +59,7 @@ class TestRedirector(BaseTestCase):
         redirector = getMultiAdapter((self.portal, self.portal.REQUEST), IMobileRedirector)
         self.assertEqual(redirector.intercept(), False)
 
+        
 class TestRedirectorFunctionality(BaseFunctionalTestCase):
     """ Check that mobile redirect hook is effective.
 

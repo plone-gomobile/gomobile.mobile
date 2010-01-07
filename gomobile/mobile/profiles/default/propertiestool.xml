@@ -68,6 +68,15 @@
   <property name="preferred_mobile_domains" type="lines" purge="False">
   </property>
 
+
+  <!-- How certain 0...1.0 the user agent match must be that we'll do a mobile redirect.
+  
+        This is to prevent accidental redirects on unknown user agents.
+   -->
+  <property name="mobile_redirect_certainty" type="float" purge="False">
+  	0.9
+   </property>
+
     <!--
 
       collective.skinny based theme interface name
@@ -100,6 +109,7 @@
   <property name="default_canvas_width" type="int" purge="False">160</property>
   <property name="default_canvas_height" type="int" purge="False">100</property>
 
+
   <!-- User mobile analytics backend name,
 
       See gomobile.mobile.interfaces.IMobileTracker -->
@@ -119,6 +129,7 @@
   <property name="no_folder_listing_view_ids" type="lines" purge="False">
     <element value="folder_listing"/>
   </property>
+
 
 
  </object>

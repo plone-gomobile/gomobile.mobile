@@ -28,7 +28,7 @@
 
     <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
              provides=".interfaces.IUserAgentSniffer"
-             factory=".sniffer.cached_wurlf_ua_sniffer"
+             factory=".sniffer.sniff"
              />
 
    <plone:behavior

@@ -140,6 +140,10 @@ class IUserAgentSniffer(zope.interface.Interface):
         * request (HTTP request object)
 
     See gomobile.mobile.sniffer for the default implementation.
+    
+    Example::
+        from zope.component import queryMultiAdapter
+        # ua is mobile.sniffer.UserAgent object or None if no match/a web browser
+        ua = queryMultiAdapter((context, request), IUserAgentSniffer)
+        
     """
-
-
