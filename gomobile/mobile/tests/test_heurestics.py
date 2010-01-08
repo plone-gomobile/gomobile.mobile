@@ -41,7 +41,7 @@ class TestHeurestics(BaseTestCase):
         formatter = self.portal.unrestrictedTraverse("@@phone_number_formatter")
         number = formatter.format(self.number)
         self.assertEqual(number, "tel:+3581231234")
-
+        
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestHeurestics))

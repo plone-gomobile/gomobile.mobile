@@ -31,6 +31,8 @@ from zope.interface import Interface
 from zope.component import adapter, getUtility, getMultiAdapter
 from plone.postpublicationhook.interfaces import IAfterPublicationEvent
 
+from mobile.heurestics.contenttype import get_content_type_and_doctype 
+
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IMobileRedirector
 
 MOBILE_CONTENT_TYPES = [
@@ -39,6 +41,7 @@ MOBILE_CONTENT_TYPES = [
 ]
 
 DOCSTRING_MARKER="xhtml-mobile"
+
 
 def is_mobile(context, request):
     util = getUtility(IMobileRequestDiscriminator)
@@ -70,28 +73,13 @@ def get_suggested_content_type(request):
 
 
 def reset_content_type_for_mobile(request, response):
-
-    # Peek first bytes to get enough data to check the marker
-    if isinstance(response.body, basestring):
-
-        snapshot = response.body[0:160]
-
-        # Does it look like mobile HTML
-        if DOCSTRING_MARKER in snapshot:
-
-            ct = response.getHeader("Content-type")
-
-            charset  = extract_charset(ct)
-
-            ct = get_suggested_content_type(request)
-
-            if charset == "None":
-                # This should have been always set by
-                # HTTPResponse.setBody()
-                charset = "utf-8"
-
-            # Set content type on response
-            response.setHeader("Content-type", ct + ";charset=" + charset)
+    """
+    TODO: Hardcoded for XHTML now. Can be varied according to handset bugs.
+    
+    http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
+    """
+    ct, doctype = get_content_type_and_doctype
+    response.setHeader("Content-type", ct)
 
 def is_wap_accepted(request):
     """
@@ -104,14 +92,9 @@ def set_mobile_html_content_type(object, event):
     request = event.request
     response = request.response
 
-    # D onot run this cose
-    return
-
     # Check that we have text/html response
-    import pdb ; pdb.set_trace()
     if "Content-type" in response.headers:
         ct = response.getHeader("Content-type")
-
 
         if ct == "text/html" or ct == "text/xhtml":
             if is_mobile(object, request):
