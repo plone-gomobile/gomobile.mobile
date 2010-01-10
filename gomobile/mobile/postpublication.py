@@ -44,6 +44,9 @@ DOCSTRING_MARKER="xhtml-mobile"
 
 
 def is_mobile(context, request):
+    """
+    @return: True if the served HTTP request was from the mobile site
+    """
     util = getUtility(IMobileRequestDiscriminator)
     flags = util.discriminate(context, request)
     return MobileRequestType.MOBILE in flags
@@ -59,9 +62,11 @@ def extract_charset(content_type):
 
 def get_suggested_content_type(request):
     """
+    
+    TODO: Not used
+    
     @return: Content type which should be used for response, None if should not be modified
     """
-    import pdb ; pdb.set_trace()
     accepted = None
 
     # Go through possibilities
@@ -78,13 +83,23 @@ def reset_content_type_for_mobile(request, response):
     
     http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
     """
-    ct, doctype = get_content_type_and_doctype
+    ct, doctype = get_content_type_and_doctype(request)
     response.setHeader("Content-type", ct)
 
 def is_wap_accepted(request):
     """
     application/vnd.wap.xhtml+xml"
     """
+    
+def get_context(object):
+    """ Post-publication hook object can be either view or context object. 
+    
+    Try extract context object in meaningful manner.
+    """
+    
+    # Get context attribute or return the object itself if does not exist
+    context = getattr(object, "context", object)
+    return context
 
 @adapter(Interface, IAfterPublicationEvent)
 def set_mobile_html_content_type(object, event):
@@ -93,11 +108,13 @@ def set_mobile_html_content_type(object, event):
     response = request.response
 
     # Check that we have text/html response
-    if "Content-type" in response.headers:
-        ct = response.getHeader("Content-type")
+    ct = response.getHeader("Content-type")
 
-        if ct == "text/html" or ct == "text/xhtml":
-            if is_mobile(object, request):
+    if ct is not None:
+        if ct.startswith("text/html") or ct.startswith("text/xhtml"):
+            context = get_context(object)
+        
+            if is_mobile(context, request):
                 reset_content_type_for_mobile(request, response)
 
 

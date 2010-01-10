@@ -109,6 +109,16 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
         # Be sure to use Products.Five.testbrowser here
         self.browser = UABrowser(user_agent)
         self.browser.handleErrors = False # Don't get HTTP 500 pages
+        
+    def setDiscriminateMode(self, mode):
+        # utils.setDiscriminateMode(self.portal.REQUEST, mode)
+        
+        if mode == "preview":
+            utils.modes = ["preview", "mobile"]    
+        elif mode == "admin":
+            utils.modes = ["web", "admin"]    
+        else:
+            utils.modes = [mode]
 
 from zope.testbrowser import browser
 from Products.Five.testbrowser import PublisherHTTPHandler
