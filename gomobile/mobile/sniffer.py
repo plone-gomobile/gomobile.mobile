@@ -46,7 +46,7 @@ class SessionCachedUASniffer(object):
         ua = get_user_agent(self.request)
         return detect_mobile_browser(ua)
     
-    def getUserAgentRecord(self, context, request):
+    def getUserAgentRecord(self):
         """ Resolve user-agent record for the request.
     
         User agent look-up may be expensive.
