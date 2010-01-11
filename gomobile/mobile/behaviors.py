@@ -18,10 +18,9 @@ from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema import getFields
 
-
 from plone.directives import form
 
-from gomobile.mobile.utilities import VolatileContext, AnnotationPersistentFactory
+from mfabrik.behaviorutilities.volatilecontext import VolatileContext, AnnotationPersistentFactory
 
 class IMobileBehavior(form.Schema):
     """ How content and its children react to differt medias """
@@ -90,6 +89,7 @@ class MobileBehaviorStorage(VolatileContext, Persistent):
 
     This allows to use attribute storage with schema input validation.
     """
+    implements(IMobileBehavior)
 
     mobileFolderListing = FieldPropertyDelegate(IMobileBehavior["mobileFolderListing"])
 
