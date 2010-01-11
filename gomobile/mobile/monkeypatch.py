@@ -97,11 +97,12 @@ def getDefaultSkin(self):
     """ Get the default skin name.
     """
     site = self
-    request = site.REQUEST
-    if is_mobile(site, request):
-        return get_mobile_skin_name(site, request)
-    else:
-        return self.default_skin
+    request = getattr(site, "REQUEST", None)
+    if request:
+        if is_mobile(site, request):
+            return get_mobile_skin_name(site, request)
+    
+    return self.default_skin
 
 SkinsTool.getDefaultSkin = getDefaultSkin
 
