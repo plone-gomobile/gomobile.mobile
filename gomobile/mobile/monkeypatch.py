@@ -10,6 +10,8 @@ import logging
 from zope.component import getUtility, queryUtility
 from zope.component.interfaces import ComponentLookupError
 
+#from layers import setMobileThemeLayer
+
 
 from interfaces import MobileRequestType, IMobileRequestDiscriminator
 
@@ -32,6 +34,44 @@ BAD_RAP="""
     Please start Zope in foreground mode or check logs to see which Python egg failed to load.
     """
 
+def is_mobile(site, request):
+    """ Special pre-traversing context discriminator
+     
+    @return: True if the request was a mobile site request
+    """
+    try:
+        discriminator = getUtility(IMobileRequestDiscriminator)
+    except ComponentLookupError:
+        # This happens aaaalways....
+        raise RuntimeError(BAD_RAP)
+
+    # Determine mobile skin name from mobile_properties
+    modes = discriminator.discriminate(site, request)
+    # print "Discriminator:" + str(discriminator) + " modes:" + str(modes) + " ids:" + str(properties.objectIds())
+    #import pdb ; pdb.set_trace()
+    return MobileRequestType.MOBILE in modes            
+
+    
+def get_mobile_skin_name(site, request):
+    """
+    """
+
+    properties = site.portal_properties
+
+    if hasattr(properties, "mobile_properties"):
+        # Plone Mobile quickinstaller has been run
+        # and we have mobile theme specifc files registeed
+
+        mobile_properties = properties.mobile_properties
+
+        # Enable mobile specific skin layer
+        skin_name = mobile_properties.mobile_skin
+        #print "Got skin:" + skin_name
+        return skin_name
+    else:
+        raise RuntimeError("Cannot access mobile properties")
+    
+
 def getSkinNameFromRequest(self, REQUEST=None):
     '''Returns the skin name from the Request.'''
 
@@ -43,36 +83,28 @@ def getSkinNameFromRequest(self, REQUEST=None):
 
         sf = getattr(self, sfn, None)
 
-        properties = self.portal_properties
-
-        try:
-            discriminator = getUtility(IMobileRequestDiscriminator)
-        except ComponentLookupError:
-            # This happens aaaalways....
-            raise RuntimeError(BAD_RAP)
-        site = self
-
-        # Determine mobile skin name from mobile_properties
-        modes = discriminator.discriminate(site, REQUEST)
-        # print "Discriminator:" + str(discriminator) + " modes:" + str(modes) + " ids:" + str(properties.objectIds())
-        #import pdb ; pdb.set_trace()
-        if MobileRequestType.MOBILE in modes:
-
-            if hasattr(properties, "mobile_properties"):
-                # Plone Mobile quickinstaller has been run
-                # and we have mobile theme specifc files registeed
-
-                mobile_properties = properties.mobile_properties
-
-                # Enable mobile specific skin layer
-                skin_name = mobile_properties.mobile_skin
-                #print "Got skin:" + skin_name
-                return skin_name
+        if is_mobile(self, REQUEST):
+            return get_mobile_skin_name(self, REQUEST)
 
         if sf is not None:
             return REQUEST.get(sf.getRequestVarname(), None)
 
 SkinnableObjectManager.getSkinNameFromRequest = getSkinNameFromRequest
+
+
+from Products.CMFCore.SkinsTool import SkinsTool
+def getDefaultSkin(self):
+    """ Get the default skin name.
+    """
+    site = self
+    request = site.REQUEST
+    if is_mobile(site, request):
+        return get_mobile_skin_name(site, request)
+    else:
+        return self.default_skin
+
+SkinsTool.getDefaultSkin = getDefaultSkin
+
 
 
 # Monkey patch authentication cookie (__ac)
