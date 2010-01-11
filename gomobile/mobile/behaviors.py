@@ -91,9 +91,9 @@ class MobileBehaviorStorage(VolatileContext, Persistent):
     """
     implements(IMobileBehavior)
 
-    mobileFolderListing = FieldPropertyDelegate(IMobileBehavior["mobileFolderListing"])
+    mobileFolderListing = FieldProperty(IMobileBehavior["mobileFolderListing"])
 
-    appearInFolderListing = FieldPropertyDelegate(IMobileBehavior["appearInFolderListing"])
+    appearInFolderListing = FieldProperty(IMobileBehavior["appearInFolderListing"])
 
 
 mobile_behavior_factory = AnnotationPersistentFactory(MobileBehaviorStorage, "mobile")
