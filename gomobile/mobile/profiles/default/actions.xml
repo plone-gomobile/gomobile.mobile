@@ -4,7 +4,7 @@
 
  <object name="document_actions" meta_type="CMF Action Category">
 
-  <object name="mobile_preview" meta_type="CMF Action" i18n:domain="plone">
+  <object name="mobile_preview" meta_type="CMF Action" i18n:domain="gomobile.mobile">
    <property name="title" i18n:translate="">Mobile preview</property>
    <property name="description"
       i18n:translate="">Show how this page looks like in a mobile browser</property>
