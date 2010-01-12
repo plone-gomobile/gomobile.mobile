@@ -35,6 +35,8 @@ setup(name='gomobile.mobile',
           'plone.postpublicationhook',
           'gomobile.imageinfo',
           'gomobile.xhtmlmp',
+          'httplib2',
+          'uuid',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

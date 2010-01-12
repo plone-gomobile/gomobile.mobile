@@ -69,7 +69,9 @@ def get_mobile_skin_name(site, request):
         #print "Got skin:" + skin_name
         return skin_name
     else:
-        raise RuntimeError("Cannot access mobile properties")
+        # Happens when the site is still being constructed
+        logger.warn("Cannot access mobile properties")
+        return None
     
 
 def getSkinNameFromRequest(self, REQUEST=None):
@@ -84,7 +86,9 @@ def getSkinNameFromRequest(self, REQUEST=None):
         sf = getattr(self, sfn, None)
 
         if is_mobile(self, REQUEST):
-            return get_mobile_skin_name(self, REQUEST)
+            skin = get_mobile_skin_name(self, REQUEST)
+            if skin:
+                return skin
 
         if sf is not None:
             return REQUEST.get(sf.getRequestVarname(), None)

@@ -22,4 +22,10 @@
            name="admob"
            />
 
+    <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+           provides="gomobile.mobile.interfaces.IMobileTracker"
+           factory=".google.GoogleAnalyticsTracker"
+           name="google"
+           />
+
 </configure>
