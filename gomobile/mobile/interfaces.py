@@ -116,7 +116,7 @@ class IMobileTracker(zope.interface.Interface):
     Tracking viewlet does the corresponding tracker look-up based on this name.
     """
 
-    def track(self, trackingId):
+    def track(self, trackingId, debug):
         """ Create tracking HTML snippet.
 
         @param trackingId: Tracker id. Site manager can edit this in the site settings.

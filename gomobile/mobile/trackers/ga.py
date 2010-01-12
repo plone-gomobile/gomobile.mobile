@@ -3,8 +3,7 @@
 
     Orignal implementation: http://github.com/b1tr0t/Google-Analytics-for-Mobile--python-/blob/master/ga.py
 
-
-    Adopted for Zope/Plone.
+    Adopted for Zope/Plone by Twinapex.
     
 """
 import re
@@ -17,7 +16,9 @@ except ImportError:
 from random import randint
 import struct
 import httplib2
+from httplib2 import HttpLib2Error
 import time
+import urlparse
 from urllib import unquote, quote
 from Cookie import SimpleCookie, CookieError
 #from messaging import stdMsg, dbgMsg, errMsg, setDebugging
@@ -28,6 +29,10 @@ try:
     from mod_python.util import parse_qsl
 except ImportError:
     from cgi import parse_qsl
+
+import logging
+
+logger = logging.getLogger("GAMobile")
 
 VERSION = "4.4sh"
 COOKIE_NAME = "__utmmobile"
@@ -61,7 +66,8 @@ GIF_DATA = reduce(lambda x,y: x + struct.pack('B', y),
 # 00 02 01 44 00 3b
 
 def dbgMsg(msg):
-    print msg                  
+    print msg
+    logger.debug(msg)                  
 
 def get_ip(remote_address):
     # dbgMsg("remote_address: " + str(remote_address))
@@ -134,28 +140,30 @@ def send_request_to_google_analytics(utm_url, environ):
                                      )
         dbgMsg("success")            
     except HttpLib2Error, e:
-        errMsg("fail: %s" % utm_url)            
+        #errMsg("fail: %s" % utm_url)
+        
+        logger.error("GA URL failed:" + utm_url)
+                    
         if environ['GET'].get('utmdebug'):
             raise Exception("Error opening: %s" % utm_url)
         else:
             pass
 
-        
-def parse_cookie(cookie):
-    """ borrowed from django.http """
-    if cookie == '':
-        return {}
-    try:
-        c = SimpleCookie()
-        c.load(cookie)
-    except CookieError:
-        # Invalid cookie
-        return {}
-
-    cookiedict = {}
-    for key in c.keys():
-        cookiedict[key] = c.get(key).value
-    return cookiedict        
+    
+def set_zope_cookie(response, cookie_name, value, expires, path):
+    """ Set cookie, Zope way.
+    
+    @param cookie_name: 
+    
+    @param expires: 
+    
+    @param path: Path where cookie is effective    
+    """
+    
+    response.setCookie(cookie_name, value, expires=expires, path=path)
+    
+class BadTrackerId(Exception):
+    pass
         
 def track_page_view(request, response, environ, tracker_id, debug=False):
     """
@@ -166,11 +174,18 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
     time_tup = time.localtime(time.time() + COOKIE_USER_PERSISTENCE)
     
     # set some useful items in environ: 
-    environ['COOKIES'] = parse_cookie(environ.get('HTTP_COOKIE', ''))
-    environ['GET'] = {}
-    for key, value in parse_qsl(environ.get('QUERY_STRING', ''), True):
-        environ['GET'][key] = value # we only have one value per key name, right? :) 
-    x_utmac = environ['GET'].get('x_utmac', None)
+    #environ['COOKIES'] = parse_cookie(environ.get('HTTP_COOKIE', ''))
+    #environ['GET'] = {}
+    #for key, value in parse_qsl(environ.get('QUERY_STRING', ''), True):
+    #    environ['GET'][key] = value # we only have one value per key name, right? :) 
+    
+    
+    
+    x_utmac = tracker_id #environ['GET'].get('x_utmac', None)
+    
+    # 
+    if not x_utmac.startswith("MO-"):
+        raise BadTrackerId("Please use different tracking number for your mobile site than you normally use. Check from Google Analytics > site > check status > advanced settings > a site build for mobile phone. The number for is something like: MO-8819100-7")
     
     domain = environ.get('HTTP_HOST', '')
             
@@ -182,22 +197,37 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
     if not document_referer or document_referer == "0":
         document_referer = "-"
 
-    document_path = environ.get("REQUEST_URI", "")
+    # http://www.teamrubber.com/blog/_serverrequest_uri-in-zope/
+    
+    # http://www.doughellmann.com/PyMOTW/urlparse/index.html
+    
+    full_url = request.ACTUAL_URL + "?" + request.QUERY_STRING
+    parsed = urlparse.urlsplit(full_url)
+        
+    uri = parsed[2]
+    if parsed[3]:
+        uri += "?" + parsed[3]
+    
+    document_path = uri
+    
     
     account = tracker_id      
     user_agent = environ.get("HTTP_USER_AGENT", '')    
 
     # // Try and get visitor cookie from the request.
-    cookie = environ['COOKIES'].get(COOKIE_NAME)
+    cookie = request.cookies.get(COOKIE_NAME, None) #environ['COOKIES'].get(COOKIE_NAME)
 
     visitor_id = get_visitor_id(environ.get("HTTP_X_DCMGUID", ''), account, user_agent, cookie)
     
     # // Always try and add the cookie to the response.
-    cookie = SimpleCookie()
-    cookie[COOKIE_NAME] = visitor_id
-    morsel = cookie[COOKIE_NAME]
-    morsel['expires'] = time.strftime('%a, %d-%b-%Y %H:%M:%S %Z', time_tup) 
-    morsel['path'] = COOKIE_PATH
+    #cookie = SimpleCookie()
+    #cookie[COOKIE_NAME] = visitor_id
+    #morsel = cookie[COOKIE_NAME]
+    #morsel['expires'] =  
+    #morsel['path'] = COOKIE_PATH
+
+    expires = time.strftime('%a, %d-%b-%Y %H:%M:%S %Z', time_tup)
+    set_zope_cookie(response, COOKIE_NAME, visitor_id, expires, COOKIE_PATH)
 
     utm_gif_location = "http://www.google-analytics.com/__utm.gif"
 
@@ -227,12 +257,9 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
 
     # // If the debug parameter is on, add a header to the response that contains
     # // the url that was used to contact Google Analytics.
-    headers = [('Set-Cookie', str(cookie).split(': ')[1])]
-    if debug:
-        headers.append(('X-GA-MOBILE-URL', utm_url))
+    #headers = [('Set-Cookie', str(cookie).split(': ')[1])]
     
-    # Finally write the gif data to the response
-    response = write_gif_data()
-    response_headers = response['response_headers']
-    response_headers.extend(headers)
-    return response
+    if debug:
+        response.setHeader('X-GA-MOBILE-URL', utm_url)
+
+    

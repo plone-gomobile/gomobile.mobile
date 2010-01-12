@@ -45,21 +45,23 @@ class MobileTracker(grok.CodeView):
         """ Look up tracker and make it generate tracking HTML snippet """
         mobile_properties = getCachedMobileProperties(self.context, self.request)
 
-        self.trackingId = mobile_properties.tracking_id.strip()
+        trackingId = mobile_properties.tracking_id.strip()
 
-        self.trackerName = mobile_properties.tracker_name.strip()
+        trackerName = mobile_properties.tracker_name.strip()
+        
+        debug = mobile_properties.tracker_debug
 
-        if self.trackingId == "":
+        if trackingId == "":
             # Assume empty input string equals to not set
-            self.trackingId = None
+            trackingId = None
 
-        if self.trackerName == "":
-            self.trackerName = None
+        if trackerName == "":
+            trackerName = None
 
-        if self.trackerName and self.trackingId:
+        if trackerName and trackingId:
             # Look up the tracker
-            tracker = self.getTracker(self.trackerName)
-            self.trackingCode = tracker.track(self.trackingId)
+            tracker = self.getTracker(trackerName)
+            self.trackingCode = tracker.track(trackingId, debug)
 
         else:
             self.trackingCode = ""

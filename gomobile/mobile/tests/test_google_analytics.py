@@ -17,7 +17,6 @@ from Products.CMFCore.utils import getToolByName
 from gomobile.mobile.tests.base import BaseTestCase, BaseFunctionalTestCase
 from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator,  MobileRequestType, IMobileTracker
 
-MARKER = "<!-- GA -->"
 
 class TestGoogleAnalytics(BaseTestCase):
     """
@@ -31,7 +30,7 @@ class TestGoogleAnalytics(BaseTestCase):
         self.portal.portal_properties.mobile_properties.tracker_name = "google"
         
         # This id is updated in GA, manually check whether it gets hits or no
-        self.portal.portal_properties.mobile_properties.tracking_id = "UA-8819100-7"
+        self.portal.portal_properties.mobile_properties.tracking_id = "MO-8819100-7"
                 
     def test_normal(self):
         """ Calls tracker code renderer. 
@@ -45,7 +44,23 @@ class TestGoogleAnalytics(BaseTestCase):
         self.assertTrue("GA" in code)
         
         # NOTE: Manually checked whether tracker statistics have been updated
-
+    
+    def test_bad_tracker_id(self):
+        """
+        GA ids must be MO-xxx
+        """
+        
+        self.portal.portal_properties.mobile_properties.tracking_id = "UA-8819100-7"
+        
+        from gomobile.mobile.trackers.ga import BadTrackerId
+        try:
+            view = getMultiAdapter((self.portal, self.portal.REQUEST), name="mobiletracker")
+            code = view()
+            raise AssertionError("No dice") 
+        except BadTrackerId, e:
+            pass
+        
+                
         
 def test_suite():
     suite = unittest.TestSuite()

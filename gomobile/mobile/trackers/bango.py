@@ -87,7 +87,7 @@ class BangoTracker(object):
         self.context = context
         self.request = request
 
-    def track(self, trackingId):
+    def track(self, trackingId, debug):
 
         referer = self.request.get_header("referer", "")
 
