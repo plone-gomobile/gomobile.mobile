@@ -68,6 +68,7 @@ class MobileTracker(grok.CodeView):
 
     def render(self):
         """ Render the HTML snippet """
+        print "Got TC:" + self.trackingCode
         return self.trackingCode
 
     def __call__(self):

@@ -261,5 +261,7 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
     
     if debug:
         response.setHeader('X-GA-MOBILE-URL', utm_url)
+        
+    return utm_url
 
     
