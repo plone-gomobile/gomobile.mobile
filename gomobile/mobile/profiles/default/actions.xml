@@ -9,7 +9,7 @@
    <property name="description"
       i18n:translate="">Show how this page looks like in a mobile browser</property>
    <property
-      name="url_expr">string:#</property>
+      name="url_expr">string:${object_url}/@@mobilesimulatoriframe</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
    <property name="permissions">

@@ -1,17 +1,19 @@
+<div id="dark-layer" class="darkClass"></div>
 
 <div id="mobile-preview">
-	<div id="preview-info">
+	<div id="preview-info">		
 		<p>
-			<a href="#">
-				<b>[ X ]</b> Click here to close preview
-			</a>
-		</p>
+			Displaying iPhone preview.
+			The preview does not use iPhone browser engine and might not be accurate.
+		</p>		
 		
 		<p>
-			Displaying simulated mobile view.
-			View is not 100% accurate.
-		</p>
+			Navigation in preview is possible.
+	        </p>
 		
+		<p>
+			Click anywhere outside the phone to close.
+		</p>
 	</div>
 	
 	<iframe tal:attributes="src view/getMobilePreviewURL">

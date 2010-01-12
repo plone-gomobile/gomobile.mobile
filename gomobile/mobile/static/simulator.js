@@ -3,7 +3,16 @@ if (typeof(gomobile) == "undefined") {
     gomobile = {};
 }
 
+function log(x) {
+	if(console.log) {
+		console.log(x);
+	}
+}
+
 gomobile.simulator = {};
+
+/** To which CSS selector we bind the trigger to open the mobile preview */ 
+gomobile.simulator.linkSelector = "#document-action-mobile_preview a";
 
 /**
  * Create <iframe> content for current preview to show
@@ -21,47 +30,27 @@ gomobile.simulator.generateIFrame = function() {
 }
 
 /**
- * Open mobile preview view
+ * Open mobile preview view.
+ * 
+ * Assume AJAX has injected proper HTML needed to show.
  */
 gomobile.simulator.open = function() {
-
-    gomobile.simulator.generateIFrame();
+    log("Opening");
+    jq("#mobile-simulator").show();
     jq("#dark-layer").show();
-    jq("div#mobile-preview-wrapper").fadeIn("slow");
+    jq("#mobile-preview-wrapper").fadeIn("slow");
 
+    // Install close handler
+    jq("#preview-info,#dark-layer").click(gomobile.simulator.close);
 }
 
 /**
  * Close mobile preview view
  */
 gomobile.simulator.close = function() {
+    jq("#mobile-preview").hide();
     jq("div#mobile-preview-wrapper,#dark-layer").fadeOut("fast");
 }
-
-/**
- * Boostrap simulator click handlers
- */
-jq(document).ready(
-
-    // Catch exceptions on setup
-    twinapex.debug.manageExceptions( function() {
-
-        jq("a.mobile-preview").click(function(event) {
-            gomobile.simulator.open()
-            // Remember to return false so the default link action is not done
-            return false;
-        });
-
-        // Close
-        jq("#preview-info").click(function(event){
-            gomobile.simulator.close();
-            // Remember to return false so the default link action is not done
-            return false;
-        });
-
-    })
-);
-
 
 /**
  * Mobile portlet preview code
@@ -73,21 +62,23 @@ jq(document).ready(
     // Catch exceptions on setup
     twinapex.debug.manageExceptions( function() {
 
-        jq("a.open-mobile-preview").click(function(event) {
-            jq("#dark-layer").show();
-            var mobileSrc = jq("#mobile-preview-url").text();
-            jq("iframe").attr("src", mobileSrc );
-            jq("div#mobile-preview-wrapper").fadeIn("slow");
+        jq(gomobile.simulator.linkSelector).click(function(event) {
 
+            // Remove existing framecode
+	    jq("#mobile-simulator").remove();
+	    
+	    jq("body").append('<div id="mobile-simulator" style="display: none"></div>');
+            // Extra URL source for the IFRAME from 
+            var src = jq(this).attr("href");
+            jq("#mobile-simulator").load(src, {}, gomobile.simulator.open);
+
+            log(src);
+	                 
+           
             // Remember to return false so the default link action is not done
             return false;
         });
-        // Close
-        jq("#preview-info").click(function(event){
-            jq("div#mobile-preview-wrapper,#dark-layer").fadeOut("fast");
 
-            return false;
-        });
 
     })
 );

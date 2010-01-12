@@ -1,8 +1,8 @@
 #mobile-preview-wrapper  
 {  
 	position: absolute;  
-	top:10px;  
-	left:25%;  
+	top:0%;  
+	left:0%;  
 	width:400px;
 	height:800px;
 	text-align: left;  
@@ -11,15 +11,19 @@
 }  
 #mobile-preview-url { display:none; }
 #mobile-preview {  
+        position: fixed;
 	background: url(++resource++gomobile.mobile/phone_back.png) no-repeat top left;  
 	width: 400px;  
 	height: 750px;  
 	margin:0;
-	padding:0; 
+	padding:0;
+	left: 20%;
+	top: 20%; 
+	z-index: 100;
 }  
 
 #mobile-preview iframe {
-	margin-left: 34px;
+        margin-left: 34px;
 	margin-top: 155px;	
 	width: 320px;
 	height: 460px;
@@ -57,7 +61,7 @@
 	width: 100%;
 	background-repeat:no-repeat;
 	background-position:center;
-	position:absolute;
+	position:fixed;
 	top: 0px;
 	left: 0px;
 	display:none;
