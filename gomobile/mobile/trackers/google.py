@@ -48,5 +48,6 @@ class GoogleAnalyticsTracker(object):
         # Perform remote HTTP request to update GA stats
         url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug)
         
-        return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
+        # return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
+        return '<!-- GA --> <!-- "%s" -->' % url # Tracker marker, does really nothing
 
