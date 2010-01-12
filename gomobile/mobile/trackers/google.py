@@ -31,7 +31,10 @@ class GoogleAnalyticsTracker(object):
     For tracking id, use your AdMob site id.
 
     Note: If ads are enabled on your AdMob acount will display ads and is not invisible.
-
+    
+    http://www.vdgraaf.info/google-analytics-without-javascript.html
+    
+    http://www.vdgraaf.info/google-analytics-tweaks.html
     """
 
     zope.interface.implements(IMobileTracker)
@@ -45,5 +48,5 @@ class GoogleAnalyticsTracker(object):
         # Perform remote HTTP request to update GA stats
         url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug)
         
-        return "<!-- GA --> <!-- " + url + " -->"# Tracker marker, does really nothing
+        return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
 

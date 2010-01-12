@@ -5,6 +5,8 @@
 
     Adopted for Zope/Plone by Twinapex.
     
+    
+    
 """
 import re
 try:
@@ -253,6 +255,8 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
         if debug:
             dbgMsg("utm_url: " + utm_url)    
     
+        # Here you can turn on syncrhonous tracking...
+        # disabled for now
         send_request_to_google_analytics(utm_url, environ)
 
     # // If the debug parameter is on, add a header to the response that contains
