@@ -83,8 +83,14 @@ def reset_content_type_for_mobile(request, response):
     
     http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
     """
-    ct, doctype = get_content_type_and_doctype(request)
-    response.setHeader("Content-type", ct)
+    
+    # Rewrite content type only if it is found from accepted list
+    header = request.get("HTTP_ACCEPT", None)
+    
+    if header:
+        if "application/xhtml+xml" in header:    
+            ct, doctype = get_content_type_and_doctype(request)
+            response.setHeader("Content-type", ct)
 
 def is_wap_accepted(request):
     """
@@ -106,7 +112,7 @@ def set_mobile_html_content_type(object, event):
 
     request = event.request
     response = request.response
-
+    
     # Check that we have text/html response
     ct = response.getHeader("Content-type")
 

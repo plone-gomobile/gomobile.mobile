@@ -5,3 +5,4 @@ HTML flavor information
 
 * XHTML basic: http://www.w3.org/TR/xhtml-basic/
 
+* http://mobiforge.com/designing/story/comparison-xhtml-mobile-profile-and-xhtml-basic
