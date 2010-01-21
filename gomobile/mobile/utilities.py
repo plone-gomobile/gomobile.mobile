@@ -85,6 +85,21 @@ def getCachedMobileProperties(context, request):
     """
     return context.portal_properties.mobile_properties
 
-
+def get_host(request):
+    """ Helper function to extract host name from HTTP request in virtual host compatible way.
+    
+    """
+    if "HTTP_X_FORWARDED_HOST" in request.environ:
+        # Virtual host
+        host = request.environ["HTTP_X_FORWARDED_HOST"]
+    elif "HTTP_HOST" in request.environ:
+        # Direct client request
+        host = request.environ["HTTP_HOST"]
+    else:
+        # Unit test code?
+        host = None
+        
+    return host
+    
 
 

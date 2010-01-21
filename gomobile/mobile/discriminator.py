@@ -11,6 +11,7 @@ import logging
 import zope.interface
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer
+from gomobile.mobile.utilities import get_host
 
 from zope.app.component.hooks import getSite
 
@@ -55,16 +56,8 @@ class DefaultMobileRequestDiscriminator(object):
         # Determine if this is targeted to mobile domain
         # based on request domain name
         #
-        if "HTTP_X_FORWARDED_HOST" in request.environ:
-            # Virtual host
-            host = request.environ["HTTP_X_FORWARDED_HOST"]
-        elif "HTTP_HOST" in request.environ:
-            # Direct client request
-            host = request.environ["HTTP_HOST"]
-        else:
-            # Unit test code?
-            host = None
-
+        host = get_host(request)
+        
         if host:
 
             host = host.lower()
