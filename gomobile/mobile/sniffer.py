@@ -44,7 +44,11 @@ class SessionCachedUASniffer(object):
         
     def isMobileBrowser(self):
         ua = get_user_agent(self.request)
-        return detect_mobile_browser(ua)
+        if ua:
+            return detect_mobile_browser(ua)
+        else:
+            # User agent missing from HTTP request
+            return False
     
     def getUserAgentRecord(self):
         """ Resolve user-agent record for the request.
