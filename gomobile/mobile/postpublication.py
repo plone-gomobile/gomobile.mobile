@@ -112,6 +112,8 @@ def set_mobile_html_content_type(object, event):
 
     request = event.request
     response = request.response
+
+    return
     
     # Check that we have text/html response
     ct = response.getHeader("Content-type")
@@ -133,7 +135,6 @@ def mobile_redirect(object, event):
     Note: Plone does not provide a good hook doing this before traversing, so we must
     do it in post-publication. This adds extra latency, but is doable.
     """
-
 
     request = event.request
     response = request.response
