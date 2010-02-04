@@ -107,8 +107,7 @@ class MobileTool(BrowserView):
 
 
 
-        
-        
+
 class FolderListingView(BrowserView):
     """ Mobile folder listing helper view
 
