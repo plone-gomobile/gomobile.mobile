@@ -84,22 +84,37 @@ class Redirector(object):
         response = self.request.response
         response.setCookie(Redirector.COOKIE_NAME, "web", path="/")
         
-    def redirect_url(self, url):
+    def redirect_url(self, url, media_type=MobileRequestType.MOBILE):
         """ HTTP redirect to a mobile site matching certain URL.
+        
+        @param url: Base URL to rewrite
+        
+        @param media_type: Target media type. "www" or "mobile"
+        
         """
         context = self.getRealContext()
         location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
-        new_url = location_manager.rewriteURL(url, MobileRequestType.MOBILE)
+        new_url = location_manager.rewriteURL(url, media_type)
+        
+        if media_type == MobileRequestType.WEB:
+            # Add magical HTTP GET parameter which
+            # enforces no redirect cookie
+            new_url += "?force_web"
+        
         self.request.response.redirect(new_url)
         
-    def redirect(self):
-        """ Redirects to the mobile site staying on the page pointed by the current HTTP request. 
+    def redirect(self, media_type=MobileRequestType.MOBILE):
+        """ Redirects to the mobile site staying on the page pointed by the current HTTP request.
+        
+        Rewrites the current HTTP response.
+        
+        @param media_type: Target media type. "www" or "mobile"
         """
 
         # This is the serverd URL 
         url = self.request["ACTUAL_URL"]
         #print "Actual url:" + url
-        self.redirect_url(url)
+        self.redirect_url(url, media_type)
 
     def intercept(self):
         """ Manage redirects to mobile site.
@@ -132,7 +147,6 @@ class Redirector(object):
             else:
                 self.redirect()
                 return True
-                #return False
 
         else:
             # A web browser
