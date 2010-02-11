@@ -49,5 +49,5 @@ class GoogleAnalyticsTracker(object):
         url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug)
         
         # return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
-        return '<img alt="" src="%s" />' % url # Tracker marker, does really nothing
+        return '<img class="google-analytics" alt="" src="%s" />' % url # Tracker marker, does really nothing
 
