@@ -41,11 +41,12 @@ class MobileTracker(grok.CodeView):
 
         return tracker
 
-    def update(self):
+    def update(self, trackingId=None):
         """ Look up tracker and make it generate tracking HTML snippet """
         mobile_properties = getCachedMobileProperties(self.context, self.request)
 
-        trackingId = mobile_properties.tracking_id.strip()
+        if not trackingId:
+            trackingId = mobile_properties.tracking_id.strip()
 
         trackerName = mobile_properties.tracker_name.strip()
         
@@ -71,7 +72,7 @@ class MobileTracker(grok.CodeView):
         print "Got TC:" + self.trackingCode
         return self.trackingCode
 
-    def __call__(self):
-        self.update()
+    def __call__(self, trackingId=None):
+        self.update(trackingId)
         return self.render()
 
