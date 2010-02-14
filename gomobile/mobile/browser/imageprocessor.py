@@ -13,6 +13,7 @@ __copyright__ = "2010 mFabrik Research Oy"
 import os
 import md5
 import urllib
+import logging
 from StringIO import StringIO
 
 from AccessControl import Unauthorized
@@ -42,6 +43,11 @@ from gomobile.imageinfo.interfaces import IImageInfoUtility
 safe_width = 1000
 safe_height = 1000
 
+logger = logging.getLogger("Resizer")
+
+# Debug variable for unit tests
+cache_hits = 0
+
 class FSCache(object):
     """ Simple balanced folder based file system cache for images.
     
@@ -58,10 +64,14 @@ class FSCache(object):
         """
         @return: Path to cached file or None if not cached
         """
+        
+        global cache_hits
+        
         path = self.getOrCreatePath(key)
         if not os.path.exists(key):
             return default
         else:
+            cache_hits += 1
             return path
         
     def getOrCreatePath(self, key):
@@ -242,11 +252,16 @@ class ResizeView(BrowserView):
           Useful for debugging.
           
     """
-    
-    def __init__(self, context, request):
-        BrowserView.__init__(self, context, request)
-        self.resizer = getMultiAdapter((context, request), IMobileImageResizer)
-    
+        
+    def init(self):
+        
+        self.resizer = getMultiAdapter((self.context, self.request), IMobileImageResizer)
+        
+        sniffer = getMultiAdapter((self.context, self.request), IUserAgentSniffer)
+        self.ua = sniffer.getUserAgentRecord()
+        
+        image_resize_cache_path = getattr(self.context.portal_properties.mobile_properties, "image_resize_cache_path", "/tmp")
+        self.cache = FSCache(image_resize_cache_path)
     
     def parseParameters(self):
         """ Parse incoming HTTP GET parameters.
@@ -273,13 +288,77 @@ class ResizeView(BrowserView):
             
         self.url = params.get("url", None) 
         
-        
-    def __call__(self):
+    def buildCacheKey(self):
         """
+        Build cache key for result image data.
+        
+        This varies by width and height if we know them.
+        If we don't know, then we user agent string itself as a part of the key,
+        so that different mobiles don't get wrong image from the cache.
         """
         
-        # Parse incoming 
+        # We know the user agent so we know the resulting width and height in this stage
+        if self.ua:
+            key = str(self.width) + "-" + str(self.height) + "-"
+        else:
+            key = get_user_agent_hash(self.request)
+            
+        def add_param(value):
+            key += "-"
+            key += str(value)
+            
+        add_param(self.url)
+        add_param(self.conserve_aspect_ration)
+        add_param(self.padding_width)
+        
+        return key
+        
+        
+    def resolveCachedFormat(self, data):
+        """
+        Peek cached file first bytes to get the format.
+        """
+        if data[0:3] == "PNG":
+            return "png"
+        elif data[0:3] == "GIF":
+            return "gif"
+        else:
+            return "jpeg"
+    
+    def serve(self, width, height):
+        """ Generate resized image or fetch one from cache.
+        """
+        key = self.buildCacheKey()
+        path = self.cache.makePathKey(key)
+        logger.debug("Performing mobile image resize cache look up " + key + " mapped to " + path)
+        
+        file = self.cache.get(path)
+        if file:
+            f = open(file, "rb")
+            data = f.read()
+            f.close()
+            format = self.resolveCacheFormat(data)
+        else:
+            tool = getUtility(IImageInfoUtility)
+            logger.debug("Resizing %d %d" % (width, height))
+            data, format = tool.getResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
 
+
+        self.request.response.setHeader("Content-type", "image/" + format)
+
+        if isinstance(data, StringIO):
+            # Looks like ZMedusa server cannot stream data to the client...
+            # so we need to return it as memory buffered
+            return data.getvalue()
+
+        return data
+    
+    def checkSecret(self):
+        """ Harden us against DoS attack.
+        
+        All query parameters are signed and check if the caller knows the correct signature.
+        """
+        
         if self.override_secret:
             # Override parameter signature check
             # by directly providing shared secret as an HTTP query parameter
@@ -296,14 +375,14 @@ class ResizeView(BrowserView):
             
             if self.resizer.calculateSignature(**params) != secret:
                 raise Unauthorized("Bad image resizer secret:" + str(secret) + " " + str(params))
-
-
-        sniffer = getMultiAdapter((self.context, self.request), IUserAgentSniffer)
-        ua = sniffer.getUserAgentRecord()
-        
-        if ua:
-            canvas_width = ua.get("usableDisplayWidth")
-            canvas_height = ua.get("usableDisplayHeight")
+                
+    
+    def resolveDimensions(self):
+        """ Calculate final dimensions for the image.
+        """ 
+        if self.ua:
+            canvas_width = self.ua.get("usableDisplayWidth")
+            canvas_height = self.ua.get("usableDisplayHeight")
         else:
             canvas_width = None
             canvas_height = None
@@ -337,21 +416,22 @@ class ResizeView(BrowserView):
 
         if height < 1 or height > safe_height:
             raise Unauthorized("Invalid height: %d" % height)
+        
+        return width, height
+    
+    def __call__(self):
+        """
+        """
+        
+        self.init()
+        
+        self.parseParameters()
 
-        tool = getUtility(IImageInfoUtility)
+        self.checkSecret()
+        
+        width, height = self.resolveDimensions()
 
-        print "Resizing %d %d" % (width, height)
-
-        data, format = tool.getResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
-
-        self.request.response.setHeader("Content-type", "image/" + format)
-
-        if isinstance(data, StringIO):
-            # Looks like ZMedusa server cannot stream data to the client...
-            # so we need to return it as memory buffered
-            return data.getvalue()
-
-        return data
+        return self.serve(width, height)
 
 
 

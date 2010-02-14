@@ -141,7 +141,8 @@
     <element value="folder_listing"/>
   </property>
 
-
+  <!-- Where we store mobile resized copies of images -->
+  <property name="image_resize_cache_path" type="string" purge="False">/tmp</property>
 
  </object>
 </object>
