@@ -36,7 +36,7 @@ from mobile.sniffer.utilities import get_user_agent, get_user_agent_hash
 
 from mobile.htmlprocessing.transformers.imageresizer import ImageResizer
 
-from gomobile.mobile.interfaces import IMobileImageResizer, IUserAgentSniffer
+from gomobile.mobile.interfaces import IMobileImageProcessor, IUserAgentSniffer
 from gomobile.imageinfo.interfaces import IImageInfoUtility
 
 # To not exceed this resize dimensions
@@ -61,7 +61,8 @@ class FSCache(object):
         return md5.new(ikey).hexdigest()
 
     def get(self, key, default=None):
-        """
+        """ Get the cached file and update its timestamp.
+        
         @return: Path to cached file or None if not cached
         """
         
@@ -71,6 +72,11 @@ class FSCache(object):
         if not os.path.exists(key):
             return default
         else:
+            
+            # http://stackoverflow.com/questions/1158076/implement-touch-using-python
+            # We set both access time and modified time, as the file may be
+            # on relatime file system 
+            os.utime(path, (None, None))
             cache_hits += 1
             return path
         
@@ -125,15 +131,15 @@ class HTMLMutator(ImageResizer):
     """
     
     def __init__(self, baseURL, trusted, rewriteCallback):
-        ImageResizer.__init__(baseURL, trusted)
+        ImageResizer.__init__(self, baseURL, trusted)
         self.rewriteCallback = rewriteCallback
         
     def rewrite(self, url):
         return self.rewriteCallback(url)
         
-class MobileImageResizer(object):
+class MobileImageProcessor(object):
     
-    zope.interface.implements(IMobileImageResizer)
+    zope.interface.implements(IMobileImageProcessor)
     
     def __init__(self, context, request):
         self.context = context
@@ -250,12 +256,16 @@ class ResizeView(BrowserView):
         * override_secret: Set this query parameteter to site resizer secret code setting
           to override DoS preventing parameter signature check.  
           Useful for debugging.
-          
+       
+    The image results are cached on file-system. The cache path is configurable
+    through *image_resize_cache_path* mobile parameter and defaults to /tmp.
+    The cache is never cleaned up, so you are responsible to set a scheduled
+    task to remove old files.
     """
         
     def init(self):
         
-        self.resizer = getMultiAdapter((self.context, self.request), IMobileImageResizer)
+        self.resizer = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
         
         sniffer = getMultiAdapter((self.context, self.request), IUserAgentSniffer)
         self.ua = sniffer.getUserAgentRecord()

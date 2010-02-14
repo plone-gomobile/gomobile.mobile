@@ -3,6 +3,9 @@
     Simple image resizer view.
     
     Resize arbitary Zope images for mobile consumption.
+    
+    
+    @deprecated: Please use imageprocessor module and @@mobile_image_processor view instead.
 
 """
 

@@ -21,6 +21,13 @@
         allowed_attributes="getResizedImageURL"
         />
 
+    <browser:page
+        for="*"
+        name="mobile_image_processor"
+        permission="zope2.Public"
+        class=".imageprocessor.ResizeView"
+        />
+
 
     <browser:page
         for="*"

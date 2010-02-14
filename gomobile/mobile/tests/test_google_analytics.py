@@ -41,7 +41,7 @@ class TestGoogleAnalytics(BaseTestCase):
 
         view = getMultiAdapter((self.portal, self.portal.REQUEST), name="mobiletracker")
         code = view()
-        self.assertTrue("GA" in code)
+        self.assertTrue("MO-" in code)
         
         # NOTE: Manually checked whether tracker statistics have been updated
     

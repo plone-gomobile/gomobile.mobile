@@ -72,5 +72,10 @@
         factory=".redirector.Redirector"
         />
 
+     <adapter
+        for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+        provides=".interfaces.IMobileImageProcessor"
+        factory=".browser.imageprocessor.MobileImageProcessor"
+        />
 
 </configure>

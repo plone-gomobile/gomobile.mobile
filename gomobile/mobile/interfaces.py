@@ -125,7 +125,7 @@ class IMobileTracker(zope.interface.Interface):
         @return: HTML snippet as a string
         """
 
-class IMobileImageResizer(zope.interface.Interface):
+class IMobileImageProcessor(zope.interface.Interface):
     """ Helper for making images behave nicely with mobile.
 
     View like multi-adapter with parameters:
