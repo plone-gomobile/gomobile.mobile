@@ -48,6 +48,10 @@ logger = logging.getLogger("Resizer")
 # Debug variable for unit tests
 cache_hits = 0
 
+DEFAULT_CACHE_PATH="/tmp/gomobile_image_cache"
+
+VIEW_NAME = "@@mobile_image_processor"
+
 class FSCache(object):
     """ Simple balanced folder based file system cache for images.
     
@@ -213,7 +217,7 @@ class MobileImageProcessor(object):
         # Prepare arguments for the image resizer view
         new_props = {}
         new_props.update(properties)        
-        new_props[url] = url
+        new_props["url"] = url
         
         if self.isUserAgentSpecific(url, new_props):
             # Check if the result may vary by user agnt
@@ -221,7 +225,7 @@ class MobileImageProcessor(object):
         
         new_props = self.finalizeViewArguments(new_props)
         
-        return self.site.absolute_url() + "/@@mobile_image_resizer?" + urllib.urlencode(new_props)
+        return self.site.absolute_url() + "/" + VIEW_NAME + "?" + urllib.urlencode(new_props)
                 
                 
     def processHTML(self, data, trusted):
@@ -258,7 +262,7 @@ class ResizeView(BrowserView):
           Useful for debugging.
        
     The image results are cached on file-system. The cache path is configurable
-    through *image_resize_cache_path* mobile parameter and defaults to /tmp.
+    through *image_resize_cache_path* mobile parameter and defaults to /tmp/gomobile_image_cache.
     The cache is never cleaned up, so you are responsible to set a scheduled
     task to remove old files.
     """
@@ -270,7 +274,7 @@ class ResizeView(BrowserView):
         sniffer = getMultiAdapter((self.context, self.request), IUserAgentSniffer)
         self.ua = sniffer.getUserAgentRecord()
         
-        image_resize_cache_path = getattr(self.context.portal_properties.mobile_properties, "image_resize_cache_path", "/tmp")
+        image_resize_cache_path = getattr(self.context.portal_properties.mobile_properties, "image_resize_cache_path", DEFAULT_CACHE_PATH)
         self.cache = FSCache(image_resize_cache_path)
     
     def parseParameters(self):
@@ -313,13 +317,14 @@ class ResizeView(BrowserView):
         else:
             key = get_user_agent_hash(self.request)
             
-        def add_param(value):
+        def add_param(key, value):
             key += "-"
             key += str(value)
-            
-        add_param(self.url)
-        add_param(self.conserve_aspect_ration)
-        add_param(self.padding_width)
+            return key
+        
+        key = add_param(key, self.url)
+        key = add_param(key, self.conserve_aspect_ration)
+        key = add_param(key, self.padding_width)
         
         return key
         
@@ -422,10 +427,10 @@ class ResizeView(BrowserView):
             height = self.height
 
         if width < 1 or width > safe_width:
-            raise Unauthorized("Invalid width: %d" % width)
+            raise Unauthorized("Invalid width: %d for %s" % (width, url))
 
         if height < 1 or height > safe_height:
-            raise Unauthorized("Invalid height: %d" % height)
+            raise Unauthorized("Invalid height: %d for %s" % (height, url))
         
         return width, height
     

@@ -16,7 +16,7 @@ class TestContentType(BaseFunctionalTestCase):
     """
 
     def test_content_type(self):
-        """ Check that we got redirect to mobile site if we pose mobile user agent.
+        """ Check that content type is something all mobile phones agree on.
         """
         
         # not being called
@@ -32,7 +32,9 @@ class TestContentType(BaseFunctionalTestCase):
         event = AfterPublicationEvent(self.portal, self.portal.REQUEST)
         zope.event.notify(event)
         
-        self.assertTrue(response.getHeader("content-type").startswith("Content-Type: application/xhtml+xml"))
+        #self.assertTrue(response.getHeader("content-type").startswith("Content-Type: application/xhtml+xml"))
+        ct = response.getHeader("content-type")
+        self.assertTrue(ct.startswith("text/html"), "Got:" + str(ct))
 
 def test_suite():
     suite = unittest.TestSuite()

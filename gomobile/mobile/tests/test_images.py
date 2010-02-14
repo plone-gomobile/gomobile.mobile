@@ -47,33 +47,82 @@ class TestProcessHTML(BaseTestCase):
         """
         """
         result = self.image_processor.processHTML(sample1, True)
+        print result
 
     def test_process_html_portal_root(self):
         """
         """
         result = self.image_processor.processHTML(sample2, True)
-
+        print result
+        
     def test_process_html_external(self):
         """
         """
         result = self.image_processor.processHTML(sample3, True)
-                
+        print result        
         
 class TestResizedView(BaseFunctionalTestCase):
     """ 
     """
     
     def afterSetUp(self):
+        BaseFunctionalTestCase.afterSetUp(self)
         self.image_processor = getMultiAdapter((self.portal, self.portal.REQUEST), IMobileImageProcessor)
+        
+    def checkIsValidDownload(self, url):
+        self.browser.open(url)
+        ct = self.browser.headers()["content-type"]
+        self.assertEqual(ct, )
         
     def test_no_user_agent(self):
         """ Check that redirect does not happen for a normal web browser.
         """
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
+        print url
+        self.checkIsValidDownload(url)
+        
+        
+    def checkIsUnauthorized(self, url):
+        self.checkIsValidDownload(url)
+        
+        
+    def test_is_cached(self):
+        from gomobile.mobile.browser import imageprocessor
+        imageprocessor.cache_hits = 0
 
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
+        self.checkIsValidDownload(url)
+        
+        self.assertEqual(imageprocessor.cache_hits, 0)       
+        
+        # Now the same URL should be cached hit
+        self.checkIsValidDownload(url)
+        self.assertEqual(imageprocessor.cache_hits, 1)       
+         
+        # Change some parameters and see that we are not cached anymore
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "20"})
+        self.checkIsValidDownload(url)
+        self.assertEqual(imageprocessor.cache_hits, 1)       
+
+    def test_relative(self):
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
+        self.checkIsValidDownload(url)
+        
+    def test_external(self):
+        url = self.image_processor.getImageDownloadURL("http://plone.org/logo.jpg", {"width":"auto", "padding_width" : "10"})
+        self.checkIsValidDownload(url)
+
+    def test_invalid_width_low(self):
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"0", "padding_width" : "10"})
+        self.checkIsValidDownload(url)
+
+    def test_invalid_width_high(self):
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"1200", "padding_width" : "10"})
+        self.checkIsValidDownload(url)
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestProcessHTML))
-    #suite.addTest(unittest.makeSuite(TestRedirectorFunctionality))
+    suite.addTest(unittest.makeSuite(TestResizedView))
     return suite
