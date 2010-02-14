@@ -14,7 +14,8 @@ import os
 import md5
 import urllib
 import logging
-from StringIO import StringIO
+import shutil
+from cStringIO import StringIO
 
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
@@ -56,11 +57,23 @@ class FSCache(object):
     """ Simple balanced folder based file system cache for images.
     
     Use cron job + timestamps to invalidate the cache.
+    
+    Each file path and name is hex digest of MD5 calculated from the cache key. 
+    Files are created in folder structure nested two levels to avoid too many files per one folder::
+    
+        DEFAULT_CACHE_PATH/00/00/000012341234
+        DEFAULT_CACHE_PATH/00/10/001012341234
+        DEFAULT_CACHE_PATH/10/00/100012341234
+        DEFAULT_CACHE_PATH/10/10/101012341234
+        
     """
     def __init__(self, root_path):
         self.root_path = root_path
         
     def makePathKey(self, ob):
+        """
+        Calculate hex digest.
+        """
         ikey = str(ob)
         return md5.new(ikey).hexdigest()
 
@@ -128,10 +141,17 @@ class FSCache(object):
         
         self.closeTempFile(temp, file_path)
         
+    def invalidate(self):
+        """ Nuke all files from the cache.
+        
+        One should do something smarter here.
+        """
+        if os.path.exists(self.root_path):
+            shutil.rmtree(self.root_path)
         
 class HTMLMutator(ImageResizer):
     """
-    Rewrite <img> in HTML content code…
+    Rewrite <img> in HTML content code.
     """
     
     def __init__(self, baseURL, trusted, rewriteCallback):
@@ -148,8 +168,10 @@ class MobileImageProcessor(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.site = getSite()
         
+    def init(self):
+        self.site = getSite()
+        self.cache = FSCache(self.getCachePath())
 
     def getSecret(self):
         """ Avoid properties look up using cached value.
@@ -163,8 +185,9 @@ class MobileImageProcessor(object):
     def calculateSignature(self, **kwargs):
         """ Calculate protected MD5 for resizing parameters, so that input is protected against DoS attack """
     
+        concat = ""
         for key, value in kwargs.items():
-            concat = key + "=" + str(value)
+            concat += key + "=" + str(value)
         concat += self.getSecret()
         return md5.new(concat).hexdigest()
 
@@ -212,6 +235,8 @@ class MobileImageProcessor(object):
         
     def getImageDownloadURL(self, url, properties={}):
         
+        self.init()
+        
         url = self.mapURL(url)
         
         # Prepare arguments for the image resizer view
@@ -235,12 +260,21 @@ class MobileImageProcessor(object):
         
         @return: Mutated HTML output as a string
         """
+        
+        self.init()
+        
         base = self.context.absolute_url()
         mutator = HTMLMutator(base, trusted, self.getImageDownloadURL)
         processed = mutator.process(data)
         return processed
         
-        
+    def getCachePath(self):
+        """
+        """
+        image_resize_cache_path = getattr(self.context.portal_properties.mobile_properties, "image_resize_cache_path", DEFAULT_CACHE_PATH)
+        return image_resize_cache_path
+    
+    
             
 class ResizeView(BrowserView):
     """ Resize images on fly for mobile screens.
@@ -270,13 +304,12 @@ class ResizeView(BrowserView):
     def init(self):
         
         self.resizer = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
+        self.resizer.init()
         
         sniffer = getMultiAdapter((self.context, self.request), IUserAgentSniffer)
         self.ua = sniffer.getUserAgentRecord()
         
-        image_resize_cache_path = getattr(self.context.portal_properties.mobile_properties, "image_resize_cache_path", DEFAULT_CACHE_PATH)
-        self.cache = FSCache(image_resize_cache_path)
-    
+        
     def parseParameters(self):
         """ Parse incoming HTTP GET parameters.
         
@@ -344,10 +377,10 @@ class ResizeView(BrowserView):
         """ Generate resized image or fetch one from cache.
         """
         key = self.buildCacheKey()
-        path = self.cache.makePathKey(key)
+        path = self.resizer.cache.makePathKey(key)
         logger.debug("Performing mobile image resize cache look up " + key + " mapped to " + path)
         
-        file = self.cache.get(path)
+        file = self.resizer.cache.get(path)
         if file:
             f = open(file, "rb")
             data = f.read()
@@ -356,9 +389,10 @@ class ResizeView(BrowserView):
         else:
             tool = getUtility(IImageInfoUtility)
             logger.debug("Resizing %d %d" % (width, height))
-            data, format = tool.getResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
-
-
+            data, format = tool.getURLResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
+            
+            self.resizer.cache.set(path, data)
+            
         self.request.response.setHeader("Content-type", "image/" + format)
 
         if isinstance(data, StringIO):
@@ -414,7 +448,7 @@ class ResizeView(BrowserView):
         if self.width == "auto":
             width = canvas_width
         else:
-            width = self.widtht
+            width = self.width
 
         # Make sure we have some margin available if defined
         width -= self.padding_width
@@ -427,10 +461,10 @@ class ResizeView(BrowserView):
             height = self.height
 
         if width < 1 or width > safe_width:
-            raise Unauthorized("Invalid width: %d for %s" % (width, url))
+            raise Unauthorized("Invalid width: %d" % width)
 
         if height < 1 or height > safe_height:
-            raise Unauthorized("Invalid height: %d for %s" % (height, url))
+            raise Unauthorized("Invalid height: %d" % height)
         
         return width, height
     
@@ -448,10 +482,26 @@ class ResizeView(BrowserView):
 
         return self.serve(width, height)
 
-
-
-
-
+class ClearCacheView(BrowserView):
+    """
+    Expose clearing of mobile cache as s view.
+    """
+    
+    def __call__(self):
+        """
+        TODO: Implement some smart timestamp checking here.
+        """
+                
+        resizer = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
+        
+        resizer.init()
+        
+        # Check that the caller knows the secret
+        secret = self.request.form.get("secret", None)
+        if secret != resizer.getSecret():
+            raise Unauthorized("Wrong secret:" + secret) 
+        
+        resizer.cache.invalidate()
 
     
 

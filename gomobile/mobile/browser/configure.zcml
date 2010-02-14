@@ -28,6 +28,13 @@
         class=".imageprocessor.ResizeView"
         />
 
+    <browser:page
+        for="*"
+        name="mobile_image_processor_clear_cache"
+        permission="zope2.View"
+        class=".imageprocessor.ClearCacheView"
+        />
+
 
     <browser:page
         for="*"

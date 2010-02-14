@@ -4,6 +4,7 @@ __copyright__ = "2009 Twinapex Research"
 
 import unittest
 
+from AccessControl import Unauthorized
 from zope.component import getUtility, queryUtility, getMultiAdapter
 
 from Products.CMFCore.utils import getToolByName
@@ -69,6 +70,8 @@ class TestResizedView(BaseFunctionalTestCase):
         BaseFunctionalTestCase.afterSetUp(self)
         self.image_processor = getMultiAdapter((self.portal, self.portal.REQUEST), IMobileImageProcessor)
         
+        self.image_processor.init()
+        
     def checkIsValidDownload(self, url):
         self.browser.open(url)
         ct = self.browser.headers()["content-type"]
@@ -83,8 +86,32 @@ class TestResizedView(BaseFunctionalTestCase):
         
         
     def checkIsUnauthorized(self, url):
-        self.checkIsValidDownload(url)
+        """
+        Check whether URL gives Unauthorized response. 
+        """
         
+        import urllib2 
+        
+        # Disable redirect on security error
+        self.portal.acl_users.credentials_cookie_auth.login_path = ""
+        
+        # Unfuse exception tracking for debugging
+        # as set up in afterSetUp()
+        self.browser.handleErrors = True
+        
+        def raising(self, info):
+            pass
+        self.portal.error_log._ignored_exceptions = ("Unauthorized")
+        from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
+        SiteErrorLog.raising = raising
+        
+        try:
+            self.browser.open(url)
+            raise AssertionError("No Unauthorized risen:" + url)
+        except urllib2.HTTPError,  e:
+            # Mechanize, the engine under testbrowser
+            # uses urlllib2 and will raise this exception
+            self.assertEqual(e.code, 401, "Got HTTP response code:" + str(e.code))
         
     def test_is_cached(self):
         from gomobile.mobile.browser import imageprocessor
@@ -114,13 +141,35 @@ class TestResizedView(BaseFunctionalTestCase):
 
     def test_invalid_width_low(self):
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"0", "padding_width" : "10"})
-        self.checkIsValidDownload(url)
+        
+        
+        print url
+        #import pdb ; pdb.set_trace()
+        self.checkIsUnauthorized(url)
 
     def test_invalid_width_high(self):
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"1200", "padding_width" : "10"})
-        self.checkIsValidDownload(url)
+        self.checkIsUnauthorized(url)
+        
+    def test_clear_cache(self):
+        secret = self.image_processor.getSecret()
+        url = self.portal.absolute_url() + "/@@mobile_image_processor_clear_cache?secret=" + secret 
+        self.browser.open(url)
 
+    def test_clear_cache_bad_secret(self):
+        url = self.portal.absolute_url() + "/@@mobile_image_processor_clear_cache?secret=abc"
+        self.checkIsUnauthorized(url)
 
+    def test_bad_secret(self):
+        """
+        Check that we need to have image processor view query parameters signed correctly or
+        will get Unauthorized.
+        """
+        url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
+        # remove secret paramater
+        url = url.replace("secret", "notsecret")
+        self.checkIsUnauthorized(url)
+        
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestProcessHTML))
