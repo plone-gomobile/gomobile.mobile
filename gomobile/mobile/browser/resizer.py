@@ -1,5 +1,14 @@
-__license__ = "GPL 2.1"
-__copyright__ = "2009 Twinapex Research"
+"""
+
+    Simple image resizer view.
+    
+    Resize arbitary Zope images for mobile consumption.
+
+"""
+
+
+__license__ = "GPL 2"
+__copyright__ = "2010 mFabrik Research Oy"
 
 import md5
 import urllib
