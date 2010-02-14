@@ -56,6 +56,7 @@ class BaseTestCase(ptc.PloneTestCase):
             utils.modes = [mode]
 
 from Products.Five.testbrowser import Browser
+from gomobile.mobile.tests.utils import UABrowser
 
 class BaseFunctionalTestCase(ptc.FunctionalTestCase):
     """ This is a base class for functional test cases for your custom product.
@@ -119,23 +120,4 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
             utils.modes = ["web", "admin"]    
         else:
             utils.modes = [mode]
-
-from zope.testbrowser import browser
-from Products.Five.testbrowser import PublisherHTTPHandler
-from Products.Five.testbrowser import PublisherMechanizeBrowser
-
-class UABrowser(browser.Browser):
-    """A Zope ``testbrowser` Browser that uses the Zope Publisher.
-
-    The instance must set a custom user agent string.
-    """
-
-    def __init__(self, user_agent, url=None):
-
-        mech_browser = PublisherMechanizeBrowser()
-        mech_browser.addheaders = [("User-agent", user_agent),]
-
-        # override the http handler class
-        mech_browser.handler_classes["http"] = PublisherHTTPHandler
-        browser.Browser.__init__(self, url=url, mech_browser=mech_browser)
 

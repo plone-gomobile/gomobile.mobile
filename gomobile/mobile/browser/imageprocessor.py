@@ -503,7 +503,17 @@ class ClearCacheView(BrowserView):
         
         resizer.cache.invalidate()
 
+class HTMLImageRewriter(BrowserView):
+    """
+    Template helper view to rewrite HTML structure <img> tags.
     
+    For example, see document_view.pt in gomobiletheme.basic.
+    
+    Related tests are in gomobiletheme.basic.tests.
+    """
 
-
+    def processHTML(self, html, trusted=True):
+        resizer = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
+        resizer.init()
+        return resizer.processHTML(html, trusted)
         

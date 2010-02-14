@@ -12,8 +12,7 @@ from Products.CMFCore.utils import getToolByName
 from gomobile.mobile.tests.base import BaseFunctionalTestCase, BaseTestCase
 from gomobile.mobile.interfaces import IMobileImageProcessor
 
-MOBILE_USER_AGENT="Mozilla/5.0 (SymbianOS/9.2; U; Series60/3.1 NokiaN95/11.0.026; Profile MIDP-2.0 Configuration/CLDC-1.1) AppleWebKit/413 (KHTML, like Gecko) Safari/413"
-
+from gomobile.mobile.tests.utils import MOBILE_USER_AGENT
 
 sample1 = """
 <p>
@@ -170,6 +169,16 @@ class TestResizedView(BaseFunctionalTestCase):
         url = url.replace("secret", "notsecret")
         self.checkIsUnauthorized(url)
         
+
+class TestDocWithImage(BaseFunctionalTestCase):
+    """ Check that we transform document body text properly for mobile.
+ 
+     .. warning ::
+     
+         As these tests depend on skin layers, they have been moved to gomobiletheme.basic
+         package.
+    """
+     
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestProcessHTML))
