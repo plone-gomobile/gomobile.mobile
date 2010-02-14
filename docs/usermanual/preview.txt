@@ -1,0 +1,15 @@
+======================
+ Mobile preview
+======================
+
+Go Mobile gives you a single click preview to see how your site will look in mobile.
+
+The site is fully navigable in preview and you can move from the page to another
+and even post forms.
+
+Preview technology
+-------------------
+
+Mobile preview is implemented using HTML IFRAME and AJAX technologies.
+It might not give you 100% accurate preview. However, you can expect
+to iron out 90% of content related mobile issues with the preview  functionality.

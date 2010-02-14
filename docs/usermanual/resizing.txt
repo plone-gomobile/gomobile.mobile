@@ -1,0 +1,43 @@
+========================
+ Mobile image resizing
+========================
+
+.. contents::
+
+Introduction
+------------
+
+Go Mobile provides facilities to automatically optimize images for mobile screens.
+
+Resizing
+========
+
+Since mobile screen come in various sizes and shapes, this is necessary for 
+optimal page viewing experience.
+
+Automatic resizing is based on browser user agent detection.
+
+* ::doc::'/usermanual/sniffing' 
+
+Defloating
+==========
+
+Also, content images are defloated. This means that mobile page viewers do not 
+try to wrap text around left or right of the image, because mobile screens 
+do not have space for this. Instead, images are centered and image width
+tries to match screen width (some padding included).
+
+Resizing use
+-------------
+
+By default, all page body text is run through the resizer
+
+* All <img> tags are rewritten so that images go through mobile resizer
+
+* Also external image sources with full http:// address are supported
+
+You can also explicitly use resizer on specific site elements, like logo,
+in your theme code.
+
+For more information, see mobile.htmlprocessing package.
+

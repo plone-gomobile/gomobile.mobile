@@ -1,0 +1,13 @@
+========================
+ Convergence publishing
+========================
+
+Go Mobile can publish your content
+
+* Web (normal Plone installation)
+
+* Mobile (Go Mobile add-on installed)
+
+* Web and mobile mixed (Go Mobile Convergence add-on installed)
+
+You can override  

@@ -1,0 +1,26 @@
+====================
+ Feature varying
+====================
+
+Go Mobile can disable site features based on the used mobile browser.
+
+Here are some examples
+
+* Templates and CSS are adjusted for 
+
+        * Low end phones and proprietary browser. These are usually non-HTML compliant browsers
+          used in sub 100$ device class
+          
+        * Webkit and Gecko based high end smartphone browsers (Mobile Safari, Fennec)
+
+* Touchable phone number links are provided in two formats: Nokia compatible and iPhone/Android compatible
+
+* Navigation information and position-of-interests are as downloadable files or Google Maps
+  links depending on what the handset supports
+
+* Images are resized ::doc`resized </usermanual/resizing>` based on the handset
+
+* Both touch and keypad based navigation are supported. Padding is added to make links 
+  easily touchable.
+  
+For more information see mobile.heurestics Python package.

@@ -1,0 +1,23 @@
+==========================
+ Optimal user experience
+==========================
+
+Go Mobile tries hard to achieve the most optimal mobile browsing experience,
+and it success quite well. 
+
+This all is achieved
+
+* With many years of experience in mobile development
+
+* ::doc::`Vary site features </usermanual/varying>` by `mobile browser detection </usernamual/sniffing>`
+  to give user special goodies like clickable phone numbers and navigation links.
+
+* Using ::doc::`mobile image optimization techniques </usermanual/resizing>`
+
+* Both touch and keypad based navigation are supported. For example, padding is added to make links 
+  easily touchable.
+
+* Ensure fast page load times by making HTTP requests cacheable and carrier proxy friendly
+
+
+

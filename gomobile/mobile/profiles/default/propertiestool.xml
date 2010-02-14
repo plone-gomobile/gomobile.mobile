@@ -53,37 +53,6 @@
     <element value="web" />
   </property>
 
-  <!-- Which mobile domain automatic redirects should target.
-
-  Contains language : domain name pairs.
-
-  No redirect is done if there is no language match.
-
-  Example values:
-      fi:saariselka.mobi
-    en:northvillage.mobi
-    ru:ru.northvillage.mobi
-
-  -->
-  <property name="preferred_mobile_domains" type="lines" purge="False">
-  </property>
-
-
-  <!-- How certain 0...1.0 the user agent match must be that we'll do a mobile redirect.
-  
-        This is to prevent accidental redirects on unknown user agents.
-   -->
-  <property name="mobile_redirect_certainty" type="float" purge="False">
-  	0.9
-   </property>
-
-    <!--
-
-      collective.skinny based theme interface name
-
-    -->
-  <property name="theme_interface" type="string" purge="False"></property>
-
 
   <!--
 

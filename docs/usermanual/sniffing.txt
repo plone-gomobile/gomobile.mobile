@@ -1,0 +1,38 @@
+==========================
+ Mobile handset detection
+===========================
+
+Go Mobile users mobile.sniffer abstraction layer for handset detection.
+Go Mobile aims to strive to support every HTML capable phone on this planet, 
+not just iPhone and other popular smartphones. 
+
+* Choose your favorite handset database: DeviceAtlas, Wurfl or internal library.
+
+* mobile.sniffer abstraction layer can source information from multiple databases,
+  reaching potential of over 10000 known handset records.
+
+* See ::doc::`what sites features are varied by the handset </usermanual/varying>` 
+
+* Free `Wurfl database <http://wurfl.sourceforge.net/>`_ is shipped with the product so that handset detection
+  works out-of-the-box
+
+For more information, see mobile.sniffer Python package.
+
+Using it
+--------
+
+Handset detection is enabled out of the box and you don't need to do anything special to use it.
+
+Changing handset database backend
+---------------------------------
+
+The used handset database is configured on Ploen site layer level.
+To change it, you need to redefine IMobileUserAgentSniffer 
+adapter for your site.
+
+Updating Wurlf
+--------------
+
+New Wurlf database is shipped with every Go Mobile release.
+If you manually want to update Wurlf, see mobile.sniffer package for
+necessary files and scripts.

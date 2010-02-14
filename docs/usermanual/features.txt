@@ -1,28 +1,25 @@
 Features
 --------
 
-* Publish and manage web and mobile through unified tool
+* Publish to both web and mobile through one, ::doc::`easy to use tool</usermanual/plone>` 
 
-* Reformat pages and images suitable for mobile
-
-* Define different content in mobile by site section or on 
-  individual field level
-
-* Supports *all* (over 5000) mobile phones models: 
-  Page will degenerate gracefully when being viewed on less powerful mobile phones
-
-* Mobile phone preview for page editors
-
-* Single URL for mobile and web - the user will be
-  catered correctly every time 
+* Provide ::doc::`optimal mobile browsing experience </usermanual/optimal_experience>`_
+  for your site visitors.
+      
+* `Multichannel and convergence </usermanual/convergence>` features allow you to 
+  have different content for different kind of devices
+    
+* Supports thousands of ::doc::`mobile phones models </usermanual/sniffing>`_ from
+  very low end to super smartphones. 
   
-* Specialized navigation for mobile phones and touch screens
+* ::doc::`Mobile phone preview </usermanual/preview>`
+  allows you to see the resulting page when you still are writing it
 
-* Use hundreds of add-on products from Plone ecosystem for mobile: blogs, forums, file sharing, etc. 
+* ::doc::`You can have single URL address for all devices </usermanual/redirector>`_ - the user will be
+  catered correctly every time 
 
-* Video and audio files  will be automatically transcoded suitable for mobile platforms(*)
-
-
-
-** Commercial add-on service
-
+* Build complex themes for your mobile site using standard Plone theming features
+  
+* Leverage existing hundreds of `Plone add-on products <http://plone.org/products>`_ for your own needs:
+  blogs, forums, polls, intranets, enterprise network authentication...
+  
