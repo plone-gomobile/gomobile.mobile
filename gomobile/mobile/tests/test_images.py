@@ -62,7 +62,9 @@ class TestProcessHTML(BaseTestCase):
         print result        
         
 class TestResizedView(BaseFunctionalTestCase):
-    """ 
+    """ Test mobile image resizer.
+    
+    This stressed the view which performs the actual image scale down and result caching.
     """
     
     def afterSetUp(self):
@@ -70,11 +72,15 @@ class TestResizedView(BaseFunctionalTestCase):
         self.image_processor = getMultiAdapter((self.portal, self.portal.REQUEST), IMobileImageProcessor)
         
         self.image_processor.init()
+        self.image_processor.cache.invalidate()
         
     def checkIsValidDownload(self, url):
+        """
+        Check whether we generated good image response.
+        """
         self.browser.open(url)
-        ct = self.browser.headers()["content-type"]
-        self.assertEqual(ct, )
+        ct = self.browser.headers["content-type"]
+        self.assertEqual(ct, "image/jpeg", "got:" + ct)
         
     def test_no_user_agent(self):
         """ Check that redirect does not happen for a normal web browser.
@@ -98,11 +104,14 @@ class TestResizedView(BaseFunctionalTestCase):
         # as set up in afterSetUp()
         self.browser.handleErrors = True
         
+        
+        # Comment out these to make 500 exceptions visible
         def raising(self, info):
             pass
         self.portal.error_log._ignored_exceptions = ("Unauthorized")
         from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
         SiteErrorLog.raising = raising
+        ## here
         
         try:
             self.browser.open(url)
@@ -113,6 +122,7 @@ class TestResizedView(BaseFunctionalTestCase):
             self.assertEqual(e.code, 401, "Got HTTP response code:" + str(e.code))
         
     def test_is_cached(self):
+                
         from gomobile.mobile.browser import imageprocessor
         imageprocessor.cache_hits = 0
 

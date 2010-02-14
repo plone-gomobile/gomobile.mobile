@@ -85,15 +85,17 @@ class FSCache(object):
         
         global cache_hits
         
-        path = self.getOrCreatePath(key)
-        if not os.path.exists(key):
+        print "Checking:" + key
+        
+        work_dir, path = self.getOrCreatePath(key)
+        if not os.path.exists(path):
             return default
         else:
             
             # http://stackoverflow.com/questions/1158076/implement-touch-using-python
             # We set both access time and modified time, as the file may be
             # on relatime file system 
-            os.utime(path, (None, None))
+            os.utime(path, None)
             cache_hits += 1
             return path
         
@@ -126,6 +128,7 @@ class FSCache(object):
     def closeTempFile(self, temp, full):
         """ Perform final cache set as atomic FS operation.
         """
+        print "Created:" + full
         os.rename(temp, full)
         
     def set(self, key, value):
@@ -152,6 +155,8 @@ class FSCache(object):
 class HTMLMutator(ImageResizer):
     """
     Rewrite <img> in HTML content code.
+    
+    Use mobile.htmlprocessing package and provide Plone specific callbacks.
     """
     
     def __init__(self, baseURL, trusted, rewriteCallback):
@@ -362,7 +367,7 @@ class ResizeView(BrowserView):
         return key
         
         
-    def resolveCachedFormat(self, data):
+    def resolveCacheFormat(self, data):
         """
         Peek cached file first bytes to get the format.
         """
@@ -391,13 +396,15 @@ class ResizeView(BrowserView):
             logger.debug("Resizing %d %d" % (width, height))
             data, format = tool.getURLResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
             
-            self.resizer.cache.set(path, data)
+            self.resizer.cache.set(path, data.getvalue())
             
         self.request.response.setHeader("Content-type", "image/" + format)
 
-        if isinstance(data, StringIO):
-            # Looks like ZMedusa server cannot stream data to the client...
-            # so we need to return it as memory buffered
+        # TODO: Check whether we can stream response (no memory buffering)
+
+        if hasattr(data, "getvalue"):
+        # Looks like ZMedusa server cannot stream data to the client...
+        # so we need to return it as memory buffered
             return data.getvalue()
 
         return data
@@ -419,8 +426,9 @@ class ResizeView(BrowserView):
             # Verify that secret signs all other parameters
             params = {} 
             params.update(self.request.form)
-            secret = params["secret"]
-            del params["secret"]
+            secret = params.get("secret", None)
+            if secret:
+                del params["secret"]
             
             if self.resizer.calculateSignature(**params) != secret:
                 raise Unauthorized("Bad image resizer secret:" + str(secret) + " " + str(params))

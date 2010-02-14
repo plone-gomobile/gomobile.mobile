@@ -137,7 +137,7 @@ Possible values:
 
 .. note::
 
-        Bango and AdMob trackers exist but are not currently officially supported.
+        Bango and AdMob trackers exist, but are not currently officially supported.
         
          
 tracking_id
