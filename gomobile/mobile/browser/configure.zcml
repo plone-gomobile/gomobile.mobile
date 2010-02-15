@@ -38,6 +38,7 @@
     <browser:page
         for="*"
         name="mobile_image_html_rewriter"
+	allowed_attributes="processHTML"
         permission="zope2.View"
         class=".imageprocessor.HTMLImageRewriter"
         />
