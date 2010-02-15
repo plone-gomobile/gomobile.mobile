@@ -216,6 +216,20 @@ class MobileImageProcessor(object):
         properties["secret"] = secret
         return properties
     
+    def removeScale(self, imagePath):
+        """
+        Helper function to remove scale view name from the image path.
+        
+        @param imagePath: Site root relative path to the image as list.
+        """
+        last = imagePath[-1]
+        
+        # Assume ATContentType image scales
+        if last.startswith("image_"):
+            imagePath = imagePath[0:-1]
+            
+        return imagePath
+    
     def mapURL(self, url):
         """
         Make image URL relative to site root.
@@ -230,12 +244,24 @@ class MobileImageProcessor(object):
                 url = url[1:]
             else:
                 # The URL is relative to the context path
-                # Map context to the site root
+                # Map URL to be relative to the site root
+                            
                 imageObject = self.context.unrestrictedTraverse(url)
-                physicalPath = imageObject.getPhysicalPath() # This path is relative to Zope Application server root
-                virtualPath = self.request.physicalPathToVirtualPath(physicalPath)
-                url = virtualPath
                 
+                physicalPath = imageObject.getPhysicalPath() # This path is relative to Zope Application server root
+#                virtualPath = self.request.physicalPathToVirtualPath(physicalPath)
+                
+                # TODO: Assume Plone site is Zope app top level root object here
+                
+                # empty root node, site node
+                assert len(physicalPath) > 2
+                                
+                virtualPath = physicalPath[2:] 
+                
+                virtualPath = self.removeScale(virtualPath)                
+                
+                url = "/".join(virtualPath)
+                                                
         return url
         
     def getImageDownloadURL(self, url, properties={}):
@@ -393,7 +419,7 @@ class ResizeView(BrowserView):
             format = self.resolveCacheFormat(data)
         else:
             tool = getUtility(IImageInfoUtility)
-            logger.debug("Resizing %d %d" % (width, height))
+            logger.debug("Resizing %d %d" % (width, height))            
             data, format = tool.getURLResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
             
             self.resizer.cache.set(path, data.getvalue())
@@ -510,6 +536,14 @@ class ClearCacheView(BrowserView):
             raise Unauthorized("Wrong secret:" + secret) 
         
         resizer.cache.invalidate()
+        
+class IHTMLImageRewriter(zope.interface.Interface):
+    """
+    Declare RestrictedPython safe functions for HTMLImageRewriter view.
+    """        
+    
+    def processHTML(html, trusted):
+        pass
 
 class HTMLImageRewriter(BrowserView):
     """
@@ -524,4 +558,9 @@ class HTMLImageRewriter(BrowserView):
         resizer = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
         resizer.init()
         return resizer.processHTML(html, trusted)
+    
+    def __call__(self):
+        """
+        """
+        raise RuntimeError("Please do not call this view directly - instead use processHTML() method")
         

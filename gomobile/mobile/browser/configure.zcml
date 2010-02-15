@@ -35,11 +35,16 @@
         class=".imageprocessor.ClearCacheView"
         />
 
+
+    <!-- TODO: you get error Unauthorized: You need to be manager to acces processHTML() when using permission zope2.View 
+    
+        Don't know why.
+        -->
     <browser:page
         for="*"
         name="mobile_image_html_rewriter"
-	allowed_attributes="processHTML"
-        permission="zope2.View"
+	allowed_interface=".imageprocessor.IHTMLImageRewriter"
+        permission="zope.Public"
         class=".imageprocessor.HTMLImageRewriter"
         />
 
