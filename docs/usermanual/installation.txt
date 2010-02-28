@@ -1,0 +1,211 @@
+===========================
+ Installation instructions
+===========================
+
+.. contents ::
+
+Introduction
+-------------
+
+This document tells how to install Go Mobile on your server or development computer.
+
+Supported operating systems are all operating systems which run Plone
+
+* Linux
+
+* OSX 
+
+* Windows
+
+.. note::
+
+        Windows installation is tricky as MingW C compiler might be needed
+        to run updates.
+
+Prerequisitements
+=================
+
+For developers
+++++++++++++++
+
+The following must be installed to be able to develop Go Mobile code:
+
+* Plone 3 / Python 2.4
+
+* Python Imaging Library (one comes with Plone Unified Installer)
+
+* Python development headers (sudo apt-get install python2.4-dev)
+
+* GCC compiler (MingW on Windows)
+
+* Subversion client (svn)
+
+Special notes
++++++++++++++++++
+
+* To get suitable Python on OSX platform, use 
+  `collective.buildout <http://svn.plone.org/svn/collective/buildout/python/src/docs>`_
+  instructions.
+
+* `Python Imaging Library installation instructions <http://blog.mfabrik.com/2009/11/19/installing-python-imaging-library-pil-under-virtualenv-or-buildout/>`_.
+      
+Installation methods
+---------------------
+
+* Python egg based installation (not yet!) 
+
+* Trunk version checkout
+
+Trunk version checkout
+-----------------------
+
+Prior Plone development experience is needed to perform this.
+
+Source code is available in Google Code repositories.
+
+* Install Plone 3.3.x
+
+* Add the following to your buildout.cfg::
+
+Add the following::
+
+    [buildout]
+    parts =
+        zope2
+        ...
+        ${gomobile.config:parts}
+
+    extends =
+        ...
+        http://good-py.appspot.com/release/dexterity/1.0a2
+        http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.buildout/gomobile.trunk.cfg
+
+    extensions = mr.developer
+
+     eggs =
+        Plone
+        ...
+        ${gomobile.config:eggs}
+
+    [instance]
+    zcml =
+        ...
+        ${gomobile.config:zcml}
+
+        
+*gomobile.trunk.cfg* is an buildout extension file defining where to get trunk source code
+using `Mr. Developer <http://pypi.python.org/pypi/mr.developer>`_ buildout extension.
+
+.. note ::
+
+       If you do not have Google Code membership or commit access you may need to replace
+       address prefixed with *https* as *http* in gomobile.trunk.cfg. For this,
+       you need to make a local copy of gomobile.trunk.cfg, edit it and
+       change extensions= in buildout.cfg to point to the local file.
+       
+.. note ::
+
+        Dexterity (new Plone system) component version configuration
+        is used as a base to have a compatible component configuration
+        for the product.
+        
+XXX TODO:
+
+These might be needed as well - not sure if still up-to-date::
+
+        [versions]
+        #zc.buildout=1.4.1
+        z3c.form = 1.9.0
+        zope.i18n = 3.4.0
+        zope.testing = 3.4.0
+        #zope.component = 3.4.0
+        zope.component = 3.5.1 
+        zope.securitypolicy = 3.4.0
+        zope.app.zcmlfiles = 3.4.3
+        zope.app.catalog = 3.5.2
+        zope.sendmail = 3.6.0
+
+Special tools
++++++++++++++
+
+You might also want add *omelette* 
+
+Making code repository certificates available in Subversion
+===========================================================
+
+Subversion *svn* command is reluctant do deal with repositores
+for which the user has not manually accepted HTTPS certificate.
+
+SVN stores the accepted certificates in the user ~/.subversion
+folder. But to get the certificates there in the first place you need 
+to checkout some of the projects manually.
+
+Please do the following in your buildout folder::
+
+    svn co https://svn.plone.org/svn/collective/collective.fastview/trunk src/collective.fastview
+    svn co https://mobilesniffer.googlecode.com/svn/trunk/mobile.sniffer src/mobile.sniffer
+    svn co https://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.mobile src/gomobile.mobile
+    
+Running Mr. Developer
+=====================
+
+You can checkout the all code after accepting the certificates using steps above.
+
+Step 1
+++++++
+
+Activate your Python 2.4 environment (depends on how your Python is installed)::
+
+        ~/python2.4/bin/activate
+
+Step 2
+++++++
+
+Run buildout:
+
+        bin/buildout 
+        
+This will result an error, but makes *bin/developer* command available.
+
+Step 3
+++++++
+
+        bin/develop co ""
+        
+Checks out all the source code.
+
+Step 4
+++++++
+
+Build final codebase::
+
+        bin/buildout
+        
+        
+Starting Plone in development mode
+----------------------------------
+
+Run command::
+
+        bin/instance fg
+
+On Windows::
+
+        bin\instance fg
+        
+Installing add-on products
+--------------------------
+
+Use *Site setup* control panel in Plone and its *Add-on products* tool to install Go Mobile add-on products.
+
+* *Go Mobile* is needed always
+
+* *Go Mobile Default Theme* or any other mobile theme is needed always
+
+* *Go Mobile Convergence* is needed if you wish to publish **both* web and mobile content on the same site
+
+
+
+
+
+ 
