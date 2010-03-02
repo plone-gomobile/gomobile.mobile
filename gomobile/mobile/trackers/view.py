@@ -50,7 +50,8 @@ class MobileTracker(grok.CodeView):
 
         trackerName = mobile_properties.tracker_name.strip()
         
-        debug = mobile_properties.tracker_debug
+        # TODO: Migration hack - may be removed after 1.0 has been released
+        debug = getattr(mobile_properties, "tracker_debug", None)
 
         if trackingId == "":
             # Assume empty input string equals to not set
@@ -69,7 +70,7 @@ class MobileTracker(grok.CodeView):
 
     def render(self):
         """ Render the HTML snippet """
-        print "Got TC:" + self.trackingCode
+        # print "Got TC:" + self.trackingCode
         return self.trackingCode
 
     def __call__(self, trackingId=None):
