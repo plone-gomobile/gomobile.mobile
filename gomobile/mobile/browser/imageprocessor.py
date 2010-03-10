@@ -313,7 +313,8 @@ class MobileImageProcessor(object):
         # Need to fix Windows style new lines here or they will cause extra new lines in the output        
         data = data.replace(u"\r", u"")
         
-        # Need to fix Unicode &nbsp; or it will be escaped in the output and appears wrong
+        # Need to fix Unicode non-breaking space bar (&nbsp;) or it will be escaped in the output and appears wrong
+        # Use XML/XHTML entity &#160; to present this evil character
         data = data.replace(u"\xA0", u"&#160;")
         
         processed = mutator.process(data)
