@@ -1,0 +1,27 @@
+===================
+XHTML compatibility
+===================
+
+.. contents ::
+
+Introduction
+------------
+
+Mobile browsers make a fuss about XHTML.
+In reality, they support X-less HTML better.
+
+XHTML compatiblity is still needed for the search bots,
+if you wish to make your pages appear in the mobile search results.
+
+Rules
+-----
+
+* Do not use &nbsp; etc. HTML entity characters.
+
+        * http://changelog.ca/log/2006/06/12/making_nbsp_work_with_xml_rss_and_atom
+        
+* Do not use & in URL. Use &amp; instead
+
+        * http://wakaba.c3.cx/sup/kareha.pl/1120173940/
+        
+         

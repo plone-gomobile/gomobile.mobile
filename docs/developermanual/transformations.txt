@@ -1,0 +1,35 @@
+=================
+ Transformations
+=================
+
+Introduction
+------------
+
+How to transform HTML and images in mobile conpatible way.
+
+Rewriting HTML with resized images
+----------------------------------
+
+You need to transform all HTML output of rich text fields 
+to be mobile HTML safe with resized images.
+
+Go Mobile Basic Theme does this by default for *Document* (*Page*) content type.
+
+The following snippet will rewrite "text" HTML code if the site is rendered in mobile mode::
+
+            <tal:rewrite-html define="text context/getText; helper nocall:context/@@mobile_image_html_rewriter; text python:helper.processHTML(text, only_for_mobile=True)">
+                <div tal:replace="structure text" />
+            </tal:rewrite-html>
+
+The following snippet will force of rewriting "text" HTML code::
+
+        <tal:rewriteimg define="helper nocall:context/@@mobile_image_html_rewriter; text python:helper.processHTML(text)">
+               <div tal:replace="structure text" />
+        </tal:rewriteimg>
+
+It is also possible force safe HTML (clean up <script> etc.).  
+
+See also
+
+* gomobile.mobile.browser.imageprocessors.HTMLImageRewriter.processHTML for other options
+ 

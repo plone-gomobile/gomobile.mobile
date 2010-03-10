@@ -38,6 +38,7 @@ from mobile.sniffer.utilities import get_user_agent, get_user_agent_hash
 from mobile.htmlprocessing.transformers.imageresizer import ImageResizer
 
 from gomobile.mobile.interfaces import IMobileImageProcessor, IUserAgentSniffer
+from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType
 from gomobile.imageinfo.interfaces import IImageInfoUtility
 
 # To not exceed this resize dimensions
@@ -609,7 +610,24 @@ class HTMLImageRewriter(BrowserView):
     Related tests are in gomobiletheme.basic.tests.
     """
 
-    def processHTML(self, html, trusted=True):
+    def processHTML(self, html, trusted=True, only_for_mobile=False):        
+        """ Rewrite HTML for mobile compatible way.
+                
+        @param html: HTML code as a string
+        
+        @param trusted: If True do not clean up nasty tags like <script>
+        
+        @param only_for_mobile: Perform processing only if the site is rendered in mobile mode
+        """
+        
+        
+        if only_for_mobile:
+            # Perform check if we are in mobile rendering mode
+            discriminator = getUtility(IMobileRequestDiscriminator)
+            flags = discriminator.discriminate(self.context, self.request)
+            if not MobileRequestType.MOBILE in flags:
+                return html
+        
         resizer = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
         resizer.init()
         if html is not None and html != "": 
@@ -622,4 +640,4 @@ class HTMLImageRewriter(BrowserView):
         """
         """
         raise RuntimeError("Please do not call this view directly - instead use processHTML() method")
-        
+
