@@ -290,6 +290,10 @@ class MobileImageProcessor(object):
                 
     def processHTML(self, data, trusted):
         """ Process all <img> tags in HTML code.
+        
+        Some error filtering is performed for incoming string data,
+        as there are some common cases related to browser based WYSIWYG
+        which will make shit hit the fan.
 
         @param base_url: Base URL of HTML document - for resolving relative img paths
         
@@ -299,8 +303,21 @@ class MobileImageProcessor(object):
         self.init()
         
         base = self.context.absolute_url()
+        
+        # create mobile.heurestics helper
         mutator = HTMLMutator(base, trusted, self.getImageDownloadURL)
+        
+        if type(data) == str:
+            data = unicode(data, "utf-8", errors="ignore")
+        
+        # Need to fix Windows style new lines here or they will cause extra new lines in the output        
+        data = data.replace(u"\r", u"")
+        
+        # Need to fix Unicode &nbsp; or it will be escaped in the output and appears wrong
+        data = data.replace(u"\xA0", u"&#160;")
+        
         processed = mutator.process(data)
+                        
         return processed
         
     def getCachePath(self):
