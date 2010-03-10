@@ -41,7 +41,7 @@ class Redirector(object):
         self.request = request
 
     def isSniffedMobile(self):
-        """
+        """ Check if the current browser is mobile browser by nature.
         """
 
         site = getSite()
@@ -55,7 +55,7 @@ class Redirector(object):
 
 
     def isCookiedWeb(self):
-        """
+        """ Check if cookie is set so that mobile browser is forced to stay on the web site.
         """
         return self.request.cookies.get(Redirector.COOKIE_NAME) == "web"
 

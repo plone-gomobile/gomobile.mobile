@@ -265,7 +265,10 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
     
     if debug:
         response.setHeader('X-GA-MOBILE-URL', utm_url)
-        
+    
+    # Must remain XHTML compatible
+    utm_url = utm_url.replace("&", "&amp;")
+    
     return utm_url
 
     

@@ -2,22 +2,7 @@
 
     Response header manipulation after the response is complete.
 
-    http://en.wikipedia.org/wiki/XHTML_Mobile_Profile
-
-    Conforming doctypes:
-
-        <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
-        "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
-
-        <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.1//EN"
-        "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile11.dtd">
-
-        <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN"
-        "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">
-
-    http://svn.zope.de/plone.org/collective/five.caching/trunk/five/caching/event.py
-
-    http://www.developershome.com/wap/xhtmlmp/xhtml_mp_tutorial.asp?page=mimeTypesFileExtension
+    
 
 """
 
@@ -34,14 +19,6 @@ from plone.postpublicationhook.interfaces import IAfterPublicationEvent
 from mobile.heurestics.contenttype import get_content_type_and_doctype 
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IMobileRedirector
-
-MOBILE_CONTENT_TYPES = [
-    "application/vnd.wap.xhtml+xml",
-    "application/xhtml+xml"
-]
-
-DOCSTRING_MARKER="xhtml-mobile"
-
 
 def is_mobile(context, request):
     """
@@ -79,7 +56,7 @@ def get_suggested_content_type(request):
 
 def reset_content_type_for_mobile(request, response):
     """
-    TODO: Hardcoded for XHTML now. Can be varied according to handset bugs.
+    
     
     http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
     """
@@ -90,10 +67,12 @@ def reset_content_type_for_mobile(request, response):
     if header:
         if "application/xhtml+xml" in header:    
             ct, doctype = get_content_type_and_doctype(request)
-            response.setHeader("Content-type", ct)
+            response.setHeader("content-type", ct)
 
 def is_wap_accepted(request):
-    """
+    """    
+    Puke on WAP. Blaaarg.
+    
     application/vnd.wap.xhtml+xml"
     """
     
@@ -109,11 +88,16 @@ def get_context(object):
 
 @adapter(Interface, IAfterPublicationEvent)
 def set_mobile_html_content_type(object, event):
-
+    """
+    Post publication hook which sets HTML content type so that the page is understood as a mobile page.
+    
+    NOTE: This should be done for Googlebot and other mobile aware search bots only! 
+    Various *real* mobile handsets
+    blow up if you try to feed them anything else beside text/html 
+    (iPhone - I am looking at you).     
+    """
     request = event.request
     response = request.response
-
-    return
     
     # Check that we have text/html response
     ct = response.getHeader("Content-type")
@@ -124,8 +108,6 @@ def set_mobile_html_content_type(object, event):
         
             if is_mobile(context, request):
                 reset_content_type_for_mobile(request, response)
-
-
 
 
 @adapter(Interface, IAfterPublicationEvent)
