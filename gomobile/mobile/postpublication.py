@@ -16,7 +16,7 @@ from zope.interface import Interface
 from zope.component import adapter, getUtility, getMultiAdapter
 from plone.postpublicationhook.interfaces import IAfterPublicationEvent
 
-from mobile.heurestics.contenttype import get_content_type_and_doctype 
+from mobile.heurestics.contenttype import get_content_type_and_doctype, need_xhtml
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IMobileRedirector
 
@@ -27,6 +27,11 @@ def is_mobile(context, request):
     util = getUtility(IMobileRequestDiscriminator)
     flags = util.discriminate(context, request)
     return MobileRequestType.MOBILE in flags
+
+def need_reset(context, request):
+    """
+    """
+    return need_xhtml(request)
 
 def extract_charset(content_type):
     """
@@ -99,6 +104,8 @@ def set_mobile_html_content_type(object, event):
     request = event.request
     response = request.response
     
+    return None
+    
     # Check that we have text/html response
     ct = response.getHeader("Content-type")
 
@@ -106,7 +113,7 @@ def set_mobile_html_content_type(object, event):
         if ct.startswith("text/html") or ct.startswith("text/xhtml"):
             context = get_context(object)
         
-            if is_mobile(context, request):
+            if need_reset(context, request):
                 reset_content_type_for_mobile(request, response)
 
 
