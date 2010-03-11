@@ -32,4 +32,11 @@ It is also possible force safe HTML (clean up <script> etc.).
 See also
 
 * gomobile.mobile.browser.imageprocessors.HTMLImageRewriter.processHTML for other options
- 
+
+CSS
+---
+
+Media queries
+=============
+
+* http://www.alexgdesign.co.uk/articles/mobile-optimised-websites-using-css3-media-queries/
