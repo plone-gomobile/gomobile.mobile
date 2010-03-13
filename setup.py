@@ -34,7 +34,6 @@ setup(name='gomobile.mobile',
           'zope.component',
           'plone.postpublicationhook',
           'gomobile.imageinfo',
-          'gomobile.xhtmlmp',
           'httplib2',
           'uuid',
           # -*- Extra requirements: -*-
