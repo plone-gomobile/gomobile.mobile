@@ -1,0 +1,39 @@
+===================================
+ Supporting Plone add-on products
+===================================
+
+.. contents ::
+
+Introduction
+-------------
+
+Plone community has various popular add-on products.
+Go Mobile defines some support for mobilizing them.
+
+Add-on mobilization support code is 
+put into separate gomobile.supporter package.
+It will conditionally include support code for a specific add-on
+if the add-on is detected to be present in your installation.
+
+Supported add-ons
+------------------
+
+This are currently supported by Go Mobile community:
+
+* Products.feedfeeder
+
+* collective.easytemplate
+
+Adding support
+--------------
+
+You need to have gomobile.supporter overrides in your buildout.cfg.
+Example for Products.feedfeeder and collective.easytemplate add ons::
+
+        zcml = Products.feedfeeder
+               archetypes.schemaextender
+               collective.easytemplate       
+               ...
+               ${gomobile.config:zcml}
+               gomobile.supporter
+               gomobile.supporter-overrides 
