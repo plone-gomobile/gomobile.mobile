@@ -201,6 +201,22 @@ Copy necessary changes by looking example in plonecommunity.app
         * profiles/default/skins.xml
 
         * Add skins registration to configure.zcml
+
+Declaring dependency to gomobiletheme.basic
+============================================
+
+To use its main_template.pt add profiles/default/skins.xml to your theme package::
+
+        <?xml version="1.0"?>
+        
+        <object name="portal_skins" allow_any="False" cookie_persistence="False">
+        
+                 <!-- Declare dependency to gomobiletheme.basic so that its skin layeres are also included when this theme is installed -->
+                 <skin-path name="plonecommunity.mobi theme" based-on="Go Mobile Default Theme">
+                 </skin-path>
+                
+        
+        </object>
         
 Overriding the logo
 ===================

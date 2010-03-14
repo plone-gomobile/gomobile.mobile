@@ -92,6 +92,8 @@ Core mobile functionality.
 
 * Mobile site redirector
 	
+* Preview action and mobile simulator CSS and JS code
+	
 * Tracking and analytics
 
 * Content type and docstring abstraction
