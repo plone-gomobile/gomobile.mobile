@@ -5,13 +5,66 @@
 Introduction
 ------------
 
-How to transform HTML and images in mobile conpatible way.
+How to transform HTML, CSS and images in mobile conpatible way.
 
-Rewriting HTML with resized images
-----------------------------------
+CSS
+---
 
-You need to transform all HTML output of rich text fields 
-to be mobile HTML safe with resized images.
+Three different main CSS files are needed for mobile sites
+
+* common.css used on every handset
+
+* highend.css used on WebKit and Gecko based browsers (iPhone, Android, Nokia Series 60, Maemo)
+
+* lowend.css used on crappy browsers (Opera Mini, all proprietary underpowered browsers out there)
+
+The condition determining how good your browser is comes from mobile.heurestics.simple module
+and is based on the browser user agent sniffing.
+
+Desktop visuals trick
+=====================
+
+Because you end up developing and viewing your site on the desktop browser in any case,
+the following trick is used to clip the site width to certain dimensions to prevent
+ugly mobile sites on wide screen aspect rations.
+
+This is in gomobiletheme.basic/static/common.css::
+
+        #margins {
+            margin-left: auto;
+            margin-right: auto;
+            background: white;
+        }
+        
+        
+        /* 
+         * Do not look stupid on desktop browsers.
+         *
+         * If screen width is too wide, clip displayable area to 800 px.
+         */
+        @media screen and (min-device-width: 850px) {
+                #margins {
+                   -webkit-box-shadow: 0 0 4px black;
+                    -moz-box-shadow: 0 0 4px black;
+                    box-shadow: 0 0 4px black;
+                    max-width: 800px;
+                }
+        }
+
+More info
+
+* http://www.alexgdesign.co.uk/articles/mobile-optimised-websites-using-css3-media-queries/
+
+Rewriting HTML 
+--------------
+
+WYSIWYG edited HTML must be transformed to be mobile compatible
+
+* All <img> tags are "mobilized" by putting them through a mobile image resizer
+
+* Other HTML fixes are applied, possible to make HTML XHTML compatible
+
+This all is based on processing HTML code with lxml DOM library.
 
 Go Mobile Basic Theme does this by default for *Document* (*Page*) content type.
 
@@ -29,14 +82,63 @@ The following snippet will force of rewriting "text" HTML code::
 
 It is also possible force safe HTML (clean up <script> etc.).  
 
+The following snippet will make "safe" HTML in Python code::
+
+        def clean_html(context, request, html):
+            """
+            """
+            from zope.component import getMultiAdapter
+            
+            mobile_image_html_rewriter = getMultiAdapter((context, request), name="mobile_image_html_rewriter")
+            return mobile_image_html_rewriter.processHTML(html, trusted=False, only_for_mobile=False)
+
 See also
 
 * gomobile.mobile.browser.imageprocessors.HTMLImageRewriter.processHTML for other options
 
-CSS
----
+Manual image resizing
+---------------------
 
-Media queries
-=============
+You can put through arbitary images through image resizer by using the following code::
 
-* http://www.alexgdesign.co.uk/articles/mobile-optimised-websites-using-css3-media-queries/
+                
+        # Use templates directory to search for templates.
+        grok.templatedir('templates')
+        
+        # Viewlets are active only when gomobiletheme.basic theme layer is activated
+        grok.layer(IThemeLayer)
+        
+        class MobileHeaderImageResizer(grok.CodeView):
+            """ A special mobile-resize aware renderer for header images.
+        
+            We cannot use gomobile.mobile stock resizer as images
+            are stored in annotation storage which is untraversable.
+            """
+            grok.context(ICampaignPage)
+            grok.require('zope2.View')
+        
+            def render(self):
+                """
+                """
+        
+                # This will read image from Archetypes ImageField called "campaignImage"
+                field = self.context.getField("campaignImage")
+                value = field.get(self.context)
+        
+                params = {
+                          "image" : value,
+                          "width" : "auto",
+                          "padding_width" : 10,
+                          "cache_key" : "campaign_header_image",
+                          "conserve_aspect_ration" : True,
+                }
+                
+                helper = self.context.unrestrictedTraverse("@@mobile_image_processor_helper")
+                
+                # helper will return <img> needed to output this image
+                return helper(params)
+
+For more information see gomobile.mobile.browser.imageprocessor module source code.
+
+
+

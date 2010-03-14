@@ -27,17 +27,34 @@ try to wrap text around left or right of the image, because mobile screens
 do not have space for this. Instead, images are centered and image width
 tries to match screen width (some padding included).
 
-Resizing use
--------------
+Resizing your own stuff
+-----------------------
 
 By default, all page body text is run through the resizer
 
-* All <img> tags are rewritten so that images go through mobile resizer
+* All <img> tags are rewritten so that images go through mobile resizer,
+  this is done by gomobiletheme.basic document_view template overriding
+  the default Plone template for pages
 
-* Also external image sources with full http:// address are supported
+* Also external image sources with full http:// address are supported in <img> tags.
+  In this case, Python urllib is used to retrieve the external image to your own server.
 
 You can also explicitly use resizer on specific site elements, like logo,
-in your theme code.
+in your theme code. For more information, see ::doc::`Transformations in Developer Manual </developermanual/transformations>`. 
 
-For more information, see mobile.htmlprocessing package.
+Resizer cache
+-------------
 
+File system based cache is used for resized images.
+The following cache keys are used
+
+* image width
+
+* image height
+
+meaning that the same result image should not be generated twice.
+
+Currently cache must be cleaned manually using a cron job if it grows too much.
+
+Image cache folder is defined by *image_resize_cache_path* setting. 
+It is full path to the folder. Plone user must have write and read access to that path.

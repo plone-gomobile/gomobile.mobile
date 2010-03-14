@@ -1,0 +1,224 @@
+======================
+ Theming
+=====================
+
+.. contents ::
+
+Introduction
+------------
+
+Go Mobile uses standard Plone skin mechanism. You can use whatever theming technique
+you wish, as long as it can be used as a Plone skin.
+
+The only difference between a normal Plone theme and 
+Go Mobile theme is that Go Mobile theme name is read
+from the property::
+
+   portal_properties.mobile_properties.mobile_skin
+   
+Instead of standard::
+
+   portal_skins.default_skin
+
+Best practices
+--------------
+
+* Use namespace "gomobiletheme" for Go Mobile themes
+
+* Read ::doc::`Transformations </developermanual/transformations>` for info about different CSS files
+  and their purposes.
+  
+gomobiletheme.basic
+-------------------
+
+A basic Plone-blueish theme is supplied with Go Mobile (gomobiletheme.basic package).
+It is recommended that you recycle theme viewlets from this package.
+
+See plonecommunity.app example how to do this.
+
+Below are some notes for theming,  used by gomobiletheme.basic 
+You may or may not opt-in to use these practices.
+
+five.grok used
+==============
+
+gomobiletheme.basic uses five.grok for viewlets and static media - this differs
+from old Plone 3 practice.
+
+Inheriting templates
+++++++++++++++++++++
+
+You can recycle and modify viewlets given in gomobiletheme.basic package in your custom theme.
+
+Make sure five.grok is initializer properly in your product (five.grok directive in configure.zcml).
+
+Create a viewlets.py code with the followind content::
+
+        
+        from zope.interface import Interface
+        from five import grok
+        
+        from collective.fastview.utilities import fix_grok_template_inheritance
+        from gomobiletheme.basic import viewlets as base
+        from gomobiletheme.basic.viewlets import MainViewletManager
+        from plonecommunity.app.interfaces import IThemeLayer
+        
+        # Viewlets are on all content by default.
+        grok.context(Interface)
+        
+        # Use templates directory to search for templates.
+        grok.templatedir("templates")
+        
+        # Viewlets are active only when gomobiletheme.basic theme layer is activated
+        grok.layer(IThemeLayer)
+        
+        # Use this viewlet manager for mobile viewlets
+        grok.viewletmanager(MainViewletManager)
+
+Since there is a problem with Grok 1.0 template inheritance (only Grok 1.0 works with Plone),
+you need to specially define if you want to use parent class templates instead of overriding
+templates in your viewlets.py code::
+
+        class Logo(base.Logo):    
+            """ Mobile site logo """
+            
+            def getLogoName(self):
+                return "++resource++plonecommunity.app/plone-logo-white-on-blue.png"
+        
+        # Fix for grok 1.0 template inheritance
+        # https://bugs.launchpad.net/grok/+bug/255005
+        fix_grok_template_inheritance(Logo, base.Logo)
+
+Static media
+============
+
+Static media is provided by five.grok *static* folder mechanism.
+
+References to static media are set in Head viewlet.
+You can override this viewlet and make static media to point to your own 
+set of files. In this case, you need to copy the whole *static* folder
+from gomobiletheme.basic to your own theme product.
+
+Example::
+
+        class Head(base.Head):
+            """
+            Override <head> generation so that we use CSS files 
+            and static resources specific to this skin.
+            """
+            
+            def resource_url(self):
+                """ Get static resource URL.
+                
+                See gomobiletheme.basic.viewlets.Head for more information.
+                """
+                
+                # You need to copy whole gomobiletheme.basic/gomobiletheme/basic/statuc
+                # folder to your own product and refer it here to use its CSS
+                
+                # return self.portal_url + "/" + "++resource++plonecommunity.app"
+                
+If you a running a very simple site and you do not wish to override any resources
+inherited from base theme package, you can use AdditionalHead viewlet
+to mix in <head> resources without overriding existing ones.
+
+No viewlet managers
+===================
+  
+collective.fastview add-on is used to render viewlets directly and there are no viewlet managers in mobile theme.
+All mobile viewlets are registered against viewlet manager gomobiletheme.basic.viewlets.MainViewletManager.
+
+Theme layer is mobile aware
+===========================
+
+All mobile views and viewlets are registered against your theme layer, which is a sublass
+of mobile layer - this way mobile views do not conflict with web views and cannot
+be accidentally exposed to web.
+
+See plonecommunity.app.interfaces for the example.
+
+Avoid old style skins folder
+============================
+
+For basic themes you generally don't need to customize main_template or old skin layers files,
+so you do not need to have *skins* structure in your own theme
+  
+* <img> images should be run through ::doc::`mobile image resize </developermanual/transformations>`
+
+* All template code which contains WYSIWYG editable HTML should run through 
+  ::doc::`HTML processor </developermanual/transformations>` to make it mobile compatible.
+
+Mobile theme specials
+=====================
+
+apple-touch-icon.png
+++++++++++++++++++++
+
+This image is used as a bookmark icon by iPod/iPad/iPhone.
+
+Examples
+--------
+
+Full examples
+=============
+
+See
+
+* `plonecommunity.app <http://code.google.com/p/plonegomobile/source/browse/trunk/gomobile/#gomobile/plonecommunity.app/plonecommunity/app>`_
+  for basic customizations (how to change logo, CSS files) and declare your own skin
+
+Creating a theme skeleton
+=========================
+
+TODO: Full tutorial will be done.
+
+Use Paster command to create a Plone 3 application.
+
+Copy necessary changes by looking example in plonecommunity.app
+
+* setup.py
+
+* configure.zcml
+
+* interfaces.py
+
+* viewlets.py
+
+* profiles/default/skins.xml
+
+* profiles/defaukt/propertiestool.xml
+
+* Copy static media folder from gomobiletheme.basic as is.
+
+* Override head viewlet in viewlets.py
+
+* Override logo viewlet in viewlets.py
+
+* If you need to change main_template.pt, you need to also copy and modify from gomobiletheme.basic
+
+        * skins/gomobiletheme_basic/main_template.pt to skins/yourtheme/main_template.pt
+        
+        * profiles/default/skins.xml
+
+        * Add skins registration to configure.zcml
+        
+Overriding the logo
+===================
+
+Add to your viewlets.py::
+        
+        from collective.fastview.utilities import fix_grok_template_inheritance
+        from gomobiletheme.basic import viewlets as base
+        
+        # ..All other grok theme setup code here...
+
+        class Logo(base.Logo):    
+            """ Mobile site logo """
+            
+            def getLogoName(self):
+                return "++resource++plonecommunity.app/plone-logo-white-on-blue.png"
+        
+        # Fix for grok 1.0 template inheritance
+        # https://bugs.launchpad.net/grok/+bug/255005
+        fix_grok_template_inheritance(Logo, base.Logo)
+
