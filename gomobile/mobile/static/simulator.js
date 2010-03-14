@@ -11,9 +11,6 @@ function log(x) {
 
 gomobile.simulator = {};
 
-/** To which CSS selector we bind the trigger to open the mobile preview */ 
-gomobile.simulator.linkSelector = "#document-action-mobile_preview a";
-
 /**
  * Create <iframe> content for current preview to show
  */
@@ -48,6 +45,7 @@ gomobile.simulator.open = function() {
  * Close mobile preview view
  */
 gomobile.simulator.close = function() {
+    log("Closing");
     jq("#mobile-preview").hide();
     jq("div#mobile-preview-wrapper,#dark-layer").fadeOut("fast");
 }
@@ -61,8 +59,24 @@ jq(document).ready(
 
     // Catch exceptions on setup
     twinapex.debug.manageExceptions( function() {
+    	
+	 /* To which CSS selector we bind the trigger to open the mobile preview */ 	
+        var identifier = "@@mobilesimulatoriframe";
+	
+	// Scan through all links and see 
+	var links = jq("a").filter(function() {
+	       var node = jq(this);
+	       var href = node.attr("href");
+	       //alert("Got:" + href);
+	       if(href) {
+	       	       if(href.indexOf(identifier) >= 0) {
+		       	  return true;
+		       }
+	       }
+	       return false;	
+	});
 
-        jq(gomobile.simulator.linkSelector).click(function(event) {
+        jq(links).click(function(event) {
 
             // Remove existing framecode
 	    jq("#mobile-simulator").remove();

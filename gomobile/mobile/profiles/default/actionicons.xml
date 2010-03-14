@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 <action-icons xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	      i18n:domain="gomobile.mobile">
+
  <action-icon category="document"
               action_id="mobile_preview"
               title="Mobile preview"
               priority="0" icon_expr="++resource++gomobile.mobile/preview_icon.png"
               i18n:attributes="title"/>
+
+ <action-icon category="document"
+              action_id="mobile_preview"
+              title="Mobile options"
+              priority="0"
+	      url="" 
+	      icon_expr="++resource++gomobile.mobile/preview_icon.png"
+              i18n:attributes="title"/>
+
 </action-icons>

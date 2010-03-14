@@ -102,9 +102,6 @@
      -->
   <property name="tracker_debug" type="boolean" purge="False">False</property>
 
-  <!-- Copyright banner HTML code -->
-  <property name="footer_text" type="string" purge="False">Theme Copyright 2009 Twinapex Research. Change this message in portal_properties / mobile_properties</property>
-
   <!-- List of view ids when not to sho folder listing viewlet -->
   <property name="no_folder_listing_view_ids" type="lines" purge="False">
     <element value="folder_listing"/>

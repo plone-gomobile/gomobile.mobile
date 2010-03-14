@@ -72,6 +72,15 @@
         class=".views.PhoneNumberFormatterView"
         allowed_attributes="format"
         />
+	
+    <!-- Mobile behavior options form -->
+    <browser:page
+        for="*"
+        name="mobile_options"
+        class=".forms.MobileFormView"
+        permission="cmf.ModifyPortalContent"
+      />
+
 
 
 </configure>

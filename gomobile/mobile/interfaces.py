@@ -9,6 +9,11 @@ from zope.viewlet.interfaces import IViewletManager
 class IMobileContentish(zope.interface.Interface):
     """ Marker interface applied to all content objects which can potentially obey mobile behaviors """
 
+class IGoMobileInstalled(IDefaultPloneLayer):
+    """
+    Mark that gomobile.mobile package is installed on the site.
+    """
+
 class IMobileLayer(IDefaultPloneLayer):
     """Marker interface that defines a Zope 3 browser layer.
 

@@ -18,5 +18,21 @@
    <property name="visible">True</property>
   </object>
 
+  <object name="mobile_options" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Mobile settings</property>
+   <property name="description"
+      i18n:translate="">Set mobile publishing options</property>
+   <property
+      name="url_expr">string:$object_url/@@mobile_options</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Modify portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  
  </object>
+
 </object>
+ 
