@@ -1,50 +1,163 @@
-Python layer
-------------
+=======================
+ Architecture
+=======================
 
-* mobile.sniffer: Handset database abstraction
+.. contents ::
 
-* mobile.heurestics: Condensed ten years of experience dealing with mobile phone complexity
+Introduction
+-------------
 
-* mobile.xhtmlmp: lxml based cleaner and post-processor for XHTML mobile profile. 
+This page gives overview of Go Mobile architecture.
 
-	* Enforce strict XHTML MP (e.g. add alt="" attributes)
-	
-	* Dynamically rewrite internal and external <img> tags for mobile.
+Architecture overview
+---------------------
 
-Note: Python layer can be used e.g. with Django and Django-CMS.
+.. figure::  images/architecture.png
+   :align:   center
+
+   Architectural overview
+   
+Python run-time
+-----------------
+
+Plone 3 CMS is built on the top of Python runtime.
+Python is a remarkably powerful dynamic programming language that is used in a wide variety of application domains.
+Specifically, Python version 2.4 is used (will be changed in Plone 4).
+
+Python mobile framework libraries
+----------------------------------
+
+This can be used with any Python project.
+We have succesfully used them with Django sites.
+
+mobile.sniffer
+==============
+
+
+.. figure::  images/sniffer.png
+   :align:   center
+
+   Handset detection backends.
+
+* Abstraction layout for different handset database abstraction
+
+* Brand name recognizition regular expressions for mobile redirects two provide ::doc::`two pass user agent detection </usermanual/sniffing>`
+
+* Pluggable backend mechanism
+
+* Currently supports following handset databases: Wurfl, DeviceAtlas, Apex Vertex, WAP profiles. 
+
+mobile.heurestic
+================
+
+Condensed years of experience dealing with mobile phone complexity.
+This package contains rules-of-thumb how to generate HTML compatible for different user agents.
+
+* Serving correct content type and docstring
+
+* Phone number links
+
+* Openining a navigator
+
+* Downloadable vCards
+
+Internally uses `vobject <http://vobject.skyhouseconsulting.com/>`_ Python module.
+
+mobile.htmlprocessing
+======================
+
+mobile.htmlprocessing provides utilities to sanitize arbitary HTML for mobile output.
+
+* Transform HTML to XHTML
+
+* Rewrite <img> tags
+
+* Clean up untrusted HTML code
+
+Internally uses `lxml <http://codespeak.net/lxml/>`_ Python module.
 
 Plone layer
 -----------
 
-* gomobile.mobile: core mobile behavior
+gomobile.mobile
+=============== 
 
-	* mobile layer and theming
+Core mobile functionality.
+
+* Mobile behavior: mobile specific settings for Archetypes content 
+
+* Mobile add-on layer and theme layer
+
+* URL mapper between web and mobile site
+
+* Mobile site redirector
 	
-	* browser mobile tracking
+* Tracking and analytics
+
+* Content type and docstring abstraction
 	
-	* domain name and URL 
+* Plone specific HTML processing and mobile image resizer
+
+* Mobile folder listing
+
+* Documentation in Sphinx format
+
+gomobile.convergence
+=====================
+
+Multichannel publishing options.
+
+* Multi-channel publishing behavior for Archetypes content
+
+* Set folder/page to be available in web and mobile only
 	
-	* mobile preview
-	
-	* user agent based image resizing
+* Override field values individually e.g. different body text for a page on web and mobile (gomobile.convergence.overrider)
 
-* gomobile.convergence: multichannel publishing options
+* Special navigation code supporting multi-channel publishing
 
-	* Set folder/page for web and mobile only
-	
-	* Override field values individually
+gomobiletheme.basic
+====================
 
-* gomobiletheme.basic: mobile theme written from scratch using Grok
+Default mobile site theme which can be extended for your specific needs.
 
-* twinapex.video: Video and audio transcoding for mobile
+See more about ::doc::`theming </developermanual/theming>`.
 
-Handset backends
-----------------
+* Uses `Grok <http://grok.zope.org>`_ API and five.grok views and viewlets
 
-* Apex Vertex (1000 handsets)
+* `Zope Page Templates <http://docs.zope.org/zope2/zope2book/AppendixC.html>`_ (.pt) are used as the template language  
 
-* Wurfl (5000 handsets)
+gomobile.imageinfo
+==================
 
-* DeviceAtlas (4000 handsets)
+Helpers to open and read various kind of persistent image objects used
+in Zope environments.
 
-* WAP profiles (dynamic)
+gomobile.supporter
+====================
+
+Add mobile support for various Plone add-on products which are not part of Plone core.
+
+gomobile.buildout
+===================
+
+`Buildout <http://www.buildout.org>`_ recipes for repeatable installations. 
+
+* Include Go Mobile with your Plone set-up
+
+* Checking out the source code  
+
+* Making releases.
+
+mfabrik.behaviorutilities
+===========================
+
+Use `plone.behavior <http://pypi.python.org/pypi/plone.behavior>` content extension mechanism with 
+`Archetypes http://plone.org/products/archetypes<>` content type subsystem.
+
+collective.fastview
+=====================
+
+Helper methods for Plone and Grok views and viewlets. 
+
+
+ 

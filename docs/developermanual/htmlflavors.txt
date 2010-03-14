@@ -1,8 +1,1 @@
-HTML flavor information
------------------------
 
-* Googlebot information: http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
-
-* XHTML basic: http://www.w3.org/TR/xhtml-basic/
-
-* http://mobiforge.com/designing/story/comparison-xhtml-mobile-profile-and-xhtml-basic
