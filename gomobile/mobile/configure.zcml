@@ -54,7 +54,7 @@
 
     <genericsetup:registerProfile
       name="default"
-      title="Plone Go Mobile"
+      title="Go Mobile"
       directory="profiles/default"
       description='Mobile CMS add-on'
       provides="Products.GenericSetup.interfaces.EXTENSION"
