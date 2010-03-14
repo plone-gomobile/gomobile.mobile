@@ -74,6 +74,8 @@ Useful user agents::
         Mozilla/5.0 (SymbianOS/9.2; U; Series60/3.1 NokiaN95/11.0.026; Profile MIDP-2.0 Configuration/CLDC-1.1) AppleWebKit/413 (KHTML, like Gecko) Safari/413
         
         Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+        
+        Opera/9.60 (J2ME/MIDP; Opera Mini/4.2.13918/670; U; en) Presto/2.2.0
 
 Changing handset database backend
 ---------------------------------
