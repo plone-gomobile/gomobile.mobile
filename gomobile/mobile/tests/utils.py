@@ -47,7 +47,8 @@ def setDiscriminateMode(request, mode):
 
 
 # Mock variable which can be manipulated by unit tests
-modes = [MobileRequestType.MOBILE]
+# This must be web by default or unit test bootstrap code (skin installation) does not work
+modes = [MobileRequestType.WEB]
 
 ZCML_INSTALL_TEST_DISCRIMINATOR='''
         <configure

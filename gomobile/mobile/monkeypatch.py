@@ -100,6 +100,7 @@ def getSkinNameFromRequest(self, REQUEST=None):
         sf = getattr(self, sfn, None)
 
         if is_mobile(self, REQUEST):
+
             skin = get_mobile_skin_name(self, REQUEST)
             if skin:
                 return skin
