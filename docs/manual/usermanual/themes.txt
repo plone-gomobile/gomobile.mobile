@@ -1,0 +1,34 @@
+==========
+ Themes
+==========
+
+Theming aims to have great visuals, without sacrifying speed and usability,
+on every kind of mobile phone. 
+
+Go Mobile themes support
+
+* Optimizing images by the ::doc::`browser screen size </usermanual/sniffing>`
+
+* Varying CSS for low end and smartphones
+
+* Varying page templates and HTML snippets
+  for low end and smartphones 
+
+Go Mobile ships with one default, blueish, Plone theme
+which is similar to one used at `plone.org <http://plone.org>`_.
+
+It is often the case that you end up viewing the mobile site
+on a desktop browser (development, testing).
+When viewed on the desktop browser (800 pixels or wider),
+the mobile theme content column is centered on the screen
+and width clipped to 800 pixels, so that big screens
+do not give a false image how the site should look.
+
+HTML and XHTML outputs are supported.
+
+Normal Plone best practices can be used to create new themes.
+For more information how to create your own theme,
+consult `Developer Manual theming section </developermanual/theming.txt>`_.
+
+
+ 

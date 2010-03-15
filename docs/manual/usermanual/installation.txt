@@ -128,6 +128,10 @@ After modifications, the following URL will render in web mode (like before modi
 ..but the following will result to the mobile mode::
 
     http://m.localhost:8080/Plone
+    
+...and the following page is laoded by mobile simulator::
+
+    http://preview.localhost:8080/Plone
 
 hosts file location
 ====================
@@ -155,8 +159,8 @@ On Windows, open the command line and type::
         cd "C:\Program Files\Plone 3"
         bin\instance.exe fg
 
-Modifying your Plone site
--------------------------
+Installing add-on products on Plone site
+-----------------------------------------
 
 This step is executed after you have a running Plone instance in place.
 They modify a running Plone site database, so that all 

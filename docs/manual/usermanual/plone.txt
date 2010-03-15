@@ -1,0 +1,39 @@
+======================
+ Plone
+=======================
+
+As being based on one of most powerful, 
+award winning, open source content management
+system, Go Mobile comes with hundreds of features 
+you cannot expect to be found in proprietary,
+in-house, mobile CMS services.
+
+Plone is used by leading brands,banks, governments,
+ travel, health care.  
+
+* Easy user interface designed by usability exports, with 
+  features like undo for everything, AJAX form validation 
+  and no preview needed WYSIWYG pages
+
+* `Hundreds of companies <http://plone.net>`_
+   around the globe 
+   which can provide support, in the case
+   you are not happy with your current vendor
+
+* Proven security track record
+
+* Vibrant community with pro business orientation 
+  and `numerious add-ons <http://plone.org/products>` 
+  on which to build your services
+
+* Enterprise level features like hierarchial
+  security and sharing, through-the-web editable
+  workflow, external authentication backends, single sign-on
+  to name a few
+  
+* Proven scalability
+
+For more information, visit `plone.org <http://plone.org>`_.
+
+  
+  

@@ -1,0 +1,47 @@
+=============================
+ Search engine optimizations
+=============================
+
+Go Mobile utilizes various search engine optimization 
+techniques to make your site be found easier.
+Most of them are defaukt Plone behavior, some
+mobile specific are added in to the mix.
+
+User friendly URLs
+-------------------
+
+Plone automatically generates human friendly URLs
+based on page titles. 
+
+Title and other META tags
+--------------------------
+
+Page titles are visible in the search engine listing.
+
+Additional add-on products, like Plone SEO, can be used to fine tune 
+META information to include keywords, descriptions and Dublin Core
+metadata.
+
+Sitemap submission
+-------------------
+
+Sitemap file (sitemap.xml.gz) can be submitted to the search engines
+to make the content be searchable faster and more accurately.
+
+robots.txt
+-----------
+
+Best practice robots.txt exist to be used on your site.
+
+Contact form, language switching link and 
+internal search results are culled out from the
+search engine listings.
+
+XHTML
+-----
+
+Google Analytics crawler bot (googlebot) expects
+mobile content to be XHTML. XHTML is enabled by default
+for the crawler bots. However, you must be sure that your
+publicly served content is XHTML valid.  
+	

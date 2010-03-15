@@ -10,23 +10,22 @@ Introduction
 Since mobile screen estate is expensive, mobile navigation needs some
 special consideration to work optimally.
 
-Here are explained some options and rules to make navigation smooth on Go Mobile.
+Here are explained some options and rules which make navigation smooth on Go Mobile.
 
 Mobile folder listing
 ----------------------
 
-There is no navigation portlet (left side navigation).
-This is the main method to navigating child content in Plone folders.
+There is no space navigation portlet, or left side vertical navigation, on the mobile.
+This is the main navigation method basically on every known web site. 
 
 To allow easy navigation and automatic child content listing, 
-each folderish content item has MobileFolderListing viewlet, defined in gomobiletheme.basic package.
-It displays "Here you can also find:" label
-and the summary of child content.
+each folderish content item has MobileFolderListing viewlet, 
+defined in gomobiletheme.basic package. It displays "Here you can also find:" label
+and the summary of child content at the bottom of the page.
 
 However, this method is impractical for folders containing more than ten to twenty items.
-Automatic folder listing can be disabled on using 
-
-*Mobile options* document action link allows you to set whether
+You can opt-out pages from automatic folder listing using 
+*Mobile options* form.
 
 * Folderish content item generates mobile folder listing
 

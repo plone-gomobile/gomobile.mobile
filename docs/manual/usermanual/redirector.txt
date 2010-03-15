@@ -1,0 +1,84 @@
+===================
+ Redirecting
+===================
+
+.. contents ::
+
+Introduction
+------------
+
+Redirecting mobile users to mobile site is critical usability factor.
+ 
+**No matter on which kind browser user types in the address, the user
+should server the page in correct format.**
+
+Isn't it utterly annoying when you read emails on a mobile, someone has
+posted you a link, you click it and you are taken to slow, big, web page
+ instead of mobile page? This does not happen with Go Mobile!
+
+Unlike most solutions, 
+Go Mobile redirector is able to match web and mobile content.
+The user gets the correct content page always and is not sent to site root
+when coming to the site on a mobile phone.
+  
+* The content, which the user is looking for, in not lost if the user is being redirected
+  
+* The user can opt-out from the mobile site and stay on the web site 
+  with the mobile if the user wishes so
+
+Redirecting logic
+-----------------
+
+.. figure::  ../developermanual/images/redirecting.png
+   :align:   center
+
+   Redirecting logic
+
+* HTTP request arrives to the web site from the user browser
+
+* Mobile browser is detected using *brand detection*
+
+* HTTP Moved Temporary response is given and the user is taken to mobile site
+
+* Mobile site as a link "Go to web site" which points to website.com/@@force_web
+
+* If the user clicks this link a special cookie is not set,
+  so that he/she is no longer automatically taken to mobile site from this browser
+  
+Web and mobile domain name mappings
+-----------------------------------
+
+By default, Go Mobile will prefixes your web site name with m. domain name prefix
+and assumes this is your mobile site. This can be changed in ::doc::`settings </usermanual/settings>.
+WWW prefix is removed from the domain before redirecting.
+
+E.g. Visitor coming to *yoursite.com* with a mobile browser is redirected to *m.yoursite.com*,
+still having the content path intact.
+
+If you use Go Mobile Convergence add-on and the page does not exist in the mobile domain,
+let's say a forum post comment page which is too complex for a mobile, the user is
+redirected to the mobile site root. 
+
+Manual redirecting URLs
+-----------------------
+
+Go Mobile exposes two views to all content objects which you can use to do manual redirects
+
+* @@go_to_mobile_site
+
+* @@go_to_web_site
+
+These views map to URI namespaces and if use properly, they do not lose the desired
+content, when redirecting.
+
+You can add the URL expressions e.g. to site actions using the following TALES expression::
+
+        string:${object_url}/@@go_to_mobile_site
+
+Or simply adding a link by hand in WYSIWYG editor HTML mode::
+
+        <a href="@@go_to_mobile_site">Go to mobile site</a>
+        
+Note that this method assumes that your content sets the page
+base url in HTML <head>. All Plone content does this by default.        
+

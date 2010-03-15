@@ -15,10 +15,8 @@ Resizing
 Since mobile screen come in various sizes and shapes, this is necessary for 
 optimal page viewing experience.
 
-Automatic resizing is based on browser user agent detection.
-
-* ::doc::'/usermanual/sniffing' 
-
+Automatic resizing is based on browser ::doc::'user agent detection </usermanual/sniffing>'_.
+ 
 Defloating
 ==========
 
@@ -26,6 +24,21 @@ Also, content images are defloated. This means that mobile page viewers do not
 try to wrap text around left or right of the image, because mobile screens 
 do not have space for this. Instead, images are centered and image width
 tries to match screen width (some padding included).
+
+Default resize algorithm
+-------------------------
+
+This is applied to page body text containing images.
+
+* All images are defloat
+
+* Images are centered 
+
+* The image is resized to browser screen width 
+
+* 10 px padding is added around image borders, so 
+  that scrollbar etc. user interface elements
+  won't overlap the image
 
 Resizing your own stuff
 -----------------------
