@@ -51,7 +51,17 @@ def is_mobile(site, request):
     #import pdb ; pdb.set_trace()
     return MobileRequestType.MOBILE in modes            
 
+def check_skin_exists(site, skin_name):
+    """ Check that skin exists on the site and is usable.
     
+    @param skin_name: Skin name as its on properties tab of portal_skins 
+    """
+    portal_skins = site.portal_skins
+    
+    # ['Plone Default']
+    available = portal_skins.getSkinSelections()
+    return skin_name in available 
+
 def get_mobile_skin_name(site, request):
     """
     """
@@ -66,7 +76,11 @@ def get_mobile_skin_name(site, request):
 
         # Enable mobile specific skin layer
         skin_name = mobile_properties.mobile_skin
+        
         #print "Got skin:" + skin_name
+        if not check_skin_exists(site, skin_name):
+            raise RuntimeError("Current selected mobile theme " + skin_name + " is not installed on the site. Please install a mobile theme add-on using Add On installer in site setup.")
+        
         return skin_name
     else:
         # Happens when the site is still being constructed

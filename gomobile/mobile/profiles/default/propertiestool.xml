@@ -59,7 +59,7 @@
       Old style skin name for mobile theming
 
     -->
-  <property name="mobile_skin" type="string" purge="False">Plone Mobile</property>
+  <property name="mobile_skin" type="string" purge="False">No Selection Made</property>
 
   <!--
 
