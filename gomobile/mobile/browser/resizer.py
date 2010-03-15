@@ -158,7 +158,7 @@ def getRecommendedDimensions(device_size, recommend_size, fallback_size=(128,128
             width = 0
 
         if width <= 1:
-            print "Using default canvas width"
+            #print "Using default canvas width"
             width = fallback_size[0]
 
     else:
@@ -263,7 +263,7 @@ class ImageResizerView(BrowserView):
             browser = None
 
 
-        print "Resizer got browser:" + str(browser)
+        # print "Resizer got browser:" + str(browser)
 
 
         # Solve wanted width
@@ -281,7 +281,7 @@ class ImageResizerView(BrowserView):
                 width = 0
 
             if width <= 1:
-                print "Using default canvas width"
+                # print "Using default canvas width"
                 width = self.context.portal_properties.mobile_properties.default_canvas_width
 
         else:
@@ -320,7 +320,7 @@ class ImageResizerView(BrowserView):
         else:
             conserve_aspect_ration = True
 
-        print "Resizing %d %d" % (width, height)
+        # print "Resizing %d %d" % (width, height)
 
         data, format = tool.getResizedImage(params["path"], width, height, conserve_aspect_ration=conserve_aspect_ration)
 

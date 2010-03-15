@@ -16,11 +16,8 @@ def setup_zcml():
 
     fiveconfigure.debug_mode = True
     import gomobile.convergence
-    zcml.load_config('configure.zcml', gomobile.convergence)
-    
-    
+    zcml.load_config('configure.zcml', gomobile.mobile)
     zcml.load_string(utils.ZCML_INSTALL_TEST_DISCRIMINATOR)
-    
     fiveconfigure.debug_mode = False
 
     # We need to tell the testing framework that these products
@@ -28,13 +25,11 @@ def setup_zcml():
     # the ZCML.
 
     ztc.installPackage('gomobile.mobile')
-    #ztc.installPackage('gomobile.convergence')
-
-
+    ztc.installPackage('gomobiletheme.basic')
 
 # The order here is important.
 setup_zcml()
-ptc.setupPloneSite(products=['gomobile.mobile'])
+ptc.setupPloneSite(products=['gomobile.mobile', 'gomobiletheme.basic'])
 
 class BaseTestCase(ptc.PloneTestCase):
     """We use this base class for all the tests in this package. If necessary,

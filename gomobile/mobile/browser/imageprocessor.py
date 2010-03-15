@@ -193,8 +193,22 @@ class MobileImageProcessor(object):
     def calculateSignature(self, **kwargs):
         """ Calculate protected MD5 for resizing parameters, so that input is protected against DoS attack """
     
+        logger.debug("Calculating signature from params:" + str(kwargs))
+        
+        # Sort parameters by key name, as MD5 function 
+        # is sensitive to the order of the parameters
+        # and Python dict does not guarantee the order
+        params = list(kwargs.items())
+        
+        def key_comparison(x, y):
+            """
+            """
+            return cmp(x[0], y[0])
+        
+        params.sort(key_comparison)
+        
         concat = ""
-        for key, value in kwargs.items():
+        for key, value in params:
             concat += key + "=" + str(value)
         concat += self.getSecret()
         return md5.new(concat).hexdigest()
@@ -234,8 +248,12 @@ class MobileImageProcessor(object):
         return imagePath
     
     def mapURL(self, url):
-        """
-        Make image URL relative to site root if possible.
+        """ Make image URL relative to site root.
+        
+        If possible, make URI relative to site root 
+        so that we can safely pass it around from a page to another.
+        
+        If URL is absolute, don't touch it.
         """
         if url.startswith("http://"):
             # external URL
@@ -271,7 +289,16 @@ class MobileImageProcessor(object):
         return url
         
     def getImageDownloadURL(self, url, properties={}):
+        """
+        Return download URL for image which is put through image resizer.
         
+        @param url: Source image URI, relative to context, or absolite URL
+        
+        @param properties: Extra options needed to be given to the resizer, e.g. padding, max width, etc.
+
+        @return: String, URL where to resized image can be downloaded. This URL varies
+            by the user agent.
+        """
         self.init()
         
         url = self.mapURL(url)
@@ -420,9 +447,9 @@ class ResizeViewHelper(BrowserView):
             format = self.resolveCacheFormat(data)
         else:
             tool = getUtility(IImageInfoUtility)
-            logger.debug("Resizing %d %d" % (width, height))            
-                
             
+            logger.debug("Resizing image to mobile dimensions %d %d" % (width, height))            
+                
             if self.url:
                 data, format = tool.getURLResizedImage(self.url, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
             else:
