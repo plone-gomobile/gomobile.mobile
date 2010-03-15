@@ -1,12 +1,12 @@
 """
     Mobile behavior for content.
 
+    http://mfabrik.com
 """
 
-__author__  = 'Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>'
-__author_url__ = "http://www.twinapex.com"
+__author__  = 'Mikko Ohtamaa <mikko.ohtamaa@mfabrik.com>'
 __docformat__ = 'epytext'
-__copyright__ = "2009 Twinapex Research"
+__copyright__ = "2010 mFabrik Research"
 __license__ = "GPL v2"
 
 from persistent import Persistent

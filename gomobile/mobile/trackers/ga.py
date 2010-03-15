@@ -3,9 +3,8 @@
 
     Orignal implementation: http://github.com/b1tr0t/Google-Analytics-for-Mobile--python-/blob/master/ga.py
 
-    Adopted for Zope/Plone by Twinapex.
-    
-    
+    Adopted for Zope/Plone by mFabrik Research Oy.
+ 
     
 """
 import re
@@ -253,8 +252,9 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
 
         
         if debug:
-            dbgMsg("utm_url: " + utm_url)    
-    
+            # NOTE: Disabed as causes extra output during unit test run
+            # dbgMsg("utm_url: " + utm_url)    
+            pass
         # Here you can turn on syncrhonous tracking...
         # disabled for now
         # send_request_to_google_analytics(utm_url, environ)

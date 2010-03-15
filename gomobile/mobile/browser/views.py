@@ -207,7 +207,7 @@ class FolderListingView(BrowserView):
 
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
-        print "Active template id:" + template
+        # print "Active template id:" + template
         if template in self.getTemplateIdsNoListing():
             # Listing forbidden by mobile rules
             return None

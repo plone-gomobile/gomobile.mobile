@@ -9,6 +9,8 @@
 
 __license__ = "GPL 2"
 __copyright__ = "2010 mFabrik Research Oy"
+__author__ = "Mikko Ohtamaa <mikko@mfabrik.com>"
+__docformat__ = "epytext" 
 
 import os
 import md5
@@ -86,7 +88,7 @@ class FSCache(object):
         
         global cache_hits
         
-        print "Checking:" + key
+        logger.debug("Checking resizer image cache for " + key)
         
         work_dir, path = self.getOrCreatePath(key)
         if not os.path.exists(path):
@@ -129,7 +131,7 @@ class FSCache(object):
     def closeTempFile(self, temp, full):
         """ Perform final cache set as atomic FS operation.
         """
-        print "Created:" + full
+        logger.debug("Created image cache file:" + full)
         os.rename(temp, full)
         
     def set(self, key, value):
@@ -445,9 +447,9 @@ class ResizeViewHelper(BrowserView):
         """ 
         
         if self.ua:
-            print "Using user agent:" + str(self.ua.getMatchedUserAgent())
+            logger.debug("Using user agent:" + str(self.ua.getMatchedUserAgent()))
         else:
-            print "No user agent"
+            logger.debug("No user agent available for resolving the target image size")
         
         if self.ua:
             canvas_width = self.ua.get("usableDisplayWidth")
