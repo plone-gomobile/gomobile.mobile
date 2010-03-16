@@ -16,7 +16,7 @@ from gomobile.mobile.tests.utils import MOBILE_USER_AGENT
 
 sample1 = """
 <p>
-<img src="/logo.jpg">
+<img src="logo.jpg">
 </p>
 """
 
@@ -36,6 +36,8 @@ sample3 = """
 class TestProcessHTML(BaseTestCase):
     """
     Test content HTML rewriting for resized images.
+
+    TODO: Needs lots of more cases covered here.
     """
     def afterSetUp(self):
         self.loginAsPortalOwner()
@@ -43,23 +45,39 @@ class TestProcessHTML(BaseTestCase):
         self.doc = self.portal.doc
         self.image_processor = getMultiAdapter((self.doc, self.doc.REQUEST), IMobileImageProcessor)
         
-    def test_process_html_relative(self):
-        """
+    def test_process_html_relative(self):         
+        """ Check that exceptions don't fly
+        
+        TODO: Something smarter here
         """
         result = self.image_processor.processHTML(sample1, True)
-        print result
+        # print "1:" + result
+        self.assertTrue("float: none" in result)
+        # Relative to the site root
+        self.assertTrue("url=logo.jpg" in result)
+
 
     def test_process_html_portal_root(self):
-        """
+        """ Check that exceptions don't fly
+        
+        TODO: Something smarter here
         """
         result = self.image_processor.processHTML(sample2, True)
-        print result
-        
+        self.assertTrue("float: none" in result)
+        # Relative to the site root
+        self.assertTrue("url=logo.jpg" in result)
+    
     def test_process_html_external(self):
+        """ Check that exceptions don't fly
+        
+        TODO: Something smarter here
         """
-        """
+        
         result = self.image_processor.processHTML(sample3, True)
-        print result        
+        #print "3:" + result
+        self.assertTrue("float: none" in result)
+        self.assertTrue("url=http%3A%2F%2Fplone.org%2Flogo.jpg" in result)
+
         
 class TestResizedView(BaseFunctionalTestCase):
     """ Test mobile image resizer.
@@ -86,7 +104,7 @@ class TestResizedView(BaseFunctionalTestCase):
         """ Check that redirect does not happen for a normal web browser.
         """
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
-        print url
+        # print url
         self.checkIsValidDownload(url)
         
         
@@ -152,7 +170,7 @@ class TestResizedView(BaseFunctionalTestCase):
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"0", "padding_width" : "10"})
         
         
-        print url
+        # print url
         #import pdb ; pdb.set_trace()
         self.checkIsUnauthorized(url)
 

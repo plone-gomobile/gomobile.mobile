@@ -27,13 +27,13 @@ class IMobileUtility(zope.interface.Interface):
 class MobileRequestType:
     """ Pseudoconstant flags how HTTP request can relate to mobility """
 
-    # Admin web page
+    # Admin web page - show both mobile and web content items in admin UI
     ADMIN = "admin"
 
-    # Anonymous web page
+    # Anonymous web page - show web only items
     WEB = "web"
 
-    # Mobile page
+    # Mobile page - show mobile items
     MOBILE = "mobile"
 
     # Preview mobile page
@@ -90,7 +90,14 @@ class IMobileSiteLocationManager(zope.interface.Interface):
 class IMobileRedirector(zope.interface.Interface):
     """ Manage whether the user wants to surf web or mobile site.
 
-    Disable user-agent sniffing based redirects if needed.
+    Disable automatic, user-agent based redirects, if needed
+    by fiddling with cookies.
+
+    View like multi-adapter with parameters:
+    
+    * context
+    
+    * request
     """
 
     def intercept():
@@ -126,6 +133,8 @@ class IMobileTracker(zope.interface.Interface):
 
         @param trackingId: Tracker id. Site manager can edit this in the site settings.
             Tracker id is given by the tracker site and is unique to it. Any string values accepted.
+
+        @param debug: Set to true to additional logging output and debug HTTP response headers
 
         @return: HTML snippet as a string
         """
@@ -180,7 +189,7 @@ class IMobileImageProcessor(zope.interface.Interface):
         @return: URL as a string.
         """
         
-    def processHTML(data, trusted):
+    def processHTML(data, trusted, only_for_mobile):
         """ Process all <img> tags in HTML code.
         
         This may also perform cross-site scripting
@@ -188,9 +197,12 @@ class IMobileImageProcessor(zope.interface.Interface):
         
         @param data: HTML code as unicode or UTF-8 string
         
+        @param only_for_mobile: If set True, touch HTML only if the site is currently rendered in mobile mode.
+            This is handy for converged sites.
+        
         @param trusted: Is parsed HTML from trusted source (run XSS clean-up) 
         
-        @return: Mutated HTML output as a string
+        @return: Mutated XHTML output as a string. Always UTF-8 encoded.
         """
     
     
@@ -215,15 +227,19 @@ class IUserAgentSniffer(zope.interface.Interface):
     def isMobileBrowser():
         """ Check whether the HTTP request was web or mobile browser request.
         
+        Perform a brand recogniziation regular expressions against
+        the user agent string.
+        
         @return: True if HTTP request was made by a mobile browser
         """
     
     def getUserAgentRecord():
         """ Get the underlying mobile.sniffer.UserAgent record for the HTTP request.
         
-        Example::
+        Example how to use::
             from zope.component import queryMultiAdapter
             # ua is mobile.sniffer.UserAgent object or None if no match/a web browser
             ua = queryMultiAdapter((context, request), IUserAgentSniffer)
                     
+        @return: mobile.sniffer.base.UserAgent instance of None 
         """

@@ -145,7 +145,7 @@ def mobile_redirect(object, event):
             if redirector.intercept():
                 # Redirect happened
                 # Override payload so that we don't send extra data to mobile
-                print "Redirected"
+                #print "Redirected"
                 response.body = ""
                 response.setHeader("Content-length", 0)
 

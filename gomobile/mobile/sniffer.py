@@ -65,7 +65,7 @@ class SessionCachedUASniffer(object):
         
         if _sniffer == None:
             # For some reason, coudln't initialize
-            print "No sniffer"
+            # print "No sniffer"
             return None
     
         # First check if we have cached hit on HTTP request
@@ -96,7 +96,7 @@ class SessionCachedUASniffer(object):
         if not ua:
             
             ua = _sniffer.sniff(request)
-            print "Sniffed:" + str(ua)
+            # print "Sniffed:" + str(ua)
             
             # TODO: Session based caching is disabled for now,
             # as pywurfl objects are not pickable
