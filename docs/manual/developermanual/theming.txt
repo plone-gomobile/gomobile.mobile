@@ -202,6 +202,61 @@ Copy necessary changes by looking example in plonecommunity.app
 
         * Add skins registration to configure.zcml
 
+Declaring your theme
+====================
+
+The following steps are needed to make Plone site aware of your theme,
+it is installable through add-on instalelr
+and it correctly extends the existing Go Mobile Default Theme.
+
+* Create propertiestool.xml which will set your theme as active mobile theme::
+
+	<?xml version="1.0"?>
+	<object name="portal_properties" meta_type="Plone Properties Tool">
+	 <object name="mobile_properties" meta_type="Plone Property Sheet" title="Mobile site specific settings">
+	  <property name="mobile_skin" type="string" purge="False">mFabrik Mobile Theme</property>	
+	 </object>
+	</object>
+	
+* Declare dependency to Go Mobile Default Theme skin layer in skins.xml::
+
+	<?xml version="1.0"?>
+	<object name="portal_skins" allow_any="False" cookie_persistence="False">
+	
+	 <skin-path name="mFabrik Mobile Theme" based-on="Go Mobile Default Theme">
+	 </skin-path>
+	
+	</object>
+
+* Declare your add-on installer profile::
+
+  <genericsetup:registerProfile
+      name="default"
+      title="mFabrik Mobile Theme"
+      directory="profiles/default"
+      description='mFabrik theme for mobile sites'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+* Declare your theme interface which subclasses Go Mobile Default Theme::
+
+	import gomobiletheme.basic.interfaces as base
+	
+	class IThemeLayer(base.IThemeLayer):
+	    """ mFabrik mobile theme layer.
+	
+	    """
+
+* Declare your theme layer for Zope::
+ 
+  <interface
+    interface=".interfaces.IThemeLayer"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="mFabrik Mobile Theme"
+    />
+
+Note that two latter steps differ if five.grok *grok.skin()* directive is used.
+
 Declaring dependency to gomobiletheme.basic
 ============================================
 

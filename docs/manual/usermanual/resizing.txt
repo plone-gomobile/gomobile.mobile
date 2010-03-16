@@ -67,7 +67,18 @@ The following cache keys are used
 
 meaning that the same result image should not be generated twice.
 
-Currently cache must be cleaned manually using a cron job if it grows too much.
-
 Image cache folder is defined by *image_resize_cache_path* setting. 
 It is full path to the folder. Plone user must have write and read access to that path.
+
+Clearing cache
+==============
+
+Currently cache must be cleaned manually using a cron job if it grows too much.
+There is no cache garbage collection.
+
+You can clear the cache if you know your *image_resizer_secret* in ::doc::`settings </usermanual/settings>`.
+Navigate to URL::
+
+http://yourhost:8080/Plone/@@mobile_image_processor_clear_cache?secret=*your_image_resizer_secret*
+        
+This triggers gomobile.mobile.imageprocessor.ClearCacheView code.

@@ -1,0 +1,23 @@
+================================
+ Extending Go Mobile framework
+================================
+
+Basically everything can be overridden in Go Mobile per site or per application server
+basis using Zope browser layers or utility adapters. This
+makes it possible to adapt the framework for your custom needs easier, 
+without too much fighting.
+
+First be familiar how Zope adapter mechanism works.
+
+Core interfaces
+---------------
+
+Core interfaces for adapters and utilities are defined in *gomobile.mobile.interfaces*
+Python package. They come with extensive commenting.
+
+Look for implementation source code 
+
+* How to change a specific feature using subclassing
+
+* How to change a specific feature by making your own implementation of the interface
+

@@ -303,6 +303,24 @@ Run::
     
 ...and hope there was no version incompatibilities between products.
 
-  
-        
+Running automatic test suite
+-----------------------------
+
+After you have succesfully launched Plone, you can 
+run automatic Go Mobile test suite which includes unit and functional tests.
+This will guarantee that your operating system libraries and Python module
+set is compatible with Go Mobile.
+
+To run test suite::
+
+	bin/instance test -m gomobile* -m mobile*
+ 
+After test suite completes, it should report zero failures::
+
+  Total: 119 tests, 0 failures, 0 errors
+
+You also need to run tests for mobile.* framework packages::
+
+ 
+                
 
