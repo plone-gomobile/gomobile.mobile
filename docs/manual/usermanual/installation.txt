@@ -205,7 +205,7 @@ Add Go Mobile snippets as described in the following::
      
      extends =
         ...
-        http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.buildout/gomobile.trunk.cfg
+        http://plonegomobile.googlecode.com/svn/trunk/gomobile/gomobile.buildout/gomobile.trunk.commit-access.cfg
 
      extensions = mr.developer
 
