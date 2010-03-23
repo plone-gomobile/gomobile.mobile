@@ -96,10 +96,44 @@ See also
 
 * gomobile.mobile.browser.imageprocessors.HTMLImageRewriter.processHTML for other options
 
-Manual image resizing
+Image resizing
 ---------------------
 
-You can put through arbitary images through image resizer by using the following code::
+Resizing traversable images
+================================
+
+You can resize images that accessible in Zope by traversing their path,
+or any URL.
+
+You can generate necessary image URLs by using the following::
+
+            from gomobile.mobile.interfaces import IMobileImageProcessor
+            from mfabrik.behaviorutilities.viewutils import getSiteRootRelativePath
+            
+            mobile_image_processor = getMultiAdapter((self.context, self.request), IMobileImageProcessor)
+                               
+            # How image should be resized                                 
+            properties = {
+                "width" : "auto",
+                "padding" : 10,
+                "conserve_aspect_ration" : "true",
+            }
+            
+            # Site root relative path to the traversable ImageField payload
+            path = getSiteRootRelativePath(self.campaign, self.request)                        
+            path = path + "/campaignVideoThumbnail"
+                  
+            # Return <img> src attribute URL which puts the image through mobile resizer
+            # Path could be also absolute URL to an image on an external server                          
+            self.image_url = mobile_image_processor.getImageDownloadURL(path, properties)
+
+In the case you specify absolute URL, the image will be downloaded and resized when 
+the HTTP request is made to render the image. The resized copy is cached.
+
+Resizing non-traversable objects
+=================================
+
+You can put through arbitary image objects through image resizer by using the following code::
 
                 
         # Use templates directory to search for templates.
@@ -132,13 +166,30 @@ You can put through arbitary images through image resizer by using the following
                           "cache_key" : "campaign_header_image",
                           "conserve_aspect_ration" : True,
                 }
-                
+                               
                 helper = self.context.unrestrictedTraverse("@@mobile_image_processor_helper")
                 
-                # helper will return <img> needed to output this image
+                # This will call gomobile.mobile.browser.imageprocessor.ResizeHelperView
+                # and output HTTP response payload to download the image
                 return helper(params)
 
 For more information see gomobile.mobile.browser.imageprocessor module source code.
 
+Resizer parameters
+===================
 
+Parameters are lsited in gomobile.mobile.browser.imageprocessor.ResizerHelperView.parseParameteres()
+
+* width: "auto" or pixels. Default: "auto". 
+
+* height: "auto" or pixels. Default: "auto".
+
+* padding_width: How many pixels reduced from the determined with. Default: 0.
+
+* converse_aspect_ration: True of False. Default: True.
+
+* URL: Absolute URL to image (http://), or  path relative to the site root
+
+* image: Image object. Only useful if you subclass ResizerHelperView or use it directly. Accepts
+  any Zope image object which can be decoded by gomobile.imageinfo.
 
