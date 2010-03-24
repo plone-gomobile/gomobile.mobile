@@ -4,6 +4,8 @@ __copyright__ = "2009 Twinapex Research"
 import urllib
 
 from Acquisition import aq_base, aq_inner, aq_parent
+from AccessControl import getSecurityManager
+
 
 import zope.interface
 from zope.interface import implements
@@ -21,8 +23,9 @@ from Products.statusmessages.interfaces import IStatusMessage
 
 from Products.CMFPlone.browser import ploneview
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore import permissions
 from Products.CMFCore.interfaces._content import IFolderish
-
+from AccessControl import getSecurityManager
 from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminator, IMobileSiteLocationManager, MobileRequestType
 from gomobile.mobile.interfaces import IMobileContentish
 from gomobile.mobile.behaviors import IMobileBehavior
@@ -154,13 +157,17 @@ class FolderListingView(BrowserView):
 
         # Return  the default page id or None if not set
         default_page = default_page_helper.getDefaultPage(container)
+        
+        security_manager = getSecurityManager()
 
         def show(item):
-            """
-            @param item: Brain
+            """ Filter whether the user can view a mobile item.
+            
+            @param item: Real content object (not brain)
 
             @return: True if item should be visible in the listing
             """
+        
 
             # Check from mobile behavior should we do the listing
             try:
@@ -174,6 +181,7 @@ class FolderListingView(BrowserView):
                 # Default to appearing
                 return False
 
+            # Default page should not appear in the quick listing
             if item.getId() == default_page:
                 return False
 
@@ -181,6 +189,10 @@ class FolderListingView(BrowserView):
             if hasattr(item, "getExcludeFromNav"):                
                 if item.getExcludeFromNav():
                     return False
+                
+            # Does the user have a permission to view this object
+            if not security_manager.checkPermission(permissions.View, item):
+                return False
 
             return True
 
@@ -220,7 +232,10 @@ class FolderListingView(BrowserView):
         if container.meta_type in navtree_properties.parentMetaTypesNotToQuery:
             # Big folder... listing forbidden
             return None
-
+        
+        state = container.restrictedTraverse('@@plone_portal_state')
+                
+        # 
         items = container.listFolderContents()
 
         items = self.filterItems(container, items)
