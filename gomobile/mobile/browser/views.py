@@ -176,9 +176,11 @@ class FolderListingView(BrowserView):
 
             if item.getId() == default_page:
                 return False
-                        
-            if item.getExcludeFromNav():
-                return False
+
+            # Note: getExcludeFromNav not necessarily exist on all content types 
+            if hasattr(item, "getExcludeFromNav"):                
+                if item.getExcludeFromNav():
+                    return False
 
             return True
 
