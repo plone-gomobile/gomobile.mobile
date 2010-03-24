@@ -1,5 +1,5 @@
-__license__ = "GPL 2.1"
-__copyright__ = "2009 Twinapex Research"
+__license__ = "GPL 2"
+__copyright__ = "2010 mFabrik Research Oy"
 
 from Products.Five import zcml
 from Products.Five import fiveconfigure
@@ -77,6 +77,9 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
 
         from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
         SiteErrorLog.raising = raising
+        
+        # skin manager must update active skin for the request
+        self._refreshSkinData()
 
 
     def loginAsAdmin(self):
@@ -97,13 +100,13 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
         browser.getControl(name='__ac_password').value = default_password
         browser.getControl(name='submit').click()
 
-    def setUA(self, user_agent):
+    def setUA(self, user_agent, extra_headers=None):
         """
         Create zope.testbrowser Browser with a specific user agent.
         """
 
         # Be sure to use Products.Five.testbrowser here
-        self.browser = UABrowser(user_agent)
+        self.browser = UABrowser(user_agent, extra_headers=extra_headers)
         self.browser.handleErrors = False # Don't get HTTP 500 pages
         
     def setDiscriminateMode(self, mode):

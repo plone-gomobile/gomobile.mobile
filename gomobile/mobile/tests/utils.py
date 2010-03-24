@@ -16,6 +16,8 @@ from gomobile.mobile.browser.views import FolderListingView
 
 MOBILE_USER_AGENT="Mozilla/5.0 (SymbianOS/9.2; U; Series60/3.1 NokiaN95/11.0.026; Profile MIDP-2.0 Configuration/CLDC-1.1) AppleWebKit/413 (KHTML, like Gecko) Safari/413"
 
+GOOGLEBOT_MOBILE_USER_AGENT = "SAMSUNG-SGH-E250/1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 UP.Browser/6.2.3.3.c.1.101 (GUI) MMP/2.0 (compatible; googlebot-mobile/2.1; +http://www.google.com/bot.html)"
+
 
 def setDiscriminateMode(request, mode):
     """ Spoof the media discrimination mode for unit tests.
@@ -131,10 +133,19 @@ class UABrowser(browser.Browser):
     The instance must set a custom user agent string.
     """
 
-    def __init__(self, user_agent, url=None):
-
+    def __init__(self, user_agent, url=None, extra_headers=None):
+        """
+        
+        @param user_agent: HTTP_USER_AGENT string to use
+        
+        @param extra_headers: List of HTTP header tuples
+        """
+        
         mech_browser = PublisherMechanizeBrowser()
         mech_browser.addheaders = [("User-agent", user_agent),]
+        
+        if extra_headers:
+             mech_browser.addheaders += extra_headers
 
         # override the http handler class
         mech_browser.handler_classes["http"] = PublisherHTTPHandler

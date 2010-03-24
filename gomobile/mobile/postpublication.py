@@ -29,8 +29,14 @@ def is_mobile(context, request):
     return MobileRequestType.MOBILE in flags
 
 def need_reset(context, request):
-    """
-    """
+    """ Check whether we should reset the content type for a  
+    
+    Check
+    
+        1. Assumption made about user agent it wants mobile XHTML
+    
+        2. HTTP_ACCEPT header is correctly set
+    """    
     return need_xhtml(request)
 
 def extract_charset(content_type):
@@ -61,18 +67,10 @@ def get_suggested_content_type(request):
 
 def reset_content_type_for_mobile(request, response):
     """
-    
-    
     http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
-    """
-    
-    # Rewrite content type only if it is found from accepted list
-    header = request.get("HTTP_ACCEPT", None)
-    
-    if header:
-        if "application/xhtml+xml" in header:    
-            ct, doctype = get_content_type_and_doctype(request)
-            response.setHeader("content-type", ct)
+    """    
+    ct, doctype = get_content_type_and_doctype(request)
+    response.setHeader("content-type", ct)
 
 def is_wap_accepted(request):
     """    
@@ -85,6 +83,8 @@ def get_context(object):
     """ Post-publication hook object can be either view or context object. 
     
     Try extract context object in meaningful manner.
+    
+    @param object: View instance of content item instance
     """
     
     # Get context attribute or return the object itself if does not exist
@@ -103,18 +103,17 @@ def set_mobile_html_content_type(object, event):
     """
     request = event.request
     response = request.response
-    
-    return None
-    
+        
     # Check that we have text/html response
     ct = response.getHeader("Content-type")
 
     if ct is not None:
         if ct.startswith("text/html") or ct.startswith("text/xhtml"):
             context = get_context(object)
-        
-            if need_reset(context, request):
-                reset_content_type_for_mobile(request, response)
+            
+            if is_mobile(context, request):        
+                if need_reset(context, request):
+                    reset_content_type_for_mobile(request, response)
 
 
 @adapter(Interface, IAfterPublicationEvent)
