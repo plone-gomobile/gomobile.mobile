@@ -81,6 +81,14 @@
         permission="cmf.ModifyPortalContent"
       />
 
+    <!-- Mobile aware sitemap -->
+    <browser:page
+        for="*"
+        name="mobile_sitemap"
+        class=".sitemap.LanguageAwareMobileSitemap"
+        permission="zope2.View"
+      />
+
 
 
 </configure>
