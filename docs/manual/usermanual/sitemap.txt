@@ -1,0 +1,42 @@
+========================
+ Sitemap protocol
+========================
+
+.. contents ::
+
+Introduction
+-------------
+
+Go Mobile suppports mobile sitemaps.
+This is a sitemap protocol extension which tells the search engines
+
+* which pages are avaiable on the site 
+
+* which are mobile pages
+
+.. note ::
+
+        Sitemap must be enabled in Site setup before mobile sitemaps are available.
+        
+Mobile sitemap URLs
+--------------------
+
+Mobile sitemap is mapped to @@mobile_sitemap view.
+
+Example links which you can put in Google Webmaster tools.
+
+Index one language of certain site::
+    
+    http://yoursite/@@mobile_sitemap?language=fi&mode=mobile
+    
+Index all languages of certain site::    
+    
+    http://yoursite/@@mobile_sitemap?language=ALL&mode=mobile
+    
+This does not generate <mobile:mobile /> tag and is not considered as mobile sitemap::
+    
+    http://yoursite/@@mobile_sitemap?language=ALL&mode=web
+
+
+        
+
