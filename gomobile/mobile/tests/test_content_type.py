@@ -100,8 +100,7 @@ class TestContentType(BaseFunctionalTestCase):
         """ Check that mobile bot gets correct XHTML mobile doctype string.
         
         """
-        self.setDiscriminateMode("mobile")
-        
+        self.setDiscriminateMode("mobile")        
         self.setUA(GOOGLEBOT_MOBILE_USER_AGENT, extra_headers=[("ACCEPT", "application/xhtml+xml")])
                     
         self.browser.open(self.portal.absolute_url())
@@ -111,15 +110,28 @@ class TestContentType(BaseFunctionalTestCase):
         slice = html[0:len(MOBILE_DOCTYPE)]
         
         # Eyeball comparison
-        #print slice
+        print slice
         #print MOBILE_DOCTYPE
         
             
         # Check that content type is correct
         self.assertTrue(html.startswith(MOBILE_DOCTYPE), "Got:" + str(html[0:200]))
+        
+        
+    def test_check_valid_xml(self):
+        """ Check that front page content is valid XML """
                 
-        # Check that content is valid XML
+        
+        self.setDiscriminateMode("mobile")        
+        self.setUA(GOOGLEBOT_MOBILE_USER_AGENT, extra_headers=[("ACCEPT", "application/xhtml+xml")])
+                                    
+        self.browser.open(self.portal.absolute_url())
+        
+        html = self.browser.contents
+                
         from lxml import etree
+        
+        print "Got front page:" + html
         
         # Assert no exception is risen
         root = etree.fromstring(html)

@@ -119,3 +119,7 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
         else:
             utils.modes = [mode]
 
+        # The active skin layers depend on which mode
+        # we assume the site is.
+        self._refreshSkinData()
+
