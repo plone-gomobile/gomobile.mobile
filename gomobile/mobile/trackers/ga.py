@@ -5,8 +5,10 @@
 
     Adopted for Zope/Plone by mFabrik Research Oy.
  
+    http://mfabrik.com
     
 """
+
 import re
 try:
     from hashlib import md5
@@ -22,8 +24,9 @@ import time
 import urlparse
 from urllib import unquote, quote
 from Cookie import SimpleCookie, CookieError
-#from messaging import stdMsg, dbgMsg, errMsg, setDebugging
 import uuid
+
+from gomobile.mobile.utilities import get_ip 
 
 try:
     # The mod_python version is more efficient, so try importing it first.
@@ -70,7 +73,7 @@ def dbgMsg(msg):
     print msg
     logger.debug(msg)                  
 
-def get_ip(remote_address):
+def extract_ip(remote_address):
     # dbgMsg("remote_address: " + str(remote_address))
     if not remote_address:
         return ""
@@ -165,8 +168,9 @@ def set_zope_cookie(response, cookie_name, value, expires, path):
     
 class BadTrackerId(Exception):
     pass
-        
-def track_page_view(request, response, environ, tracker_id, debug=False):
+
+       
+def track_page_view(request, response, environ, tracker_id, debug=False, synchronous=False):
     """
     // Track a page view, updates all the cookies and campaign tracker,
     // makes a server side request to Google Analytics and writes the transparent
@@ -227,6 +231,10 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
     #morsel['expires'] =  
     #morsel['path'] = COOKIE_PATH
 
+    # Extract client IP from the request
+    ip = get_ip(request)
+    
+
     expires = time.strftime('%a, %d-%b-%Y %H:%M:%S %Z', time_tup)
     set_zope_cookie(response, COOKIE_NAME, visitor_id, expires, COOKIE_PATH)
 
@@ -244,8 +252,13 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
                 "&utmp=" + quote(document_path) + \
                 "&utmac=" + utmac + \
                 "&utmcc=__utma%3D999.999.999.999.999.1%3B" + \
-                "&utmvid=" + visitor_id + \
-                "&utmip=" + get_ip(environ.get("REMOTE_ADDR",''))
+                "&utmvid=" + visitor_id 
+                
+        if ip:
+            
+            # Mae IP to GA compatible format
+            ip = extract_ip(ip)
+            utm_url += "&utmip=" + ip
 
                 #"&utmsr=" + environ['GET'].get('utmsr', '') + \
                 #"&utme=" + environ['GET'].get('utme', '') + \
@@ -257,7 +270,7 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
             pass
         # Here you can turn on syncrhonous tracking...
         # disabled for now
-        # send_request_to_google_analytics(utm_url, environ)
+            
 
     # // If the debug parameter is on, add a header to the response that contains
     # // the url that was used to contact Google Analytics.
@@ -265,10 +278,16 @@ def track_page_view(request, response, environ, tracker_id, debug=False):
     
     if debug:
         response.setHeader('X-GA-MOBILE-URL', utm_url)
+
+    if synchronous:
+        # Call Analytics server-to-server
+        send_request_to_google_analytics(utm_url, environ)
+    else:
+        # Create an image which calls GA
+        
+        # Must remain XHTML compatible
+        utm_url = utm_url.replace("&", "&amp;")
     
-    # Must remain XHTML compatible
-    utm_url = utm_url.replace("&", "&amp;")
-    
-    return utm_url
+        return utm_url
 
     

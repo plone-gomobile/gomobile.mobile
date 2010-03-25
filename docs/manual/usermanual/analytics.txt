@@ -43,6 +43,22 @@ How to set-up a tracker (Google)
 	Google Analytics may complain that the tracker verification failed.
 	This is normal.
 	
+	
+Real IP address of the client
+==============================
+
+If you are using Apache's mod_proxy or similar virtual hosting solution, 
+make sure that the real IP address of the client reaches the tracking code.
+
+You need to make sure that your front-end server passes the IP information 
+forward. For Apache, this setting is::
+
+        ProxyVia on
+
+For more information see
+
+* http://wiki.zope.org/zope2/ZopeAndApache#setting-remote-addr-to-the-client-ip 
+ 	
 
 Google Analytics mobile background
 ===================================
