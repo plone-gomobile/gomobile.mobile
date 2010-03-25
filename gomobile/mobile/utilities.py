@@ -100,6 +100,14 @@ def get_host(request):
         host = None
         
     return host
+
+def get_host_domain_name(request):
+    """
+    Remove possible ports from HTTP host.
+    """
+    host = get_host(request)
+    parts = host.split(":")
+    return parts[0]
     
 def get_ip(request):
     """  Extract the client IP address from the HTTP request in proxy compatible way.
