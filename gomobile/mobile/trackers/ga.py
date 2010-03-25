@@ -10,6 +10,8 @@
     * http://www.vdgraaf.info/google-analytics-tweaks.html
     
     * http://svn.mobixx.net/svn/Branches/Exp/MetricsLogging/components/ContentAdaptationEngineEJB/src/main/java/com/siruna/contentadaptationengine/util/GoogleAnalytics.java
+    
+    * http://mobiforge.com/forum/running/analytics/google-analytics-mobile
 
     Adopted for Zope/Plone by mFabrik Research Oy.
  
@@ -17,6 +19,7 @@
     
 """
 
+import urllib
 import re
 try:
     from hashlib import md5
@@ -99,6 +102,12 @@ def get_visitor_id(guid, account, user_agent, cookie):
     """
     if cookie:
         return cookie
+    else:
+        return get_random_number() 
+    
+    # does not understand the stuff b elow
+    
+    
     message = ""
     if guid:
         # Create the visitor id using the guid.
@@ -181,7 +190,7 @@ class BadTrackerId(Exception):
     pass
 
        
-def track_page_view(request, response, environ, tracker_id, debug=False, synchronous=False):
+def xxx_track_page_view(request, response, environ, tracker_id, debug=False, synchronous=False):
     """ Make remote call / URL source to track a mobile visitors.
     
     @param tracker_id: String, MO-XXX something
@@ -233,9 +242,10 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
     account = tracker_id      
     user_agent = environ.get("HTTP_USER_AGENT", '')    
 
+    # Generate Google session cookie for the site
+
     # // Try and get visitor cookie from the request.
     cookie = request.cookies.get(COOKIE_NAME, None) #environ['COOKIES'].get(COOKIE_NAME)
-
     visitor_id = get_visitor_id(environ.get("HTTP_X_DCMGUID", ''), account, user_agent, cookie)
     
     # // Always try and add the cookie to the response.
@@ -248,11 +258,40 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
     # Extract client IP from the request
     ip = get_ip(request)
     
-
     expires = time.strftime('%a, %d-%b-%Y %H:%M:%S %Z', time_tup)
     set_zope_cookie(response, COOKIE_NAME, visitor_id, expires, COOKIE_PATH)
 
     utm_gif_location = "http://www.google-analytics.com/__utm.gif"
+    
+    
+    # $urchinUrl='http://www.google-analytics.com/__utm.gif?
+    # utmwv=1&
+    # utmn='.$var_utmn.'&
+    # utmsr='.$sr.'&
+    # utmsc='.$sc.'&
+    # utmul='.$ul.'&
+    # utmje='.$je.'&
+    # utmfl='.$fl.'&
+    # utmdt='.$dt.'&
+    # utmhn='.$var_utmhn.'&
+    # utmr='.$var_referer.'&
+    # utmp='.$var_utmp.'&
+    # utmac='.$var_utmac.'&
+    # utmcc=__utma%3D'.$var_cookie.'.'.$var_random.'.'.$var_today.'.'.$var_today.'.'.$var_today.'.2%3B%2B__utmb%3D'.$var_cookie.'%3B%2B__utmc%3D'.$var_cookie.'%3B%2B__utmz%3D'.$var_cookie.'.'.$var_today.'.2.2.utmccn%3D(direct)%7Cutmcsr%3D(direct)%7Cutmcmd%3D(none)%3B%2B__utmv%3D'.$var_cookie.'.'.$var_uservar.'%3B';
+ 
+    #utmcc = '__utma%3D' + var_cookie '.' + 
+    #        var_random + '.$var_today.'.'.$var_today.'.'.$var_today.'.2%3B%2B__utmb%3D'.$var_cookie.'%3B%2B__utmc%3D'.$var_cookie.'%3B%2B__utmz%3D'.$var_cookie.'.'.$var_today.'.2.2.utmccn%3D(direct)%7Cutmcsr%3D(direct)%7Cutmcmd%3D(none)%3B%2B__utmv%3D'.$var_cookie.'.'.$var_uservar.'%3B'"
+     
+
+    var_random = get_random_number()
+    var_cookie = visitor_id
+    var_today = str(time.time())
+    var_uservar = quote(user_agent)
+    
+    utmcc= '__utma%3D' + var_cookie+ '.' + var_random+ '.' + var_today+ '.' + var_today+ '.' + var_today + \
+           '.2%3B%2B__utmb%3D' + var_cookie + '%3B%2B__utmc%3D' + var_cookie + '%3B%2B__utmz%3D' + \
+            var_cookie+ '.' + var_today + '.2.2.utmccn%3D(direct)%7Cutmcsr%3D(direct)%7Cutmcmd%3D(none)%3B%2B__utmv%3D' + var_cookie+ '.' + var_uservar + '%3B';
+ 
 
     for utmac in [account, x_utmac]:
         if not utmac:
@@ -260,12 +299,12 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
         # // Construct the gif hit url.
         utm_url = utm_gif_location + "?" + \
                 "utmwv=" + VERSION + \
+                "&utmac=" + utmac + \
                 "&utmn=" + get_random_number() + \
                 "&utmhn=" + quote(domain) + \
                 "&utmr=" + quote(document_referer) + \
                 "&utmp=" + quote(document_path) + \
-                "&utmac=" + utmac + \
-                "&utmcc=__utma%3D999.999.999.999.999.1%3B" + \
+                "&utmcc=" + utmcc + \
                 "&utmvid=" + visitor_id 
                 
         if ip:
@@ -305,4 +344,94 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
     
         return utm_url
 
+
+def track_page_view(request, response, environ, tracker_id, debug=False, synchronous=False):
+    """ Make remote call / URL source to track a mobile visitors.
+    
+    @param tracker_id: String, MO-XXX something
+    
+    @param synchronous: If True use server-to-server tracking    
+    
+    @return: URL to be used as image src or None if synchronous tracking is used    
+    """    
+    time_tup = time.localtime(time.time() + COOKIE_USER_PERSISTENCE)
+       
+    x_utmac = tracker_id #environ['GET'].get('x_utmac', None)
+
+    if not x_utmac.startswith("MO-"):
+        raise BadTrackerId("Please use different tracking number for your mobile site than you normally use. Check from Google Analytics > site > check status > advanced settings > a site build for mobile phone. The number for is something like: MO-8819100-7")
+    
+    domain = environ.get('HTTP_HOST', '')
+            
+    # Get the referrer from the utmr parameter, this is the referrer to the
+    # page that contains the tracking pixel, not the referrer for tracking
+    # pixel.    
+    document_referer = environ.get("HTTP_REFERER", None)
+    if not document_referer or document_referer == "0":
+        document_referer = "-"
+
+    # http://www.teamrubber.com/blog/_serverrequest_uri-in-zope/    
+    # http://www.doughellmann.com/PyMOTW/urlparse/index.html    
+    full_url = request.ACTUAL_URL + "?" + request.QUERY_STRING
+    parsed = urlparse.urlsplit(full_url)
+        
+    uri = parsed[2]
+    if parsed[3]:
+        uri += "?" + parsed[3]
+    
+    document_path = uri
+            
+    user_agent = environ.get("HTTP_USER_AGENT", '')    
+
+    # Generate Google session cookie for the site
+
+    # // Try and get visitor cookie from the request.
+    cookie = request.cookies.get(COOKIE_NAME, None) #environ['COOKIES'].get(COOKIE_NAME)
+    visitor_id = get_visitor_id(environ.get("HTTP_X_DCMGUID", ''), tracker_id, user_agent, cookie)
+    
+    # // Always try and add the cookie to the response.
+    #cookie = SimpleCookie()
+    #cookie[COOKIE_NAME] = visitor_id
+    #morsel = cookie[COOKIE_NAME]
+    #morsel['expires'] =  
+    #morsel['path'] = COOKIE_PATH
+
+    # Extract client IP from the request
+    ip = get_ip(request)
+    
+    expires = time.strftime('%a, %d-%b-%Y %H:%M:%S %Z', time_tup)
+    set_zope_cookie(response, COOKIE_NAME, visitor_id, expires, COOKIE_PATH)
+
+    utm_gif_location = "http://www.google-analytics.com/__utm.gif"
+    
+    parameters = {
+                  "utmac" : tracker_id,
+                  "utmn" : get_random_number(),
+                  "utmr" : document_referer,
+                  "utmp" : document_path,
+                  "guid" : "ON"     
+    }
+    
+    if ip:
+        # Mae IP to GA compatible format
+        ip = extract_ip(ip)
+        parameters["utmip"] = ip
+        
+    # // Construct the gif hit url.
+    utm_url = utm_gif_location + "?" + urllib.urlencode(parameters)  
+                                            
+    if debug:
+        response.setHeader('X-GA-MOBILE-URL', utm_url)
+
+    if synchronous:
+        # Call Analytics server-to-server
+        response = send_request_to_google_analytics(utm_url, environ)
+        return None
+    else:
+        # Create an image which calls GA
+        
+        # Must remain XHTML compatible
+        utm_url = utm_url.replace("&", "&amp;")
+    
+        return utm_url
     

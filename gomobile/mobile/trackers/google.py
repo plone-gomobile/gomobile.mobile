@@ -40,7 +40,7 @@ class GoogleAnalyticsTracker(object):
     def track(self, trackingId, debug):
         
         # Perform remote HTTP request to update GA stats
-        url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug, synchronous=True)
+        url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug, synchronous=False)
                
         # return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
         if url:
