@@ -2,6 +2,12 @@
     Python implementation of ga.php.
 
     Orignal implementation: http://github.com/b1tr0t/Google-Analytics-for-Mobile--python-/blob/master/ga.py
+    
+    Some more info:
+    
+    * http://www.vdgraaf.info/google-analytics-without-javascript.html
+    
+    * http://www.vdgraaf.info/google-analytics-tweaks.html
 
     Adopted for Zope/Plone by mFabrik Research Oy.
  
@@ -142,7 +148,7 @@ def send_request_to_google_analytics(utm_url, environ):
                                      headers={'User-Agent': environ.get('HTTP_USER_AGENT', 'Unknown'),
                                               'Accepts-Language:': environ.get("HTTP_ACCEPT_LANGUAGE",'')}
                                      )
-        dbgMsg("success")            
+        dbgMsg("GA call success:" + utm_url)            
     except HttpLib2Error, e:
         #errMsg("fail: %s" % utm_url)
         
@@ -171,10 +177,13 @@ class BadTrackerId(Exception):
 
        
 def track_page_view(request, response, environ, tracker_id, debug=False, synchronous=False):
-    """
-    // Track a page view, updates all the cookies and campaign tracker,
-    // makes a server side request to Google Analytics and writes the transparent
-    // gif byte data to the response.
+    """ Make remote call / URL source to track a mobile visitors.
+    
+    @param tracker_id: String, MO-XXX something
+    
+    @param synchronous: If True use server-to-server tracking    
+    
+    @return: URL to be used as image src or None if synchronous tracking is used    
     """    
     time_tup = time.localtime(time.time() + COOKIE_USER_PERSISTENCE)
     
@@ -282,6 +291,8 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
     if synchronous:
         # Call Analytics server-to-server
         send_request_to_google_analytics(utm_url, environ)
+        
+        return None
     else:
         # Create an image which calls GA
         

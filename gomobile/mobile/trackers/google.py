@@ -26,15 +26,9 @@ from gomobile.mobile.interfaces import IMobileTracker
 import ga
 
 class GoogleAnalyticsTracker(object):
-    """
-
-    For tracking id, use your AdMob site id.
-
-    Note: If ads are enabled on your AdMob acount will display ads and is not invisible.
+    """ Google Analytics mobile analytics tracker abstraction. 
     
-    http://www.vdgraaf.info/google-analytics-without-javascript.html
-    
-    http://www.vdgraaf.info/google-analytics-tweaks.html
+    Note: Currently tracking is done synchronously
     """
 
     zope.interface.implements(IMobileTracker)
@@ -46,8 +40,11 @@ class GoogleAnalyticsTracker(object):
     def track(self, trackingId, debug):
         
         # Perform remote HTTP request to update GA stats
-        url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug)
-        
+        url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug, synchronous=True)
+               
         # return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
-        return '<img class="google-analytics" alt="" src="%s" />' % url # Tracker marker, does really nothing
+        if url:
+            return '<img class="google-analytics" alt="" src="%s" />' % url # Tracker marker, does really nothing
+        else:
+            return ""
 
