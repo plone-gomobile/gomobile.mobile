@@ -8,6 +8,8 @@
     * http://www.vdgraaf.info/google-analytics-without-javascript.html
     
     * http://www.vdgraaf.info/google-analytics-tweaks.html
+    
+    * http://svn.mobixx.net/svn/Branches/Exp/MetricsLogging/components/ContentAdaptationEngineEJB/src/main/java/com/siruna/contentadaptationengine/util/GoogleAnalytics.java
 
     Adopted for Zope/Plone by mFabrik Research Oy.
  
@@ -148,7 +150,10 @@ def send_request_to_google_analytics(utm_url, environ):
                                      headers={'User-Agent': environ.get('HTTP_USER_AGENT', 'Unknown'),
                                               'Accepts-Language:': environ.get("HTTP_ACCEPT_LANGUAGE",'')}
                                      )
-        dbgMsg("GA call success:" + utm_url)            
+        dbgMsg("GA call success:" + utm_url)
+        
+        return resp
+                    
     except HttpLib2Error, e:
         #errMsg("fail: %s" % utm_url)
         
@@ -290,8 +295,7 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
 
     if synchronous:
         # Call Analytics server-to-server
-        send_request_to_google_analytics(utm_url, environ)
-        
+        response = send_request_to_google_analytics(utm_url, environ)
         return None
     else:
         # Create an image which calls GA
