@@ -415,7 +415,8 @@ def track_page_view(request, response, environ, tracker_id, debug=False, synchro
     if ip:
         # Mae IP to GA compatible format
         ip = extract_ip(ip)
-        parameters["utmip"] = ip
+        # TODO: not sure if it works
+        # parameters["utmip"] = ip
         
     # // Construct the gif hit url.
     utm_url = utm_gif_location + "?" + urllib.urlencode(parameters)  
