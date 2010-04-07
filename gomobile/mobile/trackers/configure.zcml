@@ -24,8 +24,15 @@
 
     <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
            provides="gomobile.mobile.interfaces.IMobileTracker"
-           factory=".google.GoogleAnalyticsTracker"
-           name="google"
+           factory=".google.GoogleAnalyticsMobileTracker"
+           name="google-mobile"
            />
+
+    <adapter for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
+           provides="gomobile.mobile.interfaces.IMobileTracker"
+           factory=".google.GoogleAnalyticsWebTracker"
+           name="google-web"
+           />
+
 
 </configure>
