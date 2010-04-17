@@ -83,8 +83,9 @@ def get_mobile_skin_name(site, request):
         
         return skin_name
     else:
-        # Happens when the site is still being constructed
-        logger.warn("Cannot access mobile properties")
+        # Happens when the site is still being constructed,
+        # or when ZMI interface is accessed
+        logger.debug("Cannot access mobile properties")
         return None
     
 
