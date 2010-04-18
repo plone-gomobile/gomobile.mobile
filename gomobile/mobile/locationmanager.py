@@ -108,6 +108,9 @@ class DomainNameBasedMobileSiteLocationManager(object):
     def rewriteDomain(self, domain, mode):
         """ Changes domain name to point to web/mobile server.
 
+        @param domain: Domain name as a string, without port like 8080 and without www/mobile prefixes like m.
+        
+        @param mode: One of "mobile", "web" etc. MobileRequestType constants
 
         @return: Domain name for redirect request as a string
         """
