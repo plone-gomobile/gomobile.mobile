@@ -1,23 +1,23 @@
 <div id="dark-layer" class="darkClass"></div>
 
-<div id="mobile-preview">
+<div id="mobile-preview" i18n:domain="gomobile.mobile">
 	<div id="preview-info">		
-		<p>
+		<p i18n:translate="">
 			Displaying iPhone preview.
 			The preview does not use iPhone browser engine and might not be accurate.
 		</p>		
 		
-		<p>
+		<p i18n:translate="">
 			Navigation in preview is possible.
 	        </p>
 		
-		<p>
+		<p i18n:translate="">
 			Click anywhere outside the phone to close.
 		</p>
 	</div>
 	
 	<iframe tal:attributes="src view/getMobilePreviewURL">
-		Your browser does not support frames.
+		<span i18n:translate="">Your browser does not support frames.</span>
 	</iframe>
 
 </div>					

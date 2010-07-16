@@ -4,6 +4,12 @@ Changelog
 0.0.2 - 0.0.3
 -------------
 
+* Added Spanish translation
+  [leonardocaballero]
+
+* Added full support for i18n
+  [leonardocaballero]
+
 * Created gomobile.xhtmlmp package 
 
 * Added support for XHTML MP mobile profile cleaning in feedfeeder

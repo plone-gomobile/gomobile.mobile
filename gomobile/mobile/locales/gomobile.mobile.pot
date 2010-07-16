@@ -1,0 +1,61 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2010-05-28 12:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: gomobile.mobile\n"
+
+#: ./behaviors.py:41
+msgid "Appear in folder listing"
+msgstr ""
+
+#: ./browser/templates/mobilesimulatoriframe.pt:14
+msgid "Click anywhere outside the phone to close."
+msgstr ""
+
+#: ./browser/templates/mobilesimulatoriframe.pt:5
+msgid "Displaying iPhone preview. The preview does not use iPhone browser engine and might not be accurate."
+msgstr ""
+
+#: ./browser/portlets/preview.py:55
+#: ./profiles/default/actionicons.xml
+#: ./profiles/default/actions.xml
+msgid "Mobile preview"
+msgstr ""
+
+#: ./browser/templates/mobilesimulatoriframe.pt:10
+msgid "Navigation in preview is possible."
+msgstr ""
+
+#: ./behaviors.py:36
+msgid "Show folder listing"
+msgstr ""
+
+#: ./profiles/default/actions.xml
+msgid "Show how this page looks like in a mobile browser"
+msgstr ""
+
+#: ./behaviors.py:37
+msgid "Show touch screen friendly listing of the child content at the bottom of the page for this content."
+msgstr ""
+
+#: ./behaviors.py:42
+msgid "This item appears in the parent folder mobile folder listing"
+msgstr ""
+
+#: ./browser/templates/mobilesimulatoriframe.pt:20
+msgid "Your browser does not support frames."
+msgstr ""
+

@@ -14,14 +14,12 @@
             	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_preview_icon.png" />
             </a>
         
-        	<a class="open-mobile-preview" href="#">
-        		Preview mobile version
-			</a>
+        	<a class="open-mobile-preview" href="#" i18n:translate="">Preview mobile version</a>
         </p>
 
         <p>
            	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_icon.png" />        
-        	Surf in mobile phone:
+        	<span i18n:translate="">Surf in mobile phone:</span>
 			<input type="text" tal:attributes="value view/getMobileSiteURL" />
         </p>
         
@@ -34,18 +32,15 @@
 				<div id="preview-info">
 					<p>
 						<a href="#">
-							<b>[ X ]</b> Click here to close preview
+							<b><tal:comment replace="nothing">[ X ]</tal:comment></b> <span i18n:translate="">Click here to close preview</span>
 						</a>
 					</p>
 					
-					<p>
-						To have the best possible preview experience,
-						use Macintosh computer and Safari browser.
-					</p>
+					<p i18n:translate="">To have the best possible preview experience, use Macintosh computer and Safari browser.</p>
 				</div>
 				<span id="mobile-preview-url" tal:content="view/getMobilePreviewURL" />
 				<iframe>
-					Your browser does not support iframes
+					<span i18n:translate="">Your browser does not support iframes</span>
 				</iframe>
 
 			</div>					

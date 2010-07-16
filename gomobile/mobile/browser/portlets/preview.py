@@ -13,6 +13,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 
 from zope.component import getUtility, queryUtility
 from gomobile.mobile.interfaces import IMobileUtility
+from gomobile.mobile import GMMobileMF as _
 
 class IPreviewPortlet(IPortletDataProvider):
     """ Define buttons for mobile preview """
@@ -51,7 +52,7 @@ class Assignment(base.Assignment):
     """ Assigner for grey static portlet. """
     implements(IPreviewPortlet)
     
-    title = "Mobile preview"    
+    title = _(u"Mobile preview")
     
 class AddForm(base.NullAddForm):
     """ Make sure that add form creates instances of our custom portlet instead of the base class portlet. """

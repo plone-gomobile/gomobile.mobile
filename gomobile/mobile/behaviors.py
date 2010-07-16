@@ -22,6 +22,8 @@ from plone.directives import form
 
 from mfabrik.behaviorutilities.volatilecontext import VolatileContext, AnnotationPersistentFactory
 
+from gomobile.mobile import GMMobileMF as _
+
 class IMobileBehavior(form.Schema):
     """ How content and its children react to differt medias """
 
@@ -31,13 +33,13 @@ class IMobileBehavior(form.Schema):
         fields=('mobileFolderListing'),
     )
 
-    mobileFolderListing = schema.Bool(title=u"Show folder listing",
-                                  description=u"Show touch screen friendly listing of the child content at the bottom of the page for this content.",
+    mobileFolderListing = schema.Bool(title=_(u"Show folder listing"),
+                                  description=_(u"Show touch screen friendly listing of the child content at the bottom of the page for this content."),
                                   default=True)
 
 
-    appearInFolderListing = schema.Bool(title=u"Appear in folder listing",
-                                  description=u"This item appears in the parent folder mobile folder listing",
+    appearInFolderListing = schema.Bool(title=_(u"Appear in folder listing"),
+                                  description=_(u"This item appears in the parent folder mobile folder listing"),
                                   default=True)
 
 

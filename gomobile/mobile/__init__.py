@@ -3,6 +3,11 @@ __copyright__ = "2009 Twinapex Research"
 
 from zope.component import getUtility, queryUtility
 
+# Import "MessageFactory" to create messages in the plone domain
+from zope.i18nmessageid import MessageFactory
+PloneMessageFactory = MessageFactory('plone')
+GMMobileMF = MessageFactory('gomobile.mobile')
+
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFCore.utils import getToolByName
 

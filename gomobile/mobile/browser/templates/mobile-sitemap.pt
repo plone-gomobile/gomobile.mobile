@@ -8,13 +8,13 @@
 
 <tal:block repeat="obj view/objects">
     <url>
-        <loc tal:content="obj/loc">url</loc>
+        <loc tal:content="obj/loc"><tal:comment replace="nothing">url</tal:comment></loc>
         <lastmod tal:condition="obj/lastmod | nothing"
-                 tal:content="obj/lastmod">date modified</lastmod>
+                 tal:content="obj/lastmod"><tal:comment replace="nothing">date modified</tal:comment></lastmod>
         <changefreq tal:condition="obj/changefreq | nothing"
-                    tal:content="obj/changefreq">change frequency</changefreq>
+                    tal:content="obj/changefreq"><tal:comment replace="nothing">change frequency</tal:comment></changefreq>
         <priority tal:condition="obj/priority | nothing"
-                  tal:content="obj/priority">priority</priority>
+                  tal:content="obj/priority"><tal:comment replace="nothing">priority</tal:comment></priority>
 		  
         <mobile:mobile tal:condition="view/is_mobile" />
     </url>

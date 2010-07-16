@@ -21,6 +21,8 @@
 
     <five:registerPackage package="." initialize=".initialize" />
 
+    <i18n:registerTranslations directory="locales" />
+
     <!-- Mark all classes which can obey mobile behavior -->
     <class class="Products.Archetypes.BaseObject.BaseObject">
           <implements interface=".interfaces.IMobileContentish" />
