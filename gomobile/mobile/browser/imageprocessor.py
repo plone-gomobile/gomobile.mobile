@@ -254,7 +254,14 @@ class MobileImageProcessor(object):
         so that we can safely pass it around from a page to another.
         
         If URL is absolute, don't touch it.
+        
+        @param url: Image URL or URI as a string
         """
+        
+        
+        # Make sure we are traversing the context chain without view object messing up things
+        context = self.context.aq_inner
+        
         if url.startswith("http://"):
             # external URL
             url = url
@@ -269,8 +276,8 @@ class MobileImageProcessor(object):
             else:
                 # The URL is relative to the context path
                 # Map URL to be relative to the site root
-                            
-                imageObject = self.context.unrestrictedTraverse(url)
+                                            
+                imageObject = context.unrestrictedTraverse(url)
                 
                 physicalPath = imageObject.getPhysicalPath() # This path is relative to Zope Application server root
 #                virtualPath = self.request.physicalPathToVirtualPath(physicalPath)
