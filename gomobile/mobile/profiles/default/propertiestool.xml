@@ -54,6 +54,9 @@
   </property>
 
 
+  <property name="serve_mobile_via_ip" type="boolean" purge="False">False</property>
+
+
   <!--
 
       Old style skin name for mobile theming
@@ -109,6 +112,7 @@
 
   <!-- Where we store mobile resized copies of images -->
   <property name="image_resize_cache_path" type="string" purge="False">/tmp/gomobile_image_cache</property>
+
 
  </object>
 </object>
