@@ -4,14 +4,15 @@
 
 """
 
-__license__ = "GPL 2.1"
-__copyright__ = "2009 Twinapex Research"
+__license__ = "GPL 2"
+__copyright__ = "2010 mFabrik Research Oy"
+__author__ = "Mikko Ohtamaa <mikko@mfabrik.com>"
 
 import logging
 import zope.interface
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer
-from gomobile.mobile.utilities import get_host
+from gomobile.mobile.utilities import get_host, is_numeric_ipv4
 
 from zope.app.component.hooks import getSite
 
@@ -34,7 +35,7 @@ class DefaultMobileRequestDiscriminator(object):
         pass
 
 
-    def isMobileRequest(self, site, request, mobileDomainPrefixes, mobileDomainSuffixes):
+    def isMobileRequest(self, site, request, mobileDomainPrefixes, mobileDomainSuffixes, mobileViaIP):
         """ Determine should this request be rendered in mobile mode. """
 
         # Force mobile mode if incoming device is mobile
@@ -58,6 +59,8 @@ class DefaultMobileRequestDiscriminator(object):
         #
         host = get_host(request)
         
+        
+        
         if host:
 
             host = host.lower()
@@ -65,6 +68,11 @@ class DefaultMobileRequestDiscriminator(object):
             # print "Got host:" + str(host)
 
             host = host.split(":")[0] # Remove port
+
+            # Special rule to use mobiles for LAN/WLAN traffic
+            if mobileViaIP and is_numeric_ipv4(host):
+                return True
+        
 
             # Go through each subdomain name and compare it to mobile markers
             for part in host.split(".")[0:-1]:
@@ -123,6 +131,9 @@ class DefaultMobileRequestDiscriminator(object):
             mobileDomainPrefixes = properties.mobile_domain_prefixes
             mobileDomainSuffixes = properties.mobile_domain_suffixes
             previewDomainPrefixes = properties.preview_domain_prefixes
+            
+            # Migration compatible
+            mobileViaIP = getattr(properties, "serve_mobile_via_ip", False)
 
         except AttributeError:
 
@@ -143,7 +154,7 @@ class DefaultMobileRequestDiscriminator(object):
             flags.append(MobileRequestType.PREVIEW)
             flags.append(MobileRequestType.MOBILE)
         # 2. Test against mobile subdomains
-        elif self.isMobileRequest(context, request, mobileDomainPrefixes, mobileDomainSuffixes):
+        elif self.isMobileRequest(context, request, mobileDomainPrefixes, mobileDomainSuffixes, mobileViaIP):
             flags.append(MobileRequestType.MOBILE)
         # 3. otherwise assume web request
         else:

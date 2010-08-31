@@ -11,6 +11,8 @@ __author_url__ = "http://www.twinapex.com"
 
 import urlparse
 
+import re
+
 import zope.interface
 from zope import schema
 from zope.component import getUtility, queryUtility
@@ -126,5 +128,17 @@ def get_ip(request):
         
     return ip
     
+ipv4_regex_source = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+ipv4_regex = re.compile(ipv4_regex_source)
 
-
+def is_numeric_ipv4(str):
+    """
+    
+    http://answers.oreilly.com/topic/318-how-to-match-ipv4-addresses-with-regular-expressions/
+        
+    @param str: Hostname as a string.
+    
+    @return: True if the given string is numeric IPv4 address
+    """
+    # ^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$
+    return ipv4_regex.match(str)
