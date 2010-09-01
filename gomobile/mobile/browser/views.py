@@ -155,10 +155,18 @@ class FolderListingView(BrowserView):
         # Filter out default content
         default_page_helper = getMultiAdapter((container, self.request), name='default_page')
 
+        portal_state = getMultiAdapter((container, self.request), name='plone_portal_state')
+
+        # Active language
+        language = portal_state.language()
+
         # Return  the default page id or None if not set
         default_page = default_page_helper.getDefaultPage(container)
         
         security_manager = getSecurityManager()
+        
+        meta_types_not_to_list = container.portal_properties.navtree_properties.metaTypesNotToList
+        
 
         def show(item):
             """ Filter whether the user can view a mobile item.
@@ -184,6 +192,17 @@ class FolderListingView(BrowserView):
             # Default page should not appear in the quick listing
             if item.getId() == default_page:
                 return False
+            
+            if item.meta_type in meta_types_not_to_list:
+                return False
+            
+            # Two letter language code
+            item_lang = item.Language()
+            
+            # Empty string makes language netral content
+            if item_lang not in ["", None]:
+                if item_lang != language:
+                    return False
 
             # Note: getExcludeFromNav not necessarily exist on all content types 
             if hasattr(item, "getExcludeFromNav"):                
@@ -221,7 +240,7 @@ class FolderListingView(BrowserView):
 
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
-        # print "Active template id:" + template
+        print "Active template id:" + template
         if template in self.getTemplateIdsNoListing():
             # Listing forbidden by mobile rules
             return None
@@ -235,7 +254,6 @@ class FolderListingView(BrowserView):
         
         state = container.restrictedTraverse('@@plone_portal_state')
                 
-        # 
         items = container.listFolderContents()
 
         items = self.filterItems(container, items)
