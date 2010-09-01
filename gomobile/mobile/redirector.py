@@ -16,7 +16,7 @@ from Products.Five.browser import BrowserView
 
 from zope.app.component.hooks import getSite
 from zope.component import getUtility, queryMultiAdapter, getMultiAdapter
-from OFS.interfaces import IApplication.
+from OFS.interfaces import IApplication
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer, IMobileSiteLocationManager
 
