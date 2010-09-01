@@ -359,6 +359,7 @@ class MobileImageProcessor(object):
         
     def getCachePath(self):
         """
+        @return: FS path where cached resized scales are stored
         """
         image_resize_cache_path = getattr(self.context.portal_properties.mobile_properties, "image_resize_cache_path", DEFAULT_CACHE_PATH)
         return image_resize_cache_path
