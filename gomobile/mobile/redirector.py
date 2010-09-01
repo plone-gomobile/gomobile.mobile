@@ -16,10 +16,12 @@ from Products.Five.browser import BrowserView
 
 from zope.app.component.hooks import getSite
 from zope.component import getUtility, queryMultiAdapter, getMultiAdapter
+from OFS.interfaces import IApplication.
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer, IMobileSiteLocationManager
 
 from mobile.sniffer.utilities import get_user_agent
+
 
 class Redirector(object):
     """
@@ -139,6 +141,11 @@ class Redirector(object):
         context = self.getRealContext()
         if context is None:
             return False
+    
+        if IApplication.providedBy(context):
+            # Do not mess with Zope root
+            return False
+        
         discriminator = getUtility(IMobileRequestDiscriminator)
         modes = discriminator.discriminate(context, self.request)
 
