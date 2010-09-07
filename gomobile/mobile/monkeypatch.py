@@ -163,7 +163,7 @@ def getCookieDomain(request):
         logger.warn("127.0.0.1 mobi.site.foo web.site.foo preview.site.foo")
         logger.warn("..and access site site using fake domain name web.site.foo.")
         logger.warn("Also DO NOT do Zope HTTP Basic Auth, since it is not subdomain aware - use only Plone interface for login")
-        logger.warn("See twinapex.plone.mobile.monkeypatch for more info")
+        logger.warn("See gomobile.mobile.monkeypatch for more info")
 
     if len(domain.split(".")) == 1:
         raise RuntimeError("You need to use subdomain to access the site. E.g. web.localhost instead of localhost")
