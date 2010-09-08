@@ -63,7 +63,8 @@ def check_skin_exists(site, skin_name):
     return skin_name in available 
 
 def get_mobile_skin_name(site, request):
-    """
+    """ 
+    @return: Mobile theme name for a Plone site object
     """
 
     properties = site.portal_properties
@@ -84,8 +85,8 @@ def get_mobile_skin_name(site, request):
         return skin_name
     else:
         # Happens when the site is still being constructed,
-        # or when ZMI interface is accessed
-        logger.debug("Cannot access mobile properties")
+        # or when ZMI interface is accessed,
+        # or on some views which do not travese Plone site.
         return None
     
 
