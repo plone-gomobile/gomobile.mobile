@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.0.2'
+version = '0.9'
 
 setup(name='gomobile.mobile',
       version=version,
@@ -27,6 +27,7 @@ setup(name='gomobile.mobile',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Products.AdvancedQuery', 
           'plone.behavior',
           'plone.directives.form',
           'zope.schema',
