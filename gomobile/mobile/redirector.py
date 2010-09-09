@@ -9,6 +9,7 @@ __copyright__ = "2009 Twinapex Research"
 __author__ = "Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>"
 __author_url__ = "http://www.twinapex.com"
 
+from Acquisition import aq_inner
 
 from datetime import datetime
 
@@ -77,7 +78,9 @@ class Redirector(object):
         Since we are a traversing hook, the context object might be bit heterogenous-
         """ 
         
-        context = self.context.aq_inner
+        
+        
+        context = aq_inner(self.context)
         return context
         
         # TODO: Fix this if there are bad pages
