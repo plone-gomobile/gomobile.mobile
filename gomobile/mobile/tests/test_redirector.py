@@ -39,7 +39,6 @@ class TestRedirector(BaseTestCase):
     def test_redirect_mobile_browser(self):
         self.set_user_agent("mobile")
         redirector = getMultiAdapter((self.portal, self.portal.REQUEST), IMobileRedirector)
-        import pdb ; pdb.set_trace()
         self.assertEqual(redirector.intercept(), True)
 
     def test_redirect_mobile_browser_force_web(self):
