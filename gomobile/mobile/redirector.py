@@ -77,9 +77,10 @@ class Redirector(object):
         Since we are a traversing hook, the context object might be bit heterogenous-
         """ 
         
-        return self.context
+        context = self.context.aq_inner
+        return context
         
-        # TODO: Fix template handling below
+        # TODO: Fix this if there are bad pages
         
         # Crap acquisition magic
         if hasattr(self.context, "aq_parent"):
