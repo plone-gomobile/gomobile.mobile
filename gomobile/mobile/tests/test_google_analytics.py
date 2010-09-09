@@ -27,7 +27,7 @@ class TestGoogleAnalytics(BaseTestCase):
         
         BaseTestCase.afterSetUp(self)
         
-        self.portal.portal_properties.mobile_properties.tracker_name = "google"
+        self.portal.portal_properties.mobile_properties.tracker_name = "google-mobile"
         
         # This id is updated in GA, manually check whether it gets hits or no
         self.portal.portal_properties.mobile_properties.tracking_id = "MO-8819100-7"
@@ -44,6 +44,25 @@ class TestGoogleAnalytics(BaseTestCase):
         self.assertTrue("MO-" in code)
         
         # NOTE: Manually checked whether tracker statistics have been updated
+
+
+    def test_javascript(self):
+        """ Test presence of Javascript based tracking. 
+        
+        """
+
+        self.portal.portal_properties.mobile_properties.tracker_name = "google-web"
+        
+        # This id is updated in GA, manually check whether it gets hits or no
+        self.portal.portal_properties.mobile_properties.tracking_id = "UA-8819100-7"
+
+
+        view = getMultiAdapter((self.portal, self.portal.REQUEST), name="mobiletracker")
+        code = view()
+        self.assertTrue("UA-" in code)
+        
+        # NOTE: Manually checked whether tracker statistics have been updated
+    
     
     def test_bad_tracker_id(self):
         """

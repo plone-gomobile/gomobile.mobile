@@ -7,12 +7,12 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="gomobile.mobile">
+    
+    <includeDependencies package="." />
 
     <include package="plone.behavior" file="meta.zcml" />
 
     <include package="plone.directives.form" file="meta.zcml" />
-    <include package="plone.directives.form" />
-    <include package="plone.postpublicationhook" />
 
     <include package=".browser" />
     <include package=".trackers" />

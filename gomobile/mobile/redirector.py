@@ -72,13 +72,21 @@ class Redirector(object):
         return "force_web" in self.request.form
 
     def getRealContext(self):
-        """
-        """
+        """ Get contentish context for the context.
+        
+        Since we are a traversing hook, the context object might be bit heterogenous-
+        """ 
+        
+        return self.context
+        
+        # TODO: Fix template handling below
+        
         # Crap acquisition magic
         if hasattr(self.context, "aq_parent"):
             return self.context.aq_parent
         else:
             return None # This context lacks acquisition chain, happens 
+        
     def forceWeb(self):
         """
         Set a cookie which forces the mobile browser to stay on the web site.
@@ -138,12 +146,14 @@ class Redirector(object):
 
         @return: True if redirect has been made
         """
+        
+        # This is needed for templates without views 
         context = self.getRealContext()
         if context is None:
             return False
     
         if IApplication.providedBy(context):
-            # Do not mess with Zope root
+            # Do not intercept requests going to the Zope management interface root (one level above Plone sites)
             return False
         
         discriminator = getUtility(IMobileRequestDiscriminator)
