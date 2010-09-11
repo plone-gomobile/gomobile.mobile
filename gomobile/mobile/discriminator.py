@@ -1,6 +1,8 @@
 """
 
-    Code for determining whether requests are mobile or web.
+    Code for determining whether requests are mobile or web HTTP requests and how user interface should be rendered.
+    
+    Go Mobile for Plone project home page: http://webandmobile.mfabrik.com
 
 """
 
@@ -11,12 +13,14 @@ __author__ = "Mikko Ohtamaa <mikko@mfabrik.com>"
 import logging
 import zope.interface
 
+from Products.CMFCore.utils import getToolByName
+
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer
 from gomobile.mobile.utilities import get_host, is_numeric_ipv4
 
 from zope.app.component.hooks import getSite
 
-logger = logging.getLogger("Plone")
+logger = logging.getLogger("gomobile.discriminator")
 
 class DefaultMobileRequestDiscriminator(object):
     """ Determine which are web, mobile, mobile preview and mobile content admin HTTP requests.
@@ -36,14 +40,10 @@ class DefaultMobileRequestDiscriminator(object):
 
 
     def isMobileRequest(self, site, request, mobileDomainPrefixes, mobileDomainSuffixes, mobileViaIP):
-        """ Determine should this request be rendered in mobile mode. """
-
-        # Force mobile mode if incoming device is mobile
-        #ua = getMultiAdapter((site, request), IUserAgentSniffer)
-        #if ua:
-        #    # This attribute is supported by pywurlf only
-        #    if ua.get("is_wireless_device") == True:
-        #        return True
+        """ Determine should this request be rendered in mobile mode. 
+        
+        @return: True or False
+        """
 
         #
         # Special HTTP GET query parameter telling
@@ -59,8 +59,7 @@ class DefaultMobileRequestDiscriminator(object):
         #
         host = get_host(request)
         
-        
-        
+    
         if host:
 
             host = host.lower()
@@ -90,7 +89,7 @@ class DefaultMobileRequestDiscriminator(object):
     def isPreviewRequest(self, site, request, prefixes):
         """ Determine should this request be rendered in mobile mode.
 
-
+        @return: True or False
         """
 
         #
@@ -104,7 +103,7 @@ class DefaultMobileRequestDiscriminator(object):
                     return True
 
         #
-        # Special HTTP GET parameter tellign
+        # Special HTTP GET parameter telling
         # that render this as a preview request
         #
         if request.get("view_mode") == "mobile":
@@ -116,7 +115,7 @@ class DefaultMobileRequestDiscriminator(object):
     def isAdminRequest(self, site, request):
         """ By default, assume all logged in users are admins.
         """
-        return not site.portal_membership.isAnonymousUser()
+        return not getToolByName(site, 'portal_membership').isAnonymousUser()
 
     def discriminate(self, context, request):
 
@@ -124,7 +123,10 @@ class DefaultMobileRequestDiscriminator(object):
 
         # Load settings from database
         try:
-            properties = context.portal_properties.mobile_properties
+            
+            portal_properties = getToolByName(context, "portal_properties")
+            
+            properties = portal_properties.mobile_properties
 
             # It is possible to have several mobile domain prefixes,
             # but in the default config there is just one
@@ -141,8 +143,15 @@ class DefaultMobileRequestDiscriminator(object):
             # or during the site launch. The loading order prevents
             # us to access mobile_properties here, so it is
             # safe to assume this was not a mobile request
+            
+            # UTF-8 issues my ensure
+            try:
+                context_desc = str(context)
+            except:
+                context_desc= ""
 
-            logger.warn("Cannot access mobile properties")
+            logger.info("Cannot access mobile properties, having context:" + context_desc)
+            
             # (Because monkey-patch intercepts admin interface requests also
             # we need to make sure no exceptio gets through)
             flags.append(MobileRequestType.WEB)
