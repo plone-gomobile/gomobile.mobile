@@ -1,11 +1,20 @@
 """
-    Python monket patched code to make twinapex.plone.mobile work properly.
+    Python monkey patched code to make gomobile.mobile apply mobile theme when needed.
+
+    http://mfabrik.com
 
 """
+
+__author__ = "Mikko Ohtamaa <mikko@mfabrik.com>"
+__docformat__ = "epytext"
+__copyright__ = "2009-2010 mFabrik Research Oy"
+__license__ = "GPL 2"
+
 from base64 import encodestring, decodestring
 from urllib import quote, unquote
 import urlparse
 import logging
+
 
 from zope.component import getUtility, queryUtility
 from zope.component.interfaces import ComponentLookupError
