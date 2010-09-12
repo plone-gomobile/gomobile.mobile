@@ -115,7 +115,14 @@ class DefaultMobileRequestDiscriminator(object):
     def isAdminRequest(self, site, request):
         """ By default, assume all logged in users are admins.
         """
-        return not getToolByName(site, 'portal_membership').isAnonymousUser()
+        
+        try:
+            portal_membership = getToolByName(site, 'portal_membership')
+        except AttributeError:
+            # Can't access member properties
+            return False
+            
+        return not portal_membership.isAnonymousUser()
 
     def discriminate(self, context, request):
 
