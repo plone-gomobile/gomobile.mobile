@@ -166,8 +166,9 @@ class FolderListingView(BrowserView):
         security_manager = getSecurityManager()
         
         meta_types_not_to_list = container.portal_properties.navtree_properties.metaTypesNotToList
-        
 
+        current_content = self.context.aq_inner
+        
         def show(item):
             """ Filter whether the user can view a mobile item.
             
@@ -175,7 +176,6 @@ class FolderListingView(BrowserView):
 
             @return: True if item should be visible in the listing
             """
-        
 
             # Check from mobile behavior should we do the listing
             try:
@@ -194,6 +194,10 @@ class FolderListingView(BrowserView):
                 return False
             
             if item.meta_type in meta_types_not_to_list:
+                return False
+            
+            if item == current_content:
+                # Do not show the currently viewed page itself in the folder listing
                 return False
             
             # Two letter language code
@@ -237,6 +241,7 @@ class FolderListingView(BrowserView):
             return None
 
         container = self.getListingContainer()
+    
 
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
