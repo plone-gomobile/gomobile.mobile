@@ -3,14 +3,14 @@
     Response header manipulation after the response is complete.
 
     
-
+    http://mfabrik.com
+    
 """
 
-__author__  = 'Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>'
-__author_url__ = "http://www.twinapex.com"
+__author__  = 'Mikko Ohtamaa <mikko.ohtamaa@mfabrik.com>'
 __docformat__ = 'epytext'
-__copyright__ = "2009 Twinapex Research"
-__license__ = "GPL v2"
+__copyright__ = "2009-2010 mFabrik Research Oy"
+__license__ = "GPL 2"
 
 from zope.interface import Interface
 from zope.component import adapter, getUtility, getMultiAdapter
