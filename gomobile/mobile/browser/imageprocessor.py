@@ -42,6 +42,7 @@ from mobile.htmlprocessing.transformers.imageresizer import ImageResizer
 from gomobile.mobile.interfaces import IMobileImageProcessor, IUserAgentSniffer
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType
 from gomobile.imageinfo.interfaces import IImageInfoUtility
+from gomobile.mobile.utilities import getMobileProperties
 
 # To not exceed this resize dimensions
 safe_width = 1000
@@ -647,6 +648,11 @@ class ClearCacheView(BrowserView):
             raise Unauthorized("Wrong secret:" + secret) 
         
         resizer.cache.invalidate()
+        
+        properties = getMobileProperties(self.context.aq_inner, self.request)
+        cache_folder = properties.image_resize_cache_path
+        
+        return "Cache has been cleared:" + cache_folder
         
 class IHTMLImageRewriter(zope.interface.Interface):
     """

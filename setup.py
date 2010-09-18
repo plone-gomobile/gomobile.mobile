@@ -41,5 +41,6 @@ setup(name='gomobile.mobile',
       ],
       entry_points="""
       # -*- Entry points: -*-
+        
       """,
       )

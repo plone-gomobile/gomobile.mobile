@@ -80,12 +80,16 @@ class MobileUtility(object):
         return is_low_end_phone(request)
 
 
-def getCachedMobileProperties(context, request):
+
+def getMobileProperties(context, request):
     """ Cached access to mobile properties of the site.
 
     Will look up mobile properties from the database or return the cached instance.
     """
     return context.portal_properties.mobile_properties
+
+# BBB
+getCachedMobileProperties = getMobileProperties
 
 def get_host(request):
     """ Helper function to extract host name from HTTP request in virtual host compatible way.

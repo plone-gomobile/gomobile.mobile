@@ -67,6 +67,8 @@ class MobileTool(BrowserView):
     """ A context-aware wrapper for mobile site utilities.
 
     Provide convience functions for page templates to deal with mobile HTTP requests.
+    This is exposed to page template as @@mobile_tool view and page templates
+    can make conditional assumptions based on the provided tools and information.
     """
 
     def __init__(self, context, request):
@@ -267,12 +269,12 @@ class FolderListingView(BrowserView):
 
     def getItems(self):
         """
-        @return: Iterable of content objects. Never return None.
+        @return: Items as a list.
         """
         items = self.constructListing()
         if items == None:
             return []
-        return items
+        return list(items)
     
 class PhoneNumberFormatterView(BrowserView):
     """

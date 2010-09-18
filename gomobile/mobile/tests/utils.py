@@ -11,7 +11,6 @@ __copyright__ = "2009 Twinapex Research"
 import zope.interface
 
 from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType
-
 from gomobile.mobile.browser.views import FolderListingView
 
 MOBILE_USER_AGENT="Mozilla/5.0 (SymbianOS/9.2; U; Series60/3.1 NokiaN95/11.0.026; Profile MIDP-2.0 Configuration/CLDC-1.1) AppleWebKit/413 (KHTML, like Gecko) Safari/413"
@@ -150,3 +149,7 @@ class UABrowser(browser.Browser):
         # override the http handler class
         mech_browser.handler_classes["http"] = PublisherHTTPHandler
         browser.Browser.__init__(self, url=url, mech_browser=mech_browser)
+        
+        
+        
+
