@@ -30,7 +30,7 @@ from gomobile.mobile.interfaces import IMobileUtility, IMobileRequestDiscriminat
 from gomobile.mobile.interfaces import IMobileContentish
 from gomobile.mobile.behaviors import IMobileBehavior
 
-from mobile.heurestics.simple import format_phone_number_href
+from mobile.heurestics.simple import format_phone_number_href, is_javascript_supported
 
 grok.templatedir("templates")
 
@@ -110,7 +110,9 @@ class MobileTool(BrowserView):
         """ @return True: If the user is visiting the site using a crappy mobile phone browser """
         return self.getUtility().isLowEndPhone(self.request)
 
-
+    def shouldRunJavascript(self):
+        """ @return True: If the user is visiting the site using a crappy mobile phone browser """
+        return is_javascript_supported(self.request)
 
 
 class FolderListingView(BrowserView):
@@ -244,14 +246,12 @@ class FolderListingView(BrowserView):
 
         container = self.getListingContainer()
     
-
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
         print "Active template id:" + template
         if template in self.getTemplateIdsNoListing():
             # Listing forbidden by mobile rules
             return None
-
 
         portal_properties = getToolByName(container, "portal_properties")
         navtree_properties = portal_properties.navtree_properties
@@ -260,7 +260,8 @@ class FolderListingView(BrowserView):
             return None
         
         state = container.restrictedTraverse('@@plone_portal_state')
-                
+            
+        print "Performing mobile folder listing"
         items = container.listFolderContents()
 
         items = self.filterItems(container, items)

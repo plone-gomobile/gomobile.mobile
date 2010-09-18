@@ -27,7 +27,10 @@ from gomobile.mobile.interfaces import IMobileUtility
 from mfabrik.behaviorutilities.volatilecontext import AnnotationPersistentFactory, VolatileContext 
 
 class MobileUtility(object):
-    """ Zope 3 utility for mobile actions. """
+    """ Zope 3 utility for mobile actions. 
+    
+    TODO: DONT USE. Get rid of this and use @@mobile_tool view.
+    """
 
     zope.interface.implements(IMobileUtility)
 
@@ -78,7 +81,6 @@ class MobileUtility(object):
         Note that Opera Mini browser works smoothly on low end phones too...
         """
         return is_low_end_phone(request)
-
 
 
 def getMobileProperties(context, request):
