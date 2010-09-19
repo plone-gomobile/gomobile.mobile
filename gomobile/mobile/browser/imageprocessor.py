@@ -266,7 +266,7 @@ class MobileImageProcessor(object):
         if url.startswith("http://"):
             # external URL
             url = url
-        elif url.startswith("++resource"):
+        elif "++resource" in url:
             # Zope 3 resources are mapped to the site root
             url = url
         else:
@@ -280,20 +280,27 @@ class MobileImageProcessor(object):
                                             
                 imageObject = context.unrestrictedTraverse(url)
                 
-                physicalPath = imageObject.getPhysicalPath() # This path is relative to Zope Application server root
-#                virtualPath = self.request.physicalPathToVirtualPath(physicalPath)
+                if ("FileResource" in imageObject.__class__.__name__):
+                    # Five mangling compatible way to detect image urls pointing to the resource directory
+                    # ...but this should not happen if images are accessed using ++resource syntax
+                    return url
+                elif hasattr(imageObject, "getPhysicalPath"):
+                    physicalPath = imageObject.getPhysicalPath() # This path is relative to Zope Application server root
+#                
+                    virtualPath = self.request.physicalPathToVirtualPath(physicalPath)
                 
-                # TODO: Assume Plone site is Zope app top level root object here
-                
-                # empty root node, site node
-                assert len(physicalPath) > 2
-                                
-                virtualPath = physicalPath[2:] 
-                
-                virtualPath = self.removeScale(virtualPath)                
-                
-                url = "/".join(virtualPath)
-                                                
+                    # TODO: Assume Plone site is Zope app top level root object here
+                    
+                    # empty root node, site node
+                    assert len(physicalPath) > 2
+                                    
+                    virtualPath = physicalPath[2:] 
+                    
+                    virtualPath = self.removeScale(virtualPath)                
+                    
+                    url = "/".join(virtualPath)
+                else:
+                    raise RuntimeError("Unknown traversable image object:" + str(imageObject))
         return url
         
     def getImageDownloadURL(self, url, properties={}):
