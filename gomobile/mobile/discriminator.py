@@ -157,7 +157,7 @@ class DefaultMobileRequestDiscriminator(object):
             except:
                 context_desc= ""
 
-            logger.info("Cannot access mobile properties, having context:" + context_desc)
+            logger.debug("Cannot access mobile properties, having context:" + context_desc)
             
             # (Because monkey-patch intercepts admin interface requests also
             # we need to make sure no exceptio gets through)
