@@ -21,7 +21,7 @@ from gomobile.mobile.tests.utils import GOOGLEBOT_MOBILE_USER_AGENT, UABrowser
 
 MOBILE_DOCTYPE = '<?xml version="1.0" encoding="utf-8" ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">'
 
-class TestContentType(BaseFunctionalTestCase):
+class TestMobileContentType(BaseFunctionalTestCase):
     """ Check that the content type is detected correctly for mobile.
     
     NOTE: Zope testbrowser does not support post-publication hook,
@@ -140,5 +140,5 @@ class TestContentType(BaseFunctionalTestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestContentType))
+    suite.addTest(unittest.makeSuite(TestMobileContentType))
     return suite
