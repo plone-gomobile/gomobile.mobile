@@ -27,6 +27,7 @@ class TestMobileContentType(BaseFunctionalTestCase):
     NOTE: Zope testbrowser does not support post-publication hook,
     thus we call it manually.
     """
+
     
 
     def test_content_type(self):

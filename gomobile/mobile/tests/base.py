@@ -57,6 +57,25 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
     """ This is a base class for functional test cases for your custom product.
     """
 
+    def installMobileTheme(self, name):
+        """
+        This will force Go Mobile Default Theme to be active
+        as it seems that if other theme packages are present
+        when running tests over many packages,
+        the functional test state is not reset between
+        packages and we have crap as mobile_properties.mobile_skin name
+        instead of Go Mobile Default Theme
+        TODO: This could be fixed using test layers?
+        """
+        
+        qi = self.portal.portal_quickinstaller
+        
+        try:
+            qi.uninstallProducts([name])
+        except:
+            pass
+        qi.installProduct(name)
+
     def afterSetUp(self):
         """
         Show errors in console by monkey patching site error_log service
@@ -78,9 +97,14 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
         from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
         SiteErrorLog.raising = raising
         
+        # Hack to fix test running on multiple theme test cases subsequent
+        #self.installMobileTheme("Go Mobile Default Theme")
+        #self.portal.portal_properties.mobile_properties.mobile_skin = "Go Mobile Default Theme"
+        
         # skin manager must update active skin for the request
         self._refreshSkinData()
 
+        
 
     def loginAsAdmin(self):
         """ Perform through-the-web login.

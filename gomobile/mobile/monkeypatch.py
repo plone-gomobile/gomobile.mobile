@@ -89,6 +89,11 @@ def get_mobile_skin_name(site, request):
         
         #print "Got skin:" + skin_name
         if not check_skin_exists(site, skin_name):
+           
+            if skin_name == "No Selection Made": 
+                # Uninstalled mobile theme marker string
+                return None
+            
             raise RuntimeError("Current selected mobile theme " + skin_name + " is not installed on the site. Please install a mobile theme add-on using Add On installer in site setup.")
         
         return skin_name

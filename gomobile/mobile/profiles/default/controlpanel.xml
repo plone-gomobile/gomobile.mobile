@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="gomobile.mobile">
+
+    <configlet
+        title="Mobile settings"
+        action_id="gomobile.mobile.settings"
+        appId="gomobile.mobile"
+        category="Products"
+        condition_expr=""
+        url_expr="string:${portal_url}/portal_properties/mobile_properties/manage_workspace"
+        icon_expr="string:http://mfabrik.com/++resource++plonetheme.mfabrik/favicon-24.png"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Manage portal</permission>
+    </configlet>
+
+</object>
