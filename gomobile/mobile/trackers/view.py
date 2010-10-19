@@ -47,11 +47,13 @@ class MobileTracker(grok.CodeView):
 
         if not trackingId:
             trackingId = mobile_properties.tracking_id.strip()
-
+            
         trackerName = mobile_properties.tracker_name.strip()
-        
+                    
         # TODO: Migration hack - may be removed after 1.0 has been released
         debug = getattr(mobile_properties, "tracker_debug", None)
+        
+        print "Tracking:" + str(trackerName)
 
         if trackingId == "":
             # Assume empty input string equals to not set

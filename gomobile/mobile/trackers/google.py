@@ -42,10 +42,11 @@ class GoogleAnalyticsMobileTracker(object):
         url = ga.track_page_view(self.request, self.request.response, self.request.environ, trackingId, debug=debug, synchronous=False)
                
         # return '<!-- GA --> <img alt="" src="%s" />' % url # Tracker marker, does really nothing
+        import pdb ; pdb.set_trace()
         if url:
             return '<img class="google-analytics" alt="" src="%s" />' % url # Tracker marker, does really nothing
         else:
-            return ""
+            return '<img class="google-analytics google-analytics-broken" alt="" src="" />'
 
 
 

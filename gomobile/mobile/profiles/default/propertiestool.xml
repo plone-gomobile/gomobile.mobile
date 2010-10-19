@@ -85,7 +85,7 @@
   <!-- User mobile analytics backend name,
 
       See gomobile.mobile.interfaces.IMobileTracker -->
-  <property name="tracker_name" type="string" purge="False"></property>
+  <property name="tracker_name" type="string" purge="False">plone-default</property>
 
 
   <!-- Input your tracking code if mobile analytics service is used.
