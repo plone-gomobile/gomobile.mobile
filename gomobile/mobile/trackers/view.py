@@ -53,7 +53,7 @@ class MobileTracker(grok.CodeView):
         # TODO: Migration hack - may be removed after 1.0 has been released
         debug = getattr(mobile_properties, "tracker_debug", None)
         
-        print "Tracking:" + str(trackerName)
+        #print "Tracking:" + str(trackerName)
 
         if trackingId == "":
             # Assume empty input string equals to not set
