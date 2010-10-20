@@ -67,7 +67,7 @@ def get_suggested_content_type(request):
 
 def reset_content_type_for_mobile(request, response):
     """
-    http://www.google.com/support/webmasters/bin/answer.py?hl=fi&answer=40348
+    http://www.google.com/support/webmasters/bin/answer.py?answer=40348
     """    
     ct, doctype = get_content_type_and_doctype(request)
     response.setHeader("content-type", ct)
