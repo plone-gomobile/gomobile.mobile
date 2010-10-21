@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.3 - 0.9
+------------
+
+* Major rework of the product [miohtama]
+
 0.0.2 - 0.0.3
 -------------
 
