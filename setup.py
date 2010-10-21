@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.9'
+version = '0.9.1'
 
 setup(name='gomobile.mobile',
       version=version,
-      description="GoMobile is a Plone add-on product to turn Plone to converged web and mobile content management system",
+      description="Core package for mobilizing Plone CMS",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
