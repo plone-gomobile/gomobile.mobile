@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.9.0 - 0.9.1
+-------------
+
+* Added zcml autoinclude [miohtama]
+
 0.0.3 - 0.9
 ------------
 
