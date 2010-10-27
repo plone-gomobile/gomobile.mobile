@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.9.1'
+version = '0.9.2'
 
 setup(name='gomobile.mobile',
       version=version,
@@ -16,9 +16,9 @@ setup(name='gomobile.mobile',
         'Framework :: Plone',
         'Intended Audience :: Developers',
         ],
-      keywords='mobile cms plone multichannel',
-      author='mFabrik Research Oy',
-      author_email='mikko.ohtamaa@twinapex.com',
+      keywords='mobile sniffer cms WAP plone',
+      author='mFabrik Reseacrh Oy',
+      author_email='research@mfabrik.com',
       url='http://webandmobile.mfabrik.com',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
@@ -34,7 +34,6 @@ setup(name='gomobile.mobile',
           'zope.interface',
           'zope.component',
           'plone.postpublicationhook',
-          'gomobile.imageinfo',
           'httplib2',
           'uuid',
           # -*- Extra requirements: -*-

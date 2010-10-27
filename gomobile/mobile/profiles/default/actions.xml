@@ -33,6 +33,46 @@
   </object>
   
  </object>
+ 
+  <object name="mobile_site_actions" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="search" meta_type="CMF Action">
+   <property name="title">Search</property>
+   <property name="description">Search this site</property>
+   <property name="url_expr">string:${portal_url}/search</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/++resource++gomobiletheme.basic/24/actions/search.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions"/>
+   <property name="visible">True</property>
+  </object>
+  <object name="contact" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Contact</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${globals_view/navigationRootUrl}/contact-info</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/++resource++gomobiletheme.basic/24/actions/contact.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="about" meta_type="CMF Action">
+   <property name="title">About</property>
+   <property name="description">About this site</property>
+   <property name="url_expr">string:${portal_url}/about</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/++resource++gomobiletheme.basic/24/actions/about.png</property>
+   <property name="available_expr"></property>
+   <property name="permissions"/>
+   <property name="visible">False</property>
+  </object>
+ </object>
 
 </object>
  
