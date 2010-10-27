@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.9.2'
+version = '0.9.3'
 
 setup(name='gomobile.mobile',
       version=version,
@@ -34,6 +34,7 @@ setup(name='gomobile.mobile',
           'zope.interface',
           'zope.component',
           'plone.postpublicationhook',
+          'plone.app.z3cform',
           'httplib2',
           'uuid',
           # -*- Extra requirements: -*-
