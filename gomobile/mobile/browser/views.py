@@ -1,5 +1,12 @@
-__license__ = "GPL 2.1"
-__copyright__ = "2009 Twinapex Research"
+"""
+
+    Various mobile HTTP request handlers and context depending utilities.
+
+"""
+
+__license__ = "GPL 2"
+__copyright__ = "2010 mFabrik Research Oy"
+__author__ = "Mikko Ohtamaa <mikko@mfabrik.com>"
 
 import urllib
 
