@@ -33,7 +33,7 @@ class TestSitemap(BaseFunctionalTestCase):
         
         url = self.portal.absolute_url() + "/@@mobile_sitemap?mode=mobile&language=en&uncompressed"
         self.browser.open(url)
-        print self.browser.contents
+        #print self.browser.contents
         
         self.assertTrue('xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"' in self.browser.contents)        
         self.assertTrue("<mobile:mobile/>" in self.browser.contents)
