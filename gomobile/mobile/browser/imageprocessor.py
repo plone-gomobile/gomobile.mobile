@@ -133,7 +133,9 @@ class FSCache(object):
         """ Perform final cache set as atomic FS operation.
         """
         logger.debug("Created image cache file:" + full)
-        os.rename(temp, full)
+        #os.rename(temp, full)
+        # Fix for freebsd http://code.google.com/p/plonegomobile/issues/detail?id=9
+        shutil.move(temp, full)
         
     def set(self, key, value):
         """
