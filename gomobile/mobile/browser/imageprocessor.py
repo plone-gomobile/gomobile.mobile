@@ -21,19 +21,18 @@ from cStringIO import StringIO
 
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
-from zope.app.component.hooks import getSite
 import zope.interface
 
 from zope.interface import implements
-from zope.component import getMultiAdapter, getUtility
+from zope.component import getMultiAdapter, getUtility, queryUtility
 from zope.app.container.interfaces import INameChooser
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.CMFPlone.browser import ploneview
 from Products.CMFCore.utils import getToolByName
-from zope.component import getUtility, queryUtility
 from zope.app.component.hooks import getSite
+from plone.app.redirector.storage import RedirectionStorage
 
 from mobile.sniffer.utilities import get_user_agent, get_user_agent_hash
 
@@ -171,7 +170,7 @@ class HTMLMutator(ImageResizer):
         
     def rewrite(self, url):
         return self.rewriteCallback(url)
-        
+
 class MobileImageProcessor(object):
     
     zope.interface.implements(IMobileImageProcessor)
@@ -261,6 +260,10 @@ class MobileImageProcessor(object):
         @param url: Image URL or URI as a string
         """
         
+        rs = RedirectionStorage()
+        if rs.has_path(url):
+            url = rs.get(url)
+        
         
         # Make sure we are traversing the context chain without view object messing up things
         context = self.context.aq_inner
@@ -275,12 +278,23 @@ class MobileImageProcessor(object):
             # Map the context path to the site root
             if url.startswith("/"):
                 # Pass URL to resizer view relocated to the site root
+                
                 url = url[1:]
             else:
                 # The URL is relative to the context path
                 # Map URL to be relative to the site root
                                             
-                imageObject = context.unrestrictedTraverse(url)
+                site = getSite()
+                
+                try:
+                    imageObject = context.unrestrictedTraverse(url)
+                except Unauthorized:
+                    # The parent folder might be private and the image public,
+                    # in which case we should be able to view the image after all.
+                    parent_path = '/'.join(url.split('/')[:-1])
+                    image_path = url.split('/')[-1]
+                    parent = site.unrestrictedTraverse(parent_path)
+                    imageObject = parent.restrictedTraverse(image_path)
                 
                 if ("FileResource" in imageObject.__class__.__name__):
                     # Five mangling compatible way to detect image urls pointing to the resource directory
