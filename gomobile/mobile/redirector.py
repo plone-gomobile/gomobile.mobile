@@ -2,12 +2,13 @@
 
     Redirect requests arriving to web site to the mobile site.
 
+    http://webandmobile.mfabrik.com
+
 """
 
 __license__ = "GPL 2"
-__copyright__ = "2009 Twinapex Research"
-__author__ = "Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>"
-__author_url__ = "http://www.twinapex.com"
+__copyright__ = "2009-2010 mFabrik Research Oy"
+__author__ = "Mikko Ohtamaa <mikko.ohtamaa@mfabrik.com>"
 
 from Acquisition import aq_inner
 
@@ -19,7 +20,7 @@ from zope.app.component.hooks import getSite
 from zope.component import getUtility, queryMultiAdapter, getMultiAdapter
 from OFS.interfaces import IApplication
 
-from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer, IMobileSiteLocationManager
+from gomobile.mobile.interfaces import IMobileRequestDiscriminator, MobileRequestType, IUserAgentSniffer, IMobileSiteLocationManager, IMobileLayer, IGoMobileInstalled
 
 from mobile.sniffer.utilities import get_user_agent
 
@@ -109,7 +110,15 @@ class Redirector(object):
         
         """
         context = self.getRealContext()
-        location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
+        
+        try:
+            location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
+        except:
+            # XXX: gomobile.mobile is not installed
+            # Should check for IGoMobileInstalled interface, but support is not yet enabled
+            # - see intercept()
+            return
+            
         new_url = location_manager.rewriteURL(url, media_type)
         
         if query_string != "":
@@ -150,6 +159,13 @@ class Redirector(object):
 
         @return: True if redirect has been made
         """
+        
+        # XXX: Enable this later
+        # Abort if gomobile.mobile is not installed
+        # - detect by browserlayers.xml 
+        #if not IGoMobileInstalled.providedBy(self.request):
+        #    return False
+        
         
         # This is needed for templates without views 
         context = self.getRealContext()

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.9.4 - current
+----------------
+
+* Fix not to fail with mobile redirects if gomobile.mobile is not installed [miohtama]
+
 0.9.3 - 0.9.4
 ----------------
 
