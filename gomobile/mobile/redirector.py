@@ -111,13 +111,7 @@ class Redirector(object):
         """
         context = self.getRealContext()
         
-        try:
-            location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
-        except:
-            # XXX: gomobile.mobile is not installed
-            # Should check for IGoMobileInstalled interface, but support is not yet enabled
-            # - see intercept()
-            return
+        location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
             
         new_url = location_manager.rewriteURL(url, media_type)
         
@@ -171,6 +165,15 @@ class Redirector(object):
         context = self.getRealContext()
         if context is None:
             return False
+        
+        try:
+            location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
+        except:
+            # XXX: gomobile.mobile is not installed
+            # Should check for IGoMobileInstalled interface, but support is not yet enabled
+            # - see intercept()
+            return False
+
     
         if IApplication.providedBy(context):
             # Do not intercept requests going to the Zope management interface root (one level above Plone sites)
