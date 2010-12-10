@@ -2,6 +2,7 @@ __license__ = "GPL 2"
 __copyright__ = "2009 Twinapex Research"
 
 import logging
+import re
 import urlparse
 
 import zope.interface
@@ -11,6 +12,9 @@ from gomobile.mobile.interfaces import MobileRequestType
 from gomobile.mobile.interfaces import IMobileSiteLocationManager
 
 logger = logging.getLogger("Plone")
+# Roughly match ip address.  Taken from
+# http://www.regular-expressions.info/examples.html
+IP_ADDRESS_PATTERN = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b')
 
 
 class DomainNameBasedMobileSiteLocationManager(object):
@@ -103,6 +107,9 @@ class DomainNameBasedMobileSiteLocationManager(object):
 
         properties = self.properties
         if self.properties is None:
+            return domain
+        if IP_ADDRESS_PATTERN.match(domain):
+            # m.127.0.0.1 makes no sense
             return domain
         if mode == MobileRequestType.MOBILE:
             # Use first prefix on the list when rewriting

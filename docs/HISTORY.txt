@@ -4,6 +4,9 @@ Changelog
 0.9.4 - current
 ----------------
 
+* Do not try to rewrite an ip address into something like m.127.0.0.1.
+  [maurits]
+
 * In the redirector: when the url is the same as the rewritten url, do
   not redirect, as you will go arond in a circle.
   [maurits]
