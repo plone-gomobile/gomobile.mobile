@@ -4,6 +4,10 @@ Changelog
 0.9.4 - current
 ----------------
 
+* Fixed "NameError: global name 'domain_rot' is not defined" when
+  trying to logout using manage_zmi_logout (and possibly elsewhere).
+  [maurits]
+
 * Fix not to fail with mobile redirects if gomobile.mobile is not installed [miohtama]
 
 0.9.3 - 0.9.4

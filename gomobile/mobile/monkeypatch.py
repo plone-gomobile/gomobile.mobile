@@ -185,7 +185,7 @@ def getCookieDomain(request):
 
     domain_root = ".".join(domain.split(".")[1:])
 
-    return "." + domain_rot
+    return "." + domain_root
 
 
 def updateCredentials(self, request, response, login, new_password):
