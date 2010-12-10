@@ -4,6 +4,11 @@ Changelog
 0.9.4 - current
 ----------------
 
+* Avoid some possible problems in locationmanager when our property
+  sheet is not available.
+  Refs http://code.google.com/p/plonegomobile/issues/detail?id=14
+  [maurits]
+
 * Do not fail with an IndexError when trying to get the first
   mobile_domain_prefix or preview_domain_prefix.  Fall back to the
   current domain then.

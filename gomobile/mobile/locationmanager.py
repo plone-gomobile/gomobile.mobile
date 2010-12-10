@@ -52,8 +52,10 @@ class DomainNameBasedMobileSiteLocationManager(object):
             return None
 
         # Load config from the database
-        properties = site.portal_properties.mobile_properties
-        return properties
+        if hasattr(site.portal_properties, "mobile_properties"):
+            return site.portal_properties.mobile_properties
+        # We implicitly return None here
+        logger.warn("No mobile_properties found.")
 
     def getBaseDomainName(self, domain):
         """ Get the domain name with all unnecessary prefixes and
@@ -71,6 +73,8 @@ class DomainNameBasedMobileSiteLocationManager(object):
         """
 
         properties = self.properties
+        if self.properties is None:
+            return domain
         parts = domain.split(".")
 
         all_subdomain_prefixes = properties.mobile_domain_prefixes + \
@@ -98,6 +102,8 @@ class DomainNameBasedMobileSiteLocationManager(object):
         """
 
         properties = self.properties
+        if self.properties is None:
+            return domain
         if mode == MobileRequestType.MOBILE:
             # Use first prefix on the list when rewriting
             if properties.mobile_domain_prefixes:
