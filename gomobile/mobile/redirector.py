@@ -10,6 +10,8 @@ __license__ = "GPL 2"
 __copyright__ = "2009-2010 mFabrik Research Oy"
 __author__ = "Mikko Ohtamaa <mikko.ohtamaa@mfabrik.com>"
 
+import logging
+
 from Acquisition import aq_inner
 
 from datetime import datetime
@@ -23,6 +25,8 @@ from gomobile.mobile.interfaces import (
     IMobileSiteLocationManager)
 
 from mobile.sniffer.utilities import get_user_agent
+
+logger = logging.getLogger('gomobile.mobile')
 
 
 class Redirector(object):
@@ -110,6 +114,7 @@ class Redirector(object):
 
         @param media_type: Target media type. "www" or "mobile"
 
+        @return: True if redirect has been made
         """
         context = self.getRealContext()
 
@@ -117,6 +122,11 @@ class Redirector(object):
             (context, self.request), IMobileSiteLocationManager)
 
         new_url = location_manager.rewriteURL(url, media_type)
+        if url == new_url:
+            # No change, so do not redirect, otherwise you go around
+            # in circles.
+            logger.info('NOT redirecting')
+            return False
 
         if query_string != "":
             new_url += "?" + query_string
@@ -133,6 +143,8 @@ class Redirector(object):
             new_url += "force_web"
 
         self.request.response.redirect(new_url)
+        # Signal that a redirect has happened
+        return True
 
     def redirect(self, media_type=MobileRequestType.MOBILE):
         """ Redirects to the mobile site staying on the page pointed
@@ -141,6 +153,8 @@ class Redirector(object):
         Rewrites the current HTTP response.
 
         @param media_type: Target media type. "www" or "mobile"
+
+        @return: True if redirect has been made
         """
 
         # This is the serverd URL
@@ -149,7 +163,7 @@ class Redirector(object):
         query_string = self.request["QUERY_STRING"]
 
         #print "Actual url:" + url
-        self.redirect_url(url, query_string, media_type)
+        return bool(self.redirect_url(url, query_string, media_type))
 
     def intercept(self):
         """ Manage redirects to mobile site.
@@ -202,8 +216,7 @@ class Redirector(object):
             elif self.isCookiedWeb():
                 return False
             else:
-                self.redirect()
-                return True
+                return bool(self.redirect())
 
         else:
             # A web browser
