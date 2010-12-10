@@ -4,6 +4,11 @@ Changelog
 0.9.4 - current
 ----------------
 
+* Do not fail with an IndexError when trying to get the first
+  mobile_domain_prefix or preview_domain_prefix.  Fall back to the
+  current domain then.
+  [maurits]
+
 * Fixed "NameError: global name 'domain_rot' is not defined" when
   trying to logout using manage_zmi_logout (and possibly elsewhere).
   [maurits]

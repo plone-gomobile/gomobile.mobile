@@ -97,13 +97,19 @@ class DomainNameBasedMobileSiteLocationManager(object):
         properties = self.properties
         if mode == MobileRequestType.MOBILE:
             # Use first prefix on the list when rewriting
-            return properties.mobile_domain_prefixes[0] + "." + domain
+            if properties.mobile_domain_prefixes:
+                return properties.mobile_domain_prefixes[0] + "." + domain
+            else:
+                logger.warn('No mobile_domain_prefixes found.')
         elif mode == MobileRequestType.PREVIEW:
             # Use first prefix on the list when rewriting
-            return properties.preview_domain_prefixes[0] + "." + domain
-        else:
-            # Assume web domains shouldn't get prefixed
-            return domain
+            if properties.preview_domain_prefixes:
+                return properties.preview_domain_prefixes[0] + "." + domain
+            else:
+                logger.warn('No preview_domain_prefixes found.')
+        # Assume web domains shouldn't get prefixed.
+        # Also, we end up here when we could not find a domain prefix above.
+        return domain
 
     def rewriteDomain(self, domain, mode):
         """ Changes domain name to point to web/mobile server.
