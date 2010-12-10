@@ -8,24 +8,24 @@
     </dt>
 
     <dd class="portletItem odd">
-    
+
         <p>
             <a class="open-mobile-preview" href="#">
             	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_preview_icon.png" />
             </a>
-        
+
         	<a class="open-mobile-preview" href="#" i18n:translate="">Preview mobile version</a>
         </p>
 
         <p>
-           	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_icon.png" />        
+           	<img tal:attributes="src string:${view/site_url}/++resource++gomobile.mobile/mobile_icon.png" />
         	<span i18n:translate="">Surf in mobile phone:</span>
 			<input type="text" tal:attributes="value view/getMobileSiteURL" />
         </p>
-        
-        
+
+
         <div id="dark-layer" class="darkClass"></div>
-        
+
 		<div id="mobile-preview-wrapper">
 				
 			<div id="mobile-preview">
@@ -45,11 +45,11 @@
 
 			</div>					
 		</div>
-                
+
         <tal:corners>
             <span class="portletBottomLeft"></span>
             <span class="portletBottomRight"></span>
         </tal:corners>
     </dd>
-   
+
 </dl>

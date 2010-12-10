@@ -31,9 +31,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  
+
  </object>
- 
+
   <object name="mobile_site_actions" meta_type="CMF Action Category">
   <property name="title"></property>
   <object name="search" meta_type="CMF Action">
@@ -72,4 +72,4 @@
  </object>
 
 </object>
- 
+

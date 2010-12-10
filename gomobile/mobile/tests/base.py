@@ -39,14 +39,14 @@ class BaseTestCase(ptc.PloneTestCase):
     def setUp(self):
         ptc.PloneTestCase.setUp(self)
         utils.modes = ["web"]
-        
+
     def setDiscriminateMode(self, mode):
         # utils.setDiscriminateMode(self.portal.REQUEST, mode)
-        
+
         if mode == "preview":
-            utils.modes = ["preview", "mobile"]    
+            utils.modes = ["preview", "mobile"]
         elif mode == "admin":
-            utils.modes = ["web", "admin"]    
+            utils.modes = ["web", "admin"]
         else:
             utils.modes = [mode]
 
@@ -67,9 +67,9 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
         instead of Go Mobile Default Theme
         TODO: This could be fixed using test layers?
         """
-        
+
         qi = self.portal.portal_quickinstaller
-        
+
         try:
             qi.uninstallProducts([name])
         except:
@@ -96,15 +96,15 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
 
         from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
         SiteErrorLog.raising = raising
-        
+
         # Hack to fix test running on multiple theme test cases subsequent
         #self.installMobileTheme("Go Mobile Default Theme")
         #self.portal.portal_properties.mobile_properties.mobile_skin = "Go Mobile Default Theme"
-        
+
         # skin manager must update active skin for the request
         self._refreshSkinData()
 
-        
+
 
     def loginAsAdmin(self):
         """ Perform through-the-web login.
@@ -132,14 +132,14 @@ class BaseFunctionalTestCase(ptc.FunctionalTestCase):
         # Be sure to use Products.Five.testbrowser here
         self.browser = UABrowser(user_agent, extra_headers=extra_headers)
         self.browser.handleErrors = False # Don't get HTTP 500 pages
-        
+
     def setDiscriminateMode(self, mode):
         # utils.setDiscriminateMode(self.portal.REQUEST, mode)
-        
+
         if mode == "preview":
-            utils.modes = ["preview", "mobile"]    
+            utils.modes = ["preview", "mobile"]
         elif mode == "admin":
-            utils.modes = ["web", "admin"]    
+            utils.modes = ["web", "admin"]
         else:
             utils.modes = [mode]
 

@@ -122,7 +122,7 @@ def spoofMobileFolderListingActiveTemplate(viewName="something"):
 
     old = FolderListingView.getActiveTemplate
     FolderListingView.getActiveTemplate = dummy
-    
+
 
 from zope.testbrowser import browser
 from Products.Five.testbrowser import PublisherHTTPHandler
@@ -136,22 +136,22 @@ class UABrowser(browser.Browser):
 
     def __init__(self, user_agent, url=None, extra_headers=None):
         """
-        
+
         @param user_agent: HTTP_USER_AGENT string to use
-        
+
         @param extra_headers: List of HTTP header tuples
         """
-        
+
         mech_browser = PublisherMechanizeBrowser()
         mech_browser.addheaders = [("User-agent", user_agent),]
-        
+
         if extra_headers:
              mech_browser.addheaders += extra_headers
 
         # override the http handler class
         mech_browser.handler_classes["http"] = PublisherHTTPHandler
         browser.Browser.__init__(self, url=url, mech_browser=mech_browser)
-        
-        
-        
+
+
+
 

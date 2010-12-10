@@ -15,7 +15,7 @@
                     tal:content="obj/changefreq"><tal:comment replace="nothing">change frequency</tal:comment></changefreq>
         <priority tal:condition="obj/priority | nothing"
                   tal:content="obj/priority"><tal:comment replace="nothing">priority</tal:comment></priority>
-		  
+		
         <mobile:mobile tal:condition="view/is_mobile" />
     </url>
 </tal:block>

@@ -95,13 +95,13 @@
 
 
   <!-- Should mobile tracker print out debug information.
-  
+
      Useful for tracing tracker problems.
-     
+
      * Set special HTTP response header
-     
+
      * Print console output
-      
+
      -->
   <property name="tracker_debug" type="boolean" purge="False">False</property>
 

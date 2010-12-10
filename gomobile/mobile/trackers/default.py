@@ -16,8 +16,8 @@ import zope.interface
 from gomobile.mobile.interfaces import IMobileTracker
 
 class PloneDefaultTracker(object):
-    """ Google Analytics mobile analytics tracker abstraction. 
-    
+    """ Google Analytics mobile analytics tracker abstraction.
+
     Uses __utm.gif synchronous server calling for the visitor tracking.
     """
 
@@ -30,5 +30,5 @@ class PloneDefaultTracker(object):
     def track(self, trackingId, debug):
         # use default plone tracker viewlet to render the tracking code
         code = self.context.unrestrictedTraverse("@@viewlets/plone.analytics")
-        return code 
+        return code
 

@@ -27,7 +27,7 @@ setup(name='gomobile.mobile',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'Products.AdvancedQuery', 
+          'Products.AdvancedQuery',
           'plone.behavior',
           'plone.directives.form',
           'zope.schema',
@@ -43,6 +43,6 @@ setup(name='gomobile.mobile',
       # -*- Entry points: -*-
 
       [z3c.autoinclude.plugin]
-      target = plone        
+      target = plone
       """,
       )

@@ -25,32 +25,32 @@ from gomobile.convergence.interfaces import IOverrideForm, IOverrider
 from plone.z3cform.layout import FormWrapper, wrap_form
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as FiveViewPageTemplateFile
 
-from gomobile.mobile.behaviors import IMobileBehavior 
+from gomobile.mobile.behaviors import IMobileBehavior
 
 class MobileForm(z3c.form.form.EditForm):
     """ Folder/page specific mobile publishing options """
 
     fields = field.Fields(IMobileBehavior)
-    
+
     prefix = "mobile"
     label = u"Mobile navigation options"
 
     def update(self):
         return z3c.form.form.EditForm.update(self)
-    
+
     def getContent(self):
         behavior = IMobileBehavior(self.context)
         return behavior
 
     def applyChanges(self, data):
         # Call super
-        content = self.getContent() 
+        content = self.getContent()
         val = z3c.form.form.EditForm.applyChanges(self, data)
-        
+
         # Write behavior to database
-        content = self.getContent() 
+        content = self.getContent()
         content.save()
-        
+
         return val
 
 MobileFormView = wrap_form(MobileForm)

@@ -173,16 +173,16 @@ class FolderListingView(BrowserView):
 
         # Return  the default page id or None if not set
         default_page = default_page_helper.getDefaultPage(container)
-        
+
         security_manager = getSecurityManager()
-        
+
         meta_types_not_to_list = container.portal_properties.navtree_properties.metaTypesNotToList
 
         current_content = self.context.aq_inner
-        
+
         def show(item):
             """ Filter whether the user can view a mobile item.
-            
+
             @param item: Real content object (not brain)
 
             @return: True if item should be visible in the listing
@@ -203,27 +203,27 @@ class FolderListingView(BrowserView):
             # Default page should not appear in the quick listing
             if item.getId() == default_page:
                 return False
-            
+
             if item.meta_type in meta_types_not_to_list:
                 return False
-            
+
             if item == current_content:
                 # Do not show the currently viewed page itself in the folder listing
                 return False
-            
+
             # Two letter language code
             item_lang = item.Language()
-            
+
             # Empty string makes language netral content
             if item_lang not in ["", None]:
                 if item_lang != language:
                     return False
 
-            # Note: getExcludeFromNav not necessarily exist on all content types 
-            if hasattr(item, "getExcludeFromNav"):                
+            # Note: getExcludeFromNav not necessarily exist on all content types
+            if hasattr(item, "getExcludeFromNav"):
                 if item.getExcludeFromNav():
                     return False
-                
+
             # Does the user have a permission to view this object
             if not security_manager.checkPermission(permissions.View, item):
                 return False
@@ -252,7 +252,7 @@ class FolderListingView(BrowserView):
             return None
 
         container = self.getListingContainer()
-    
+
         # Do not list if already doing folder listing
         template = self.getActiveTemplate()
         #print "Active template id:" + template
@@ -265,9 +265,9 @@ class FolderListingView(BrowserView):
         if container.meta_type in navtree_properties.parentMetaTypesNotToQuery:
             # Big folder... listing forbidden
             return None
-        
+
         state = container.restrictedTraverse('@@plone_portal_state')
-            
+
         #print "Performing mobile folder listing"
         items = container.listFolderContents()
 
@@ -283,11 +283,11 @@ class FolderListingView(BrowserView):
         if items == None:
             return []
         return list(items)
-    
+
 class PhoneNumberFormatterView(BrowserView):
     """
     Helper view to format phone numbers so that they appear as dial-in links.
-    
+
     Directly use underlying mobile.* package formatters.
     """
 

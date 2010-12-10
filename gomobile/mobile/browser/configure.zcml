@@ -44,8 +44,8 @@
         />
 
 
-    <!-- TODO: you get error Unauthorized: You need to be manager to acces processHTML() when using permission zope2.View 
-    
+    <!-- TODO: you get error Unauthorized: You need to be manager to acces processHTML() when using permission zope2.View
+
         Don't know why.
         -->
     <browser:page

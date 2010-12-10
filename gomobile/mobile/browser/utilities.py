@@ -10,5 +10,5 @@ from Products.Five.browser import BrowserView
 from zope.component import getUtility, queryUtility
 
 from gomobile.mobile.interfaces import IMobileUtility
-       
+
 # TODO: This module is being phased out

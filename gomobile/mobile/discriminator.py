@@ -1,7 +1,7 @@
 """
 
     Code for determining whether requests are mobile or web HTTP requests and how user interface should be rendered.
-    
+
     Go Mobile for Plone project home page: http://webandmobile.mfabrik.com
 
 """
@@ -40,8 +40,8 @@ class DefaultMobileRequestDiscriminator(object):
 
 
     def isMobileRequest(self, site, request, mobileDomainPrefixes, mobileDomainSuffixes, mobileViaIP):
-        """ Determine should this request be rendered in mobile mode. 
-        
+        """ Determine should this request be rendered in mobile mode.
+
         @return: True or False
         """
 
@@ -58,8 +58,8 @@ class DefaultMobileRequestDiscriminator(object):
         # based on request domain name
         #
         host = get_host(request)
-        
-    
+
+
         if host:
 
             host = host.lower()
@@ -71,7 +71,7 @@ class DefaultMobileRequestDiscriminator(object):
             # Special rule to use mobiles for LAN/WLAN traffic
             if mobileViaIP and is_numeric_ipv4(host):
                 return True
-        
+
 
             # Go through each subdomain name and compare it to mobile markers
             for part in host.split(".")[0:-1]:
@@ -115,13 +115,13 @@ class DefaultMobileRequestDiscriminator(object):
     def isAdminRequest(self, site, request):
         """ By default, assume all logged in users are admins.
         """
-        
+
         try:
             portal_membership = getToolByName(site, 'portal_membership')
         except AttributeError:
             # Can't access member properties
             return False
-            
+
         return not portal_membership.isAnonymousUser()
 
     def discriminate(self, context, request):
@@ -130,9 +130,9 @@ class DefaultMobileRequestDiscriminator(object):
 
         # Load settings from database
         try:
-            
+
             portal_properties = getToolByName(context, "portal_properties")
-            
+
             properties = portal_properties.mobile_properties
 
             # It is possible to have several mobile domain prefixes,
@@ -140,7 +140,7 @@ class DefaultMobileRequestDiscriminator(object):
             mobileDomainPrefixes = properties.mobile_domain_prefixes
             mobileDomainSuffixes = properties.mobile_domain_suffixes
             previewDomainPrefixes = properties.preview_domain_prefixes
-            
+
             # Migration compatible
             mobileViaIP = getattr(properties, "serve_mobile_via_ip", False)
 
@@ -150,7 +150,7 @@ class DefaultMobileRequestDiscriminator(object):
             # or during the site launch. The loading order prevents
             # us to access mobile_properties here, so it is
             # safe to assume this was not a mobile request
-            
+
             # UTF-8 issues my ensure
             try:
                 context_desc = str(context)
@@ -158,7 +158,7 @@ class DefaultMobileRequestDiscriminator(object):
                 context_desc= ""
 
             logger.debug("Cannot access mobile properties, having context:" + context_desc)
-            
+
             # (Because monkey-patch intercepts admin interface requests also
             # we need to make sure no exceptio gets through)
             flags.append(MobileRequestType.WEB)

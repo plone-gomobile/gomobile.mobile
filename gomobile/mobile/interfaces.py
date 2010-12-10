@@ -94,9 +94,9 @@ class IMobileRedirector(zope.interface.Interface):
     by fiddling with cookies.
 
     View like multi-adapter with parameters:
-    
+
     * context
-    
+
     * request
     """
 
@@ -143,69 +143,69 @@ class IMobileImageProcessor(zope.interface.Interface):
     """ Helper for making images behave nicely with mobile.
 
     View like multi-adapter with parameters:
-    
+
     * context
-    
+
     * request
-    
-    This helper is able to rewrite 
-    
+
+    This helper is able to rewrite
+
     * Individual image urls to be processed for mobile
-    
-    * HTML snippets 
-    
+
+    * HTML snippets
+
     Accepts both internal and external image source links.
     All internal links are assumed to be relative to context.absolute_url().
 
     Possible properties for resized images:
-    
+
     * width: "auto" to set width to user agent max screen width or integer
-    
+
     * height: "auto2 to set height to user agent max screen height or integer
 
     * padding_width: How many pixels of width padding is subtracted from the result
       width. Integer.
-      
+
     * conserve_aspect_ration: true or false string. Default is false.
-      
-      
+
+
     """
-    
+
     def getImageDownloadURL(url, properties):
         """ Rewrite <img src=""> URL so that image is processed through resizer.
-        
+
         The original URL is returned if the processer thinks the resizer
         cannot handle this sort of image.
-        
+
         The default operation is to scale down image conserving
         aspect ration so that both width and height fits to the mobile phone screen.
         Mobile phone screen is picked from user agent database. If database or
         database entry is not available, use width and height defaults configured
         for the site.
-        
-        @properties: Dictionary of directives how image should be processed e.g. 
+
+        @properties: Dictionary of directives how image should be processed e.g.
             is padding added.
-        
+
         @return: URL as a string.
         """
-        
+
     def processHTML(data, trusted, only_for_mobile):
         """ Process all <img> tags in HTML code.
-        
+
         This may also perform cross-site scripting
         attack preventation.
-        
+
         @param data: HTML code as unicode or UTF-8 string
-        
+
         @param only_for_mobile: If set True, touch HTML only if the site is currently rendered in mobile mode.
             This is handy for converged sites.
-        
-        @param trusted: Is parsed HTML from trusted source (run XSS clean-up) 
-        
+
+        @param trusted: Is parsed HTML from trusted source (run XSS clean-up)
+
         @return: Mutated XHTML output as a string. Always UTF-8 encoded.
         """
-    
-    
+
+
 class IUserAgentSniffer(zope.interface.Interface):
     """ Get user agent info for HTTP request.
 
@@ -220,26 +220,26 @@ class IUserAgentSniffer(zope.interface.Interface):
         * request (HTTP request object)
 
     See gomobile.mobile.sniffer for the default implementation.
-    
+
 
     """
-    
+
     def isMobileBrowser():
         """ Check whether the HTTP request was web or mobile browser request.
-        
+
         Perform a brand recogniziation regular expressions against
         the user agent string.
-        
+
         @return: True if HTTP request was made by a mobile browser
         """
-    
+
     def getUserAgentRecord():
         """ Get the underlying mobile.sniffer.UserAgent record for the HTTP request.
-        
+
         Example how to use::
             from zope.component import queryMultiAdapter
             # ua is mobile.sniffer.UserAgent object or None if no match/a web browser
             ua = queryMultiAdapter((context, request), IUserAgentSniffer)
-                    
-        @return: mobile.sniffer.base.UserAgent instance of None 
+
+        @return: mobile.sniffer.base.UserAgent instance of None
         """

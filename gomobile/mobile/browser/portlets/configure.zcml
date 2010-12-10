@@ -12,6 +12,6 @@
         renderer=".preview.Renderer"
         addview=".preview.AddForm"
         />
-        
+
 
 </configure>

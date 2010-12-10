@@ -75,76 +75,76 @@ class Redirector(object):
 
     def getRealContext(self):
         """ Get contentish context for the context.
-        
+
         Since we are a traversing hook, the context object might be bit heterogenous-
-        """ 
-        
-        
-        
+        """
+
+
+
         context = aq_inner(self.context)
         return context
-        
+
         # TODO: Fix this if there are bad pages
-        
+
         # Crap acquisition magic
         if hasattr(self.context, "aq_parent"):
             return self.context.aq_parent
         else:
-            return None # This context lacks acquisition chain, happens 
-        
+            return None # This context lacks acquisition chain, happens
+
     def forceWeb(self):
         """
         Set a cookie which forces the mobile browser to stay on the web site.
         """
         response = self.request.response
         response.setCookie(Redirector.COOKIE_NAME, "web", path="/")
-        
+
     def redirect_url(self, url, query_string, media_type=MobileRequestType.MOBILE):
         """ HTTP redirect to a mobile site matching certain URL.
-        
+
         @param url: Base URL to rewrite
-        
+
         @param query_string: Incoming query string on the orignal request (for analytics preservation etc.)
-        
+
         @param media_type: Target media type. "www" or "mobile"
-        
+
         """
         context = self.getRealContext()
-        
+
         location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
-            
+
         new_url = location_manager.rewriteURL(url, media_type)
-        
+
         if query_string != "":
             new_url += "?" + query_string
-        
-        
+
+
         if media_type == MobileRequestType.WEB:
             # Add magical HTTP GET parameter which
             # enforces no redirect cookie
-            
+
             if query_string == "":
                 new_url += "?"
             else:
                 new_url += "&"
-            
+
             new_url += "force_web"
-                    
+
         self.request.response.redirect(new_url)
-        
+
     def redirect(self, media_type=MobileRequestType.MOBILE):
         """ Redirects to the mobile site staying on the page pointed by the current HTTP request.
-        
+
         Rewrites the current HTTP response.
-        
+
         @param media_type: Target media type. "www" or "mobile"
         """
 
-        # This is the serverd URL 
+        # This is the serverd URL
         url = self.request["ACTUAL_URL"]
-        
+
         query_string = self.request["QUERY_STRING"]
-        
+
         #print "Actual url:" + url
         self.redirect_url(url, query_string, media_type)
 
@@ -153,19 +153,19 @@ class Redirector(object):
 
         @return: True if redirect has been made
         """
-        
+
         # XXX: Enable this later
         # Abort if gomobile.mobile is not installed
-        # - detect by browserlayers.xml 
+        # - detect by browserlayers.xml
         #if not IGoMobileInstalled.providedBy(self.request):
         #    return False
-        
-        
-        # This is needed for templates without views 
+
+
+        # This is needed for templates without views
         context = self.getRealContext()
         if context is None:
             return False
-        
+
         try:
             location_manager = getMultiAdapter((context, self.request), IMobileSiteLocationManager)
         except:
@@ -174,11 +174,11 @@ class Redirector(object):
             # - see intercept()
             return False
 
-    
+
         if IApplication.providedBy(context):
             # Do not intercept requests going to the Zope management interface root (one level above Plone sites)
             return False
-        
+
         discriminator = getUtility(IMobileRequestDiscriminator)
         modes = discriminator.discriminate(context, self.request)
 

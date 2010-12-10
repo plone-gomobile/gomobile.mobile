@@ -24,12 +24,12 @@
     enabled="True" expression=""  inline="False"/>
 -->
 
- <javascript 
+ <javascript
     id="++resource++gomobile.mobile/exception.js"
     cacheable="False" compression="safe" cookable="False"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser"  inline="False"/>
 
- <javascript 
+ <javascript
     id="++resource++gomobile.mobile/simulator.js"
     cacheable="False" compression="safe" cookable="False"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser"  inline="False"/>

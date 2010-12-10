@@ -1,9 +1,9 @@
 """
 
     Mobile sitemap support.
-    
+
     http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=34648
-    
+
     http://mfabrik.com
 
 """
@@ -39,26 +39,26 @@ def _render_cachekey(fun, self):
 class LanguageAwareMobileSitemap(base.SiteMapView):
     """
     Allow generation of language specific sitemaps.
-    
+
     Example Google Webmaster tools links:
-    
+
     * http://yoursite/@@mobile_sitemap?language=fi&mode=mobile
-    
+
     * http://yoursite/@@mobile_sitemap?language=fi&mode=mobile
-    
+
     * http://yoursite/@@mobile_sitemap?language=ALL&mode=web
-    
+
     Example test runs (does not GZip content):
-    
+
     * http://yoursite/@@mobile_sitemap?language=fi&mode=mobile&test
     """
-    
+
     template = ViewPageTemplateFile("templates/mobile-sitemap.pt")
 
     def getMode(self):
         """
         Should we pages as mobile.
-        
+
         @return: "web" or "mobile"
         """
         mode = self.request.form.get("mode", "mobile")
@@ -67,7 +67,7 @@ class LanguageAwareMobileSitemap(base.SiteMapView):
     def getLanguage(self):
         """
         Read language from the request.
-        
+
         @return: Two letter language code or "ALL"
         """
         lang = self.request.form.get("language", None)
@@ -134,10 +134,10 @@ class LanguageAwareMobileSitemap(base.SiteMapView):
             raise NotFound(self.context, self.get_filename(), self.request)
 
 
-        
-        
+
+
         if self.request.get("uncompressed", None) != None:
-            self.request.response.setHeader('Content-Type','text/xml')            
+            self.request.response.setHeader('Content-Type','text/xml')
             return self.uncompressed()
         else:
             self.request.response.setHeader('Content-Type', 'application/octet-stream')

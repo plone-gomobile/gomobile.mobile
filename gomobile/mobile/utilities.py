@@ -24,11 +24,11 @@ from mobile.heurestics.simple import is_low_end_phone
 from Products.Five.browser import BrowserView
 from gomobile.mobile.interfaces import IMobileUtility
 
-from mfabrik.behaviorutilities.volatilecontext import AnnotationPersistentFactory, VolatileContext 
+from mfabrik.behaviorutilities.volatilecontext import AnnotationPersistentFactory, VolatileContext
 
 class MobileUtility(object):
-    """ Zope 3 utility for mobile actions. 
-    
+    """ Zope 3 utility for mobile actions.
+
     TODO: DONT USE. Get rid of this and use @@mobile_tool view.
     """
 
@@ -95,7 +95,7 @@ getCachedMobileProperties = getMobileProperties
 
 def get_host(request):
     """ Helper function to extract host name from HTTP request in virtual host compatible way.
-    
+
     """
     if "HTTP_X_FORWARDED_HOST" in request.environ:
         # Virtual host
@@ -106,7 +106,7 @@ def get_host(request):
     else:
         # Unit test code?
         host = None
-        
+
     return host
 
 def get_host_domain_name(request):
@@ -116,10 +116,10 @@ def get_host_domain_name(request):
     host = get_host(request)
     parts = host.split(":")
     return parts[0]
-    
+
 def get_ip(request):
     """  Extract the client IP address from the HTTP request in proxy compatible way.
-    
+
     @return: IP address as a string or None if not available
     """
     if "HTTP_X_FORWARDED_FOR" in request.environ:
@@ -131,19 +131,19 @@ def get_ip(request):
     else:
         # Unit test code?
         ip = None
-        
+
     return ip
-    
+
 ipv4_regex_source = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 ipv4_regex = re.compile(ipv4_regex_source)
 
 def is_numeric_ipv4(str):
     """
-    
+
     http://answers.oreilly.com/topic/318-how-to-match-ipv4-addresses-with-regular-expressions/
-        
+
     @param str: Hostname as a string.
-    
+
     @return: True if the given string is numeric IPv4 address
     """
     # ^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$

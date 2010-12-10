@@ -26,7 +26,7 @@ class TestDiscriminator(BaseTestCase):
 
         # By default, we are in web mode
         self.logout()
-        
+
         self.setDiscriminateMode("web")
 
         util = getUtility(IMobileRequestDiscriminator)
@@ -58,7 +58,7 @@ class TestDiscriminator(BaseTestCase):
 
 
     def test_mobile_tool_traverse(self):
-        
+
         self.setDiscriminateMode("web")
         tool = self.portal.unrestrictedTraverse("@@mobile_tool")
         self.assertFalse(tool.isMobileRequest())

@@ -33,9 +33,9 @@ class TestFolderListing(BaseTestCase):
         self.spoofActiveTemplate("some_view_not_blacklisted")
 
     def spoofActiveTemplate(self, viewName):
-        """ We cannot do unit testing because FolderListingView.getActiveTemple() 
+        """ We cannot do unit testing because FolderListingView.getActiveTemple()
         does not provide a template which would allow listing.
-        
+
         """
 
         # Monkey-patch for tests
@@ -68,7 +68,7 @@ class TestFolderListing(BaseTestCase):
         behavior = IMobileBehavior(self.portal.folder.doc2)
         behavior.appearInFolderListing = False
         behavior.save()
-        
+
         # self.assertEqual(self.getItems(self.portal.folder), None)
         items = self.getItems(self.portal.folder)
         self.assertEqual(len(self.getItems(self.portal.folder)), 1)

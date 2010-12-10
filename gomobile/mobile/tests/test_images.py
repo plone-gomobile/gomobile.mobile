@@ -44,10 +44,10 @@ class TestProcessHTML(BaseTestCase):
         self.portal.invokeFactory("Document", "doc")
         self.doc = self.portal.doc
         self.image_processor = getMultiAdapter((self.doc, self.doc.REQUEST), IMobileImageProcessor)
-        
-    def test_process_html_relative(self):         
+
+    def test_process_html_relative(self):
         """ Check that exceptions don't fly
-        
+
         TODO: Something smarter here
         """
         result = self.image_processor.processHTML(sample1, True)
@@ -59,39 +59,39 @@ class TestProcessHTML(BaseTestCase):
 
     def test_process_html_portal_root(self):
         """ Check that exceptions don't fly
-        
+
         TODO: Something smarter here
         """
         result = self.image_processor.processHTML(sample2, True)
         self.assertTrue("float: none" in result)
         # Relative to the site root
         self.assertTrue("url=logo.jpg" in result)
-    
+
     def test_process_html_external(self):
         """ Check that exceptions don't fly
-        
+
         TODO: Something smarter here
         """
-        
+
         result = self.image_processor.processHTML(sample3, True)
         #print "3:" + result
         self.assertTrue("float: none" in result)
         self.assertTrue("url=http%3A%2F%2Fplone.org%2Flogo.jpg" in result)
 
-        
+
 class TestResizedView(BaseFunctionalTestCase):
     """ Test mobile image resizer.
-    
+
     This stressed the view which performs the actual image scale down and result caching.
     """
-    
+
     def afterSetUp(self):
         BaseFunctionalTestCase.afterSetUp(self)
         self.image_processor = getMultiAdapter((self.portal, self.portal.REQUEST), IMobileImageProcessor)
-        
+
         self.image_processor.init()
         self.image_processor.cache.invalidate()
-        
+
     def checkIsValidDownload(self, url):
         """
         Check whether we generated good image response.
@@ -99,30 +99,30 @@ class TestResizedView(BaseFunctionalTestCase):
         self.browser.open(url)
         ct = self.browser.headers["content-type"]
         self.assertEqual(ct, "image/jpeg", "got:" + ct)
-        
+
     def test_no_user_agent(self):
         """ Check that redirect does not happen for a normal web browser.
         """
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
         # print url
         self.checkIsValidDownload(url)
-        
-        
+
+
     def checkIsUnauthorized(self, url):
         """
-        Check whether URL gives Unauthorized response. 
+        Check whether URL gives Unauthorized response.
         """
-        
-        import urllib2 
-        
+
+        import urllib2
+
         # Disable redirect on security error
         self.portal.acl_users.credentials_cookie_auth.login_path = ""
-        
+
         # Unfuse exception tracking for debugging
         # as set up in afterSetUp()
         self.browser.handleErrors = True
-        
-        
+
+
         # Comment out these to make 500 exceptions visible
         def raising(self, info):
             pass
@@ -130,7 +130,7 @@ class TestResizedView(BaseFunctionalTestCase):
         from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
         SiteErrorLog.raising = raising
         ## here
-        
+
         try:
             self.browser.open(url)
             raise AssertionError("No Unauthorized risen:" + url)
@@ -138,38 +138,38 @@ class TestResizedView(BaseFunctionalTestCase):
             # Mechanize, the engine under testbrowser
             # uses urlllib2 and will raise this exception
             self.assertEqual(e.code, 401, "Got HTTP response code:" + str(e.code))
-        
+
     def test_is_cached(self):
-                
+
         from gomobile.mobile.browser import imageprocessor
         imageprocessor.cache_hits = 0
 
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
         self.checkIsValidDownload(url)
-        
-        self.assertEqual(imageprocessor.cache_hits, 0)       
-        
+
+        self.assertEqual(imageprocessor.cache_hits, 0)
+
         # Now the same URL should be cached hit
         self.checkIsValidDownload(url)
-        self.assertEqual(imageprocessor.cache_hits, 1)       
-         
+        self.assertEqual(imageprocessor.cache_hits, 1)
+
         # Change some parameters and see that we are not cached anymore
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "20"})
         self.checkIsValidDownload(url)
-        self.assertEqual(imageprocessor.cache_hits, 1)       
+        self.assertEqual(imageprocessor.cache_hits, 1)
 
     def test_relative(self):
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"auto", "padding_width" : "10"})
         self.checkIsValidDownload(url)
-        
+
     def test_external(self):
         url = self.image_processor.getImageDownloadURL("http://plone.org/logo.jpg", {"width":"auto", "padding_width" : "10"})
         self.checkIsValidDownload(url)
 
     def test_invalid_width_low(self):
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"0", "padding_width" : "10"})
-        
-        
+
+
         # print url
         #import pdb ; pdb.set_trace()
         self.checkIsUnauthorized(url)
@@ -177,10 +177,10 @@ class TestResizedView(BaseFunctionalTestCase):
     def test_invalid_width_high(self):
         url = self.image_processor.getImageDownloadURL("/logo.jpg", {"width":"1200", "padding_width" : "10"})
         self.checkIsUnauthorized(url)
-        
+
     def test_clear_cache(self):
         secret = self.image_processor.getSecret()
-        url = self.portal.absolute_url() + "/@@mobile_image_processor_clear_cache?secret=" + secret 
+        url = self.portal.absolute_url() + "/@@mobile_image_processor_clear_cache?secret=" + secret
         self.browser.open(url)
 
     def test_clear_cache_bad_secret(self):
@@ -196,17 +196,17 @@ class TestResizedView(BaseFunctionalTestCase):
         # remove secret paramater
         url = url.replace("secret", "notsecret")
         self.checkIsUnauthorized(url)
-        
+
 
 class TestDocWithImage(BaseFunctionalTestCase):
     """ Check that we transform document body text properly for mobile.
- 
+
      .. warning ::
-     
+
          As these tests depend on skin layers, they have been moved to gomobiletheme.basic
          package.
     """
-     
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestProcessHTML))
