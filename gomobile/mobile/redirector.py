@@ -193,7 +193,9 @@ class Redirector(object):
 
         if IApplication.providedBy(context):
             # Do not intercept requests going to the Zope management
-            # interface root (one level above Plone sites)
+            # interface root (one level above Plone sites).
+            # Actually, this is not working, as the context is usually
+            # <DTMLMethod at /index_html> in that case.
             return False
 
         discriminator = getUtility(IMobileRequestDiscriminator)
