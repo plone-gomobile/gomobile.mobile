@@ -6,7 +6,7 @@
 
 __license__ = "GPL 2"
 __copyright__ = "2010 mFabrik Research Oy"
-__author__ = "Mikko Ohtamaa <mikko.ohtamaa@twinapex.com>"
+__author__ = "Mikko Ohtamaa <mikko.ohtamaa@mfabrik.com>"
 __docformat__ = "epytext"
 
 from Acquisition import aq_inner
@@ -33,7 +33,8 @@ class MobileForm(z3c.form.form.EditForm):
     fields = field.Fields(IMobileBehavior)
 
     prefix = "mobile"
-    label = u"Mobile navigation options"
+    
+    label = u"Mobile navigation settings"
 
     def update(self):
         return z3c.form.form.EditForm.update(self)
@@ -51,6 +52,8 @@ class MobileForm(z3c.form.form.EditForm):
         content = self.getContent()
         content.save()
 
+        self.status = u"Mobile navigation settings changed"
+        
         return val
 
 MobileFormView = wrap_form(MobileForm)
