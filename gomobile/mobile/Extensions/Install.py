@@ -16,10 +16,6 @@ def uninstall(portal, reinstall=False):
 
     output = StringIO()
     if not reinstall:
-
-        # normal uninstall
-        setup_tool = getToolByName(portal, 'portal_setup')
-        setup_tool.runAllImportStepsFromProfile('profile-gomobile.mobile:uninstall')
       
         report = clean_up_content_annotations(portal, ["mobile"])
         print >> output, report
