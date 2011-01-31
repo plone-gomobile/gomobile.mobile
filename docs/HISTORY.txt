@@ -4,6 +4,8 @@ Changelog
 0.9.4 - current
 ----------------
 
+* Uninstall cleanly - test it [miohtama]
+
 * Do not try to rewrite an ip address into something like m.127.0.0.1.
   [maurits]
 
