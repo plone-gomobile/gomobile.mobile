@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.4 - current
+0.9.4 - 1.0.0
 ----------------
 
 * Uninstall cleanly - test it [miohtama]

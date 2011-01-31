@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.9.4'
+version = '1.0.0'
 
 setup(name='gomobile.mobile',
       version=version,
