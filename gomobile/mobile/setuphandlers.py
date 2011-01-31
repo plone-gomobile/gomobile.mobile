@@ -87,10 +87,15 @@ def clean_up_content_annotations(portal, names):
     def recurse(context):
         """ Recurse through all content on Plone site """
                 
-        annotations = IAnnotations(context)
+        try:
+            annotations = IAnnotations(context)
+        except TypeError:
+            # Some special objects, like AT criterion on Plone 4, might not support annotations
+            print  >> output, "Annotations where not available on item:" + str(context)
+            return
         
         #print  >> output, "Recusring to item:" + str(context)
-        print annotations
+        # print annotations
         
         for name in names:
             if name in annotations:
