@@ -57,12 +57,20 @@
 
 
     <genericsetup:registerProfile
-      name="default"
-      title="Go Mobile"
-      directory="profiles/default"
-      description='Mobile CMS add-on'
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+	name="default"
+	title="Go Mobile"
+	directory="profiles/default"
+	description='Mobile CMS add-on'
+	provides="Products.GenericSetup.interfaces.EXTENSION"
+	/>
+      
+     <genericsetup:registerProfile
+	name="uninstall"
+	title="Go Mobile Uninstall"
+	directory="profiles/uninstall"
+	description="Removes Go Mobile"
+	provides="Products.GenericSetup.interfaces.EXTENSION"
+	/>
 
      <adapter
         for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
