@@ -64,14 +64,6 @@
 	provides="Products.GenericSetup.interfaces.EXTENSION"
 	/>
       
-     <genericsetup:registerProfile
-	name="uninstall"
-	title="Go Mobile Uninstall"
-	directory="profiles/uninstall"
-	description="Removes Go Mobile"
-	provides="Products.GenericSetup.interfaces.EXTENSION"
-	/>
-
      <adapter
         for="zope.interface.Interface zope.publisher.interfaces.browser.IBrowserRequest"
         provides=".interfaces.IMobileSiteLocationManager"
