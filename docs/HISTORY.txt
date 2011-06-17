@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.1 - current
+---------------------
+
+* Fixed handling of https images [miohtama]
+
 1.0.0 - 1.0.1
 -----------------
 
