@@ -268,7 +268,7 @@ class MobileImageProcessor(object):
         # Make sure we are traversing the context chain without view object messing up things
         context = self.context.aq_inner
 
-        if url.startswith("http://"):
+        if url.startswith("http://") or url.startswith("https://"):
             # external URL
             url = url
         elif "++resource" in url:
