@@ -164,8 +164,8 @@ class DomainNameBasedMobileSiteLocationManager(object):
     def rewriteURL(self, url, mode):
 
         if self.properties is None:
-            logger.warn("Cannot rewrite URL - no mobile_properties "
-                        "available - " + url)
+            #logger.warn("Cannot rewrite URL - no mobile_properties "
+            #            "available - " + url)
             # Don't do anything exceptional here as we might be called
             # in pre traverse hook or other unsafe location
             return url

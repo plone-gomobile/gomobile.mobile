@@ -1,10 +1,13 @@
 Changelog
 =========
 
-1.0.1 - current
+1.0.1 - 1.0.2
 ---------------------
 
 * Fixed handling of https images [miohtama]
+
+* Removed LocationManager warning message which was unneededly triggered on sites where
+  no gomobile.mobile was installed [miohtama]
 
 1.0.0 - 1.0.1
 -----------------
