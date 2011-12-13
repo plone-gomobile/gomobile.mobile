@@ -51,7 +51,7 @@ class DomainNameBasedMobileSiteLocationManager(object):
         # Load PloneSite object from thread locals
         site = getSite()
         if site == None:
-            logger.warn("No site was available in "
+            logger.debug("No site was available in "
                         "locationmanager.rewriteURL()")
             return None
 
@@ -59,7 +59,7 @@ class DomainNameBasedMobileSiteLocationManager(object):
         if hasattr(site.portal_properties, "mobile_properties"):
             return site.portal_properties.mobile_properties
         # We implicitly return None here
-        logger.warn("No mobile_properties found.")
+        logger.debug("No mobile_properties found.")
 
     def getBaseDomainName(self, domain):
         """ Get the domain name with all unnecessary prefixes and
