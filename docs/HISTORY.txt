@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.2 - 1.0.3
+----------------
+
+* Fixed too verbose no mobile_properties available warning [miohtama]
+
 1.0.1 - 1.0.2
 ---------------------
 
