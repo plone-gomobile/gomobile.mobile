@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.3 - current
+--------------------
+
+* Mercifully handle remote image resizes with bad HTTP responses [miohtama]
+
 1.0.2 - 1.0.3
 ----------------
 
@@ -84,7 +89,7 @@ Changelog
 * Added full support for i18n
   [leonardocaballero]
 
-* Created gomobile.xhtmlmp package 
+* Created gomobile.xhtmlmp package
 
 * Added support for XHTML MP mobile profile cleaning in feedfeeder
 

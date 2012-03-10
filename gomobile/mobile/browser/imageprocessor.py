@@ -477,6 +477,7 @@ class ResizeViewHelper(BrowserView):
             data = f.read()
             f.close()
             format = self.resolveCacheFormat(data)
+            value = data
         else:
             tool = getUtility(IImageInfoUtility)
 
@@ -487,8 +488,18 @@ class ResizeViewHelper(BrowserView):
             else:
                 data, format = tool.resizeImage(self.image, width, height, conserve_aspect_ration=self.conserve_aspect_ration)
 
-            self.resizer.cache.set(path, data.getvalue())
+            # Mercifully cache broken images from remote HTTP downloads
+            if data is None:
+                value = ""
+            else:
+                value = data.getvalue()
 
+            self.resizer.cache.set(path, value)
+
+        if value == "":
+            # We could not access the orignal image data
+            self.request.response.setHeader("Content-type", "text/plain")
+            return "Image resize error"
 
         self.request.response.setHeader("Content-type", "image/" + format)
 
