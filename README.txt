@@ -55,14 +55,10 @@ any software development needs.
 Author
 ------
 
-`mFabrik Research Oy <mailto:info@mfabrik.com>`_ - Python and Plone professionals for hire.
+Mikko Ohtamaa & others
 
 * `mFabrik Web & Mobile - multichannel CMS made easy <http://webandmobile.mfabrik.com>`_ 
 
-* `mFabrik web site <http://mfabrik.com>`_ 
-
-* `mFabrik mobile site <http://mfabrik.mobi>`_ 
-
-* `Blog <http://blog.mfabrik.com>`_
+* `Author web site <http://opensourcehacker.com>`_ 
 
 
