@@ -1,10 +1,12 @@
 Changelog
 =========
 
-1.0.3 - current
+1.0.3 - 1.0.4
 --------------------
 
-* Mercifully handle remote image resizes with bad HTTP responses [miohtama]
+* Resizer rercifully handle remote image resizes with bad HTTP responses [miohtama]
+
+* Author info update [miohtama]
 
 1.0.2 - 1.0.3
 ----------------
