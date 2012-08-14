@@ -111,7 +111,7 @@ class TestMobileContentType(BaseFunctionalTestCase):
         slice = html[0:len(MOBILE_DOCTYPE)]
 
         # Eyeball comparison
-        print slice
+        #print slice
         #print MOBILE_DOCTYPE
 
 
@@ -132,7 +132,7 @@ class TestMobileContentType(BaseFunctionalTestCase):
 
         from lxml import etree
 
-        print "Got front page:" + html
+        #print "Got front page:" + html
 
         # Assert no exception is risen
         root = etree.fromstring(html)

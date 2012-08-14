@@ -51,7 +51,7 @@ class TestRedirector(BaseTestCase):
         response = self.portal.REQUEST.response
         cookies = response._cookie_list()
         self.assertEqual(len(cookies), 1)
-        self.assertEqual(cookies[0], 'Set-Cookie: mobile_mode="web"; Path=/')
+        self.assertEqual(cookies[0], ('Set-Cookie', 'mobile_mode="web"; Path=/'))
 
     def test_redirect_mobile_browser_web_cookie_set(self):
         self.set_user_agent("mobile")
