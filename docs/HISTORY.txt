@@ -8,6 +8,12 @@ Changelog
 
 * Fixed tests for Plone 4.2
 
+1.0.6 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.0.5 (2012-08-14)
 ------------------
 
