@@ -1,4 +1,4 @@
-recursive-include main_directory *
+recursive-include gomobile *
 recursive-include docs *
 include *
 global-exclude *.pyc
