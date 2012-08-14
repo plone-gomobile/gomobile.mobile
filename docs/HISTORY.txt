@@ -1,8 +1,15 @@
 Changelog
 =========
 
-1.0.3 - 1.0.4
---------------------
+1.0.5
+---------------------
+
+* Fixed: in mobile website the access to public content in a private container is forbidden [vmaksymiv]
+
+* Fixed tests for Plone 4.2
+
+1.0.5 (2012-08-14)
+------------------
 
 * Resizer rercifully handle remote image resizes with bad HTTP responses [miohtama]
 

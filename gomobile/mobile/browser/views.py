@@ -266,9 +266,6 @@ class FolderListingView(BrowserView):
             # Big folder... listing forbidden
             return None
 
-        state = container.restrictedTraverse('@@plone_portal_state')
-
-        #print "Performing mobile folder listing"
         items = container.listFolderContents()
 
         items = self.filterItems(container, items)
