@@ -286,11 +286,20 @@ class MobileImageProcessor(object):
 
                 site = getSite()
 
+                # check if the context is folderish so that we can
+                # traverse from the parent if it's not
+                folderish = getattr(aq_base(context), 'isPrincipiaFolderish',
+                                    False)
                 try:
-                    imageObject = context.unrestrictedTraverse(url)
+                    if folderish:
+                        imageObject = context.unrestrictedTraverse(url)
+                    else:
+                        imageObject = \
+                            context.aq_parent.unrestrictedTraverse(url)
                 except Unauthorized:
-                    # The parent folder might be private and the image public,
-                    # in which case we should be able to view the image after all.
+                    # The parent folder might be private and the image
+                    # public, in which case we should be able to view
+                    # the image after all.
                     parent_path = '/'.join(url.split('/')[:-1])
                     image_path = url.split('/')[-1]
                     parent = site.unrestrictedTraverse(parent_path)

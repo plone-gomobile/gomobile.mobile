@@ -1,18 +1,11 @@
 Changelog
 =========
 
-1.0.5
----------------------
-
-* Fixed: in mobile website the access to public content in a private container is forbidden [vmaksymiv]
-
-* Fixed tests for Plone 4.2
-
 1.0.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+* Fix MobileImageProcess.mapURL to traverse relative urls from folder if
+  content is not folderish
 
 1.0.5 (2012-08-14)
 ------------------
@@ -20,6 +13,10 @@ Changelog
 * Resizer rercifully handle remote image resizes with bad HTTP responses [miohtama]
 
 * Author info update [miohtama]
+
+* Fixed: in mobile website the access to public content in a private container is forbidden [vmaksymiv]
+
+* Fixed tests for Plone 4.2
 
 1.0.2 - 1.0.3
 ----------------
