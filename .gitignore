@@ -1,0 +1,3 @@
+*.pyc
+gomobile.mobile.egg-info
+gomobile/mobile/i18n/gomobile.mobile-plone-*.mo
