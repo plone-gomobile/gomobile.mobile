@@ -17,7 +17,7 @@ from gomobile.mobile.interfaces import IMobileTracker
 
 from five import grok
 
-class MobileTracker(grok.CodeView):
+class MobileTracker(grok.View):
     """ Mobile tracking code renderer.
 
     Can be used stand-alone or from viewlet (see gomobiletheme.basic.viewlets).

@@ -30,7 +30,7 @@ class IMobileBehavior(form.Schema):
     form.fieldset(
         'mobile',
         label=('Mobile'),
-        fields=('mobileFolderListing'),
+        fields=('mobileFolderListing',),
     )
 
     mobileFolderListing = schema.Bool(title=_(u"Show folder listing"),
