@@ -6,6 +6,7 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="gomobile.mobile">
 
     <include package="five.grok" />
@@ -81,5 +82,11 @@
         provides=".interfaces.IMobileImageProcessor"
         factory=".browser.imageprocessor.MobileImageProcessor"
         />
+
+  <!-- Resource directory for resources -->
+  <browser:resourceDirectory
+      name="gomobile.mobile"
+      directory="static"
+      />
 
 </configure>
